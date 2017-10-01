@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import App from './components/App';
-import 'semantic-ui/dist/semantic.min.css';
 import './index.css';
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
