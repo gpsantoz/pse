@@ -229,6 +229,15 @@ const convoluteFloat32 = (pixels, weights, opaque) => {
     return output;
 }
 
+const getNewHistogramArray = () => {
+    return _
+        .chain(_.range(0, 256, 1))
+        .map(elem => {
+            return { nivel: `Nível: ${elem}`, Quantidade: 0 }
+        })
+        .value();
+}
+
 let _figureAreaId;
 let _originalImageId;
 
@@ -242,32 +251,24 @@ class CIM {
     runPipelineFilter() {
         let canvas = document.getElementById('test-canvas');
         const ctx = canvas.getContext('2d');
-        ctx.putImageData(grayscale(getPixels(canvas)), 0, 0);
-        ctx.putImageData(invert(getPixels(canvas)), 0, 0);
-        ctx.putImageData(brightness(getPixels(canvas), -100), 0, 0);
+        //ctx.putImageData(grayscale(getPixels(canvas)), 0, 0);
+        //ctx.putImageData(invert(getPixels(canvas)), 0, 0);
+        //ctx.putImageData(brightness(getPixels(canvas), 40), 0, 0);
     }
 
     getHistogram() {
-        const pixels = getPixels(document.getElementById(_originalImageId));
-        let count = 0
+        const pixels = getPixels(document.getElementById('test-canvas'));
         let d = pixels.data;
 
-        let redArray = _
-            .chain(_.range(0, 256, 1))
-            .map(elem => {
-                return { nivel: `Nível: ${elem}`, Quantidade: 0 }
-            })
-            .value(),
-            greenArray = _.slice(redArray),
-            blueArray = _.slice(redArray);
+        let redArray = getNewHistogramArray();
+        let greenArray = getNewHistogramArray();
+        let blueArray = getNewHistogramArray();
 
         for (let i = 4; i < d.length; i += 4) {
-            count++;
             redArray[d[i]].Quantidade++;
             greenArray[d[i + 1]].Quantidade++;
             blueArray[d[i + 2]].Quantidade++;
         }
-        console.log(count);
         return { redArray, greenArray, blueArray };
     }
 

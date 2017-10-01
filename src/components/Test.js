@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import CIM from '../lib/CIM'
 import React from 'react';
-import { BarChart, Bar, Tooltip, Legend, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { BarChart, Bar, Tooltip, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-const cim = new CIM('figure-area', 'orig');
+const cim = new CIM('figure-area', 'test-canvas');
 
 const buttons = [
 	{ name: 'grayscale', func: cim.runGrayscale },
@@ -30,7 +30,7 @@ class Test extends React.Component {
 					<button
 						key={button.name}
 						id={`${button.name}-btn`}
-						className="waves-effect waves-light btn"
+						className='waves-effect waves-light btn'
 						onClick={button.func}
 					>
 						{button.name}
@@ -46,71 +46,65 @@ class Test extends React.Component {
 
 	render() {
 		return (
-			<div className="container">
-				<figure id="figure-area">
+			<div className='container'>
+				<figure id='figure-area'>
 					<canvas id='test-canvas'>
 					</canvas>
 					<img
 						onLoad={() => {
 							const img = document.getElementById('orig');
-							this.setState(cim.getHistogram());
 							const canvas = document.getElementById('test-canvas');
 							canvas.width = img.width;
 							canvas.height = img.height;
 							canvas.getContext('2d').drawImage(img, 0, 0);
 							cim.runPipelineFilter();
+							this.setState(cim.getHistogram());
 						}}
-						id="orig"
-						src="stormtrooper.jpg"
-						alt="image"
+						id='orig'
+						src='demo_small.png'
+						alt='canvas area'
 						style={{ display: 'none' }}
 					/>
 				</figure>
 
-				<div className="divider" />
+				<div className='divider' />
 
-				<div className="section">
+				<div className='section'>
 					{this.renderFilterButtons()}
 				</div>
 
-				<div className="divider" />
+				<div className='divider' />
 
-				<div className="section">
-					<BarChart width={600} height={300} data={this.state.redArray}
-						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-						<XAxis dataKey='nivel' />
-						<YAxis />
-						<CartesianGrid strokeDasharray="3 3" />
-						<Tooltip />
-						<Bar dataKey="Quantidade" fill="#8884d8" />
-					</BarChart>
-				</div>
+				<div className='row'>
+					<div className='col s12 m6'>
+						<BarChart width={400} height={200} data={this.state.redArray}>
+							<XAxis dataKey='nivel' />
+							<YAxis />
+							<CartesianGrid strokeDasharray='3 3' />
+							<Tooltip />
+							<Bar dataKey='Quantidade' fill='#8884d8' />
+						</BarChart>
+					</div>
 
-				<div className="divider" />
+					<div className='col s12 m6'>
+						<BarChart width={400} height={200} data={this.state.greenArray}>
+							<XAxis dataKey='nivel' />
+							<YAxis />
+							<CartesianGrid strokeDasharray='3 3' />
+							<Tooltip />
+							<Bar dataKey='Quantidade' fill='#8884d8' />
+						</BarChart>
+					</div>
 
-				<div className="section">
-					<BarChart width={600} height={300} data={this.state.greenArray}
-						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-						<XAxis dataKey='nivel' />
-						<YAxis />
-						<CartesianGrid strokeDasharray="3 3" />
-						<Tooltip />
-						<Bar dataKey="Quantidade" fill="#8884d8" />
-					</BarChart>
-				</div>
-
-				<div className="divider" />
-
-				<div className="section">
-
-					<BarChart width={600} height={300} data={this.state.blueArray}
-						margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-						<XAxis dataKey='nivel' />
-						<YAxis />
-						<CartesianGrid strokeDasharray="3 3" />
-						<Tooltip />
-						<Bar dataKey="Quantidade" fill="#8884d8" />
-					</BarChart>
+					<div className='col s12 offset-m3 m6'>
+						<BarChart width={400} height={200} data={this.state.blueArray}>
+							<XAxis dataKey='nivel' />
+							<YAxis />
+							<CartesianGrid strokeDasharray='3 3' />
+							<Tooltip />
+							<Bar dataKey='Quantidade' fill='#8884d8' />
+						</BarChart>
+					</div>
 				</div>
 			</div >
 		);
