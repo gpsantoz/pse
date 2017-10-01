@@ -69,57 +69,26 @@ const runFilter = (id, filter, arg1, arg2, arg3) => {
     }
 }
 
-const filterImage = (filter, image, var_args) => {
-    let args = [getPixels(image)];
-    for (let i = 2; i < arguments.length; i++) {
-        args.push(arguments[i]);
-    }
+const filterImage = (filter, image, ...var_args) => {
+    let args = [getPixels(image), ...var_args];
     return filter(...args);
 }
 
-const grayscale = (pixels, args) => {
+const getIntensity = (r, g, b) => {
+    // CIE luminance for the RGB
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+const grayscale = (pixels) => {
     let d = pixels.data;
     for (let i = 0; i < d.length; i += 4) {
         let r = d[i];
         let g = d[i + 1];
         let b = d[i + 2];
-        // CIE luminance for the RGB
-        let v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        d[i] = d[i + 1] = d[i + 2] = v;
+        d[i] = d[i + 1] = d[i + 2] = getIntensity(r, g, b);
     }
     return pixels;
 }
-
-const getIntensity = (r, g, b) => {
-    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-// getHistogram: function(pixels, args) {
-// 	let d = pixels.data;
-
-// 	let first = this.getIntensity(d[0], d[1], d[2]);
-
-// 	let data = [];
-// 	const data = [
-// 		{ name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
-// 		{ name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
-// 		{ name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
-// 		{ name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
-// 		{ name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
-// 		{ name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
-// 		{ name: 'Page G', uv: 3490, pv: 4300, amt: 2100 }
-// 	];
-
-// 	for (let i = 4; i < d.length; i += 4) {
-// 		let r = d[i];
-// 		let g = d[i + 1];
-// 		let b = d[i + 2];
-// 		// CIE luminance for the RGB
-// 		let v = this.getIntensity(r, g, b);
-// 		d[i] = d[i + 1] = d[i + 2] = v;
-// 	}
-// 	return pixels;
-// }
 
 const brightness = (pixels, adjustment) => {
     let d = pixels.data;
@@ -268,6 +237,38 @@ class CIM {
         if (!window.Float32Array) Float32Array = Array;
         _figureAreaId = figureAreaId;
         _originalImageId = originalImageId;
+    }
+
+    runPipelineFilter() {
+        let canvas = document.getElementById('test-canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.putImageData(grayscale(getPixels(canvas)), 0, 0);
+        ctx.putImageData(invert(getPixels(canvas)), 0, 0);
+        ctx.putImageData(brightness(getPixels(canvas), -100), 0, 0);
+    }
+
+    getHistogram() {
+        const pixels = getPixels(document.getElementById(_originalImageId));
+        let count = 0
+        let d = pixels.data;
+
+        let redArray = _
+            .chain(_.range(0, 256, 1))
+            .map(elem => {
+                return { nivel: `Nível: ${elem}`, Quantidade: 0 }
+            })
+            .value(),
+            greenArray = _.slice(redArray),
+            blueArray = _.slice(redArray);
+
+        for (let i = 4; i < d.length; i += 4) {
+            count++;
+            redArray[d[i]].Quantidade++;
+            greenArray[d[i + 1]].Quantidade++;
+            blueArray[d[i + 2]].Quantidade++;
+        }
+        console.log(count);
+        return { redArray, greenArray, blueArray };
     }
 
     runGrayscale() {
