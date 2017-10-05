@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import imageAreasReducer from './imageAreasReducer'
+import imageActionsReducer from './imageActionsReducer';
 
 export default combineReducers({
-    imageAreas: imageAreasReducer
+	imageActions: imageActionsReducer
 });
