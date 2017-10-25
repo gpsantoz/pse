@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Header from './Header';
 import Test from './Test';
 import LeftMenu from './LeftMenu/LeftMenu';
 import FlowArea from './FlowArea/FlowArea';
+//import '../lib/web-dsp/webdsp_c';
 
 const Content = () => {
 	return (
@@ -21,7 +22,7 @@ const Content = () => {
 			</Grid.Row>
 		</Grid>
 	);
-}
+};
 
 class App extends Component {
 	render() {
@@ -37,7 +38,6 @@ class App extends Component {
 					</div>
 				</BrowserRouter>
 			</DragDropContextProvider>
-
 		);
 	}
 }
