@@ -1,12 +1,8 @@
 import React from 'react';
-import * as actions from '../../actions';
-import { connect } from 'react-redux';
 import { Button, Header, Modal, Icon } from 'semantic-ui-react';
 import ButtonBlock from './ButtonBlock';
-import OpenImageModal from './OpenImageModal';
-import { OPEN_IMAGE } from '../../actions/types';
 
-class ConnectorModal extends React.Component {
+class OpenImageModal extends React.Component {
 	state = { modalOpen: false };
 
 	handleOpen = () => this.setState({ modalOpen: true });
@@ -14,7 +10,7 @@ class ConnectorModal extends React.Component {
 	handleClose = () => this.setState({ modalOpen: false });
 
 	handleRemove = () => {
-		this.props.removeProcessingBlock(this.props.id);
+		//this.props.removeProcessingBlock(this.props.id);
 		this.setState({ modalOpen: false });
 	};
 
@@ -24,9 +20,6 @@ class ConnectorModal extends React.Component {
 
 	render() {
 		const { type } = this.props;
-
-		if (type === OPEN_IMAGE) return <OpenImageModal type={type} />;
-
 		return (
 			<Modal
 				trigger={this.renderTriggerButton(type)}
@@ -35,9 +28,9 @@ class ConnectorModal extends React.Component {
 				basic
 				size="small"
 			>
-				<Header icon="pencil" content="Propriedades" />
+				<Header icon="pencil" content="Open Image" />
 				<Modal.Content>
-					<h3>Edite as propriedades desse conector.</h3>
+					<h3>Conteúdo</h3>
 				</Modal.Content>
 				<Modal.Actions>
 					<Button color="green" onClick={this.handleClose} inverted>
@@ -56,4 +49,4 @@ class ConnectorModal extends React.Component {
 	}
 }
 
-export default connect(null, actions)(ConnectorModal);
+export default OpenImageModal;
