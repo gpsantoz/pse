@@ -3,7 +3,12 @@ import { Button, Header, Modal, Icon } from 'semantic-ui-react';
 import ButtonBlock from './ButtonBlock';
 
 class OpenImageModal extends React.Component {
-	state = { modalOpen: false };
+	state = {
+		modalOpen: false,
+		image: {
+			visibility: 'hidden'
+		}
+	};
 
 	handleOpen = () => this.setState({ modalOpen: true });
 
@@ -18,6 +23,30 @@ class OpenImageModal extends React.Component {
 		return <ButtonBlock content={type} onClick={this.handleOpen} />;
 	};
 
+	handleFileUpload(e) {
+		debugger;
+
+		const selectedFile = e.target.files[0];
+		const reader = new FileReader();
+
+		const imgtag = document.getElementById('originalImage');
+		imgtag.title = selectedFile.name;
+
+		reader.onload = function(event) {
+			imgtag.src = event.target.result;
+		};
+
+		reader.readAsDataURL(selectedFile);
+
+		this.setState({
+			...this.state,
+			image: {
+				...this.state.image,
+				visibility: 'inherit'
+			}
+		});
+	}
+
 	render() {
 		const { type } = this.props;
 		return (
@@ -30,7 +59,27 @@ class OpenImageModal extends React.Component {
 			>
 				<Header icon="pencil" content="Open Image" />
 				<Modal.Content>
-					<h3>Conteúdo</h3>
+					<Button
+						color="green"
+						inverted
+						style={{ marginBottom: '20px' }}
+					>
+						<input
+							type="file"
+							onChange={this.handleFileUpload.bind(this)}
+						/>
+					</Button>
+
+					<img
+						id="originalImage"
+						srcSet={this.state.src}
+						key="test"
+						alt="test"
+						style={{
+							maxWidth: '600px',
+							visibility: this.state.image.visibility
+						}}
+					/>
 				</Modal.Content>
 				<Modal.Actions>
 					<Button color="green" onClick={this.handleClose} inverted>
