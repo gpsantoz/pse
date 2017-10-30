@@ -2,6 +2,7 @@ import React from 'react';
 import * as actions from '../../actions';
 import { connect } from 'react-redux';
 import { Button, Header, Modal, Icon } from 'semantic-ui-react';
+import ButtonBlock from './ButtonBlock';
 
 class ConnectorModal extends React.Component {
     state = { modalOpen: false }
@@ -15,11 +16,17 @@ class ConnectorModal extends React.Component {
         this.setState({ modalOpen: false });
     }
 
+    renderTriggerButton = (type) => {
+        return (
+            <ButtonBlock content={type} onClick={this.handleOpen}></ButtonBlock>
+        )
+    }
+
     render() {
         const { type } = this.props;
         return (
             <Modal
-                trigger={<Button secondary onClick={this.handleOpen} >{type}</Button>}
+                trigger={this.renderTriggerButton(type)}
                 open={this.state.modalOpen}
                 onClose={this.handleClose}
                 basic
@@ -37,7 +44,7 @@ class ConnectorModal extends React.Component {
                         <Icon name='trash' /> Remove
                     </Button>
                 </Modal.Actions>
-            </Modal >
+            </Modal>
         )
     }
 }

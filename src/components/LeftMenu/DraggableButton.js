@@ -18,7 +18,19 @@ const buttonSource = {
         const dropResult = monitor.getDropResult();
 
         if (dropResult) {
-            props.addProcessingBlock(_.snakeCase(item.name), _.snakeCase(dropResult.name));
+            const type = _.snakeCase(item.name);
+            const target = _.snakeCase(dropResult.name);
+            switch (type) {
+                case 'abrir_imagem':
+                    props.addOpenImageBlock(type, target);
+                    break;
+                case 'gravar_arquivo':
+                    props.addWriteFileBlock(type, target);
+                    break;
+                default:
+                    props.addProcessingBlock(type, target);
+                    break;
+            }
         }
     },
 };

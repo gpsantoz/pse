@@ -7,7 +7,6 @@ import Header from './Header';
 import Test from './Test';
 import LeftMenu from './LeftMenu/LeftMenu';
 import FlowArea from './FlowArea/FlowArea';
-//import '../lib/web-dsp/webdsp_c';
 
 const Content = () => {
 	return (

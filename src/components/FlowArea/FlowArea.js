@@ -7,7 +7,6 @@ class FlowArea extends React.Component {
             <div>
                 <ImageArea id="area_1" />
                 <ImageArea id="area_2" />
-                <ImageArea id="area_3" />
             </div>
         );
     }

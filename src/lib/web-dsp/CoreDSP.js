@@ -46,8 +46,6 @@ export default class CoreDSP {
 function grayScale(data) {
 	for (let i = 0; i < data.length; i += 4) {
 		let r = data[i];
-		let g = data[i + 1];
-		let b = data[i + 2];
 		let a = data[i + 3];
 		// let brightness = (r*.21+g*.72+b*.07);
 
@@ -60,9 +58,9 @@ function grayScale(data) {
 }
 function brighten(data, brightness = 25) {
 	for (let i = 0; i < data.length; i += 4) {
-		data[i] + brightness > 255 ? 255 : (data[i] += brightness);
-		data[i + 1] + brightness > 255 ? 255 : (data[i + 1] += brightness);
-		data[i + 2] + brightness > 255 ? 255 : (data[i + 2] += brightness);
+		data[i] = (data[i] + brightness) > 255 ? 255 : (data[i] + brightness);
+		data[i + 1] = (data[i + 1] + brightness) > 255 ? 255 : (data[i + 1] + brightness);
+		data[i + 2] = (data[i + 2] + brightness) > 255 ? 255 : (data[i + 2] + brightness);
 	}
 	return data;
 }
@@ -86,7 +84,7 @@ function noise(data) {
 }
 function multiFilter(data, width, filterType, mag, mult, adj) {
 	for (let i = 0; i < data.length; i += filterType) {
-		if (i % 4 != 3) {
+		if (i % 4 !== 3) {
 			data[i] =
 				mag + mult * data[i] - data[i + adj] - data[i + width * 4];
 		}
@@ -96,7 +94,7 @@ function multiFilter(data, width, filterType, mag, mult, adj) {
 
 //to bind arguments in the right order
 const bindLastArgs = (func, ...boundArgs) => {
-	return function(...baseArgs) {
+	return function (...baseArgs) {
 		return func(...baseArgs, ...boundArgs);
 	};
 };
@@ -200,10 +198,9 @@ const destruction = bindLastArgs(
 	2
 );
 const sobelFilter = (data, width, height, invert = false) => {
-	const out = [];
 	let wid = width;
 	let hei = height;
-	var grayData = new Int32Array(wid * hei);
+	let grayData = new Int32Array(wid * hei);
 
 	function getPixel(x, y) {
 		if (x < 0 || y < 0) return 0;
@@ -211,15 +208,15 @@ const sobelFilter = (data, width, height, invert = false) => {
 		return grayData[wid * y + x];
 	}
 	//Grayscale
-	for (var y = 0; y < height; y++) {
-		for (var x = 0; x < width; x++) {
-			var goffset = (wid * y + x) << 2; //multiply by 4
-			var r = data[goffset];
-			var g = data[goffset + 1];
-			var b = data[goffset + 2];
-			var avg = (r >> 2) + (g >> 1) + (b >> 3);
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			let goffset = (wid * y + x) << 2; //multiply by 4
+			let r = data[goffset];
+			let g = data[goffset + 1];
+			let b = data[goffset + 2];
+			let avg = (r >> 2) + (g >> 1) + (b >> 3);
 			grayData[wid * y + x] = avg;
-			var doffset = (wid * y + x) << 2;
+			let doffset = (wid * y + x) << 2;
 			data[doffset] = avg;
 			data[doffset + 1] = avg;
 			data[doffset + 2] = avg;
@@ -227,10 +224,10 @@ const sobelFilter = (data, width, height, invert = false) => {
 		}
 	}
 	//Sobel
-	for (var y = 0; y < height; y++) {
-		for (var x = 0; x < width; x++) {
-			var newX;
-			var newY;
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			let newX;
+			let newY;
 			if (x >= width - 1 || y >= height - 1) {
 				newX = 0;
 				newY = 0;
@@ -250,7 +247,7 @@ const sobelFilter = (data, width, height, invert = false) => {
 					getPixel(x - 1, y + 1) +
 					(getPixel(x, y + 1) << 1) +
 					getPixel(x + 1, y + 1);
-				var mag = Math.floor(
+				let mag = Math.floor(
 					Math.sqrt(newX * newX + newY * newY) >>> 0
 				);
 				if (mag > 255) mag = 255;
