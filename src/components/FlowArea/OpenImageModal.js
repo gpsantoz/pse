@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 import { Button, Header, Modal, Icon } from 'semantic-ui-react';
 import ButtonBlock from './ButtonBlock';
 
@@ -47,6 +49,21 @@ class OpenImageModal extends React.Component {
 		});
 	}
 
+	renderImage() {
+		return (
+			<img
+				id="originalImage"
+				srcSet={this.state.src}
+				key="test"
+				alt="test"
+				style={{
+					maxWidth: '600px',
+					visibility: this.state.image.visibility
+				}}
+			/>
+		);
+	}
+
 	render() {
 		const { type } = this.props;
 		return (
@@ -70,16 +87,7 @@ class OpenImageModal extends React.Component {
 						/>
 					</Button>
 
-					<img
-						id="originalImage"
-						srcSet={this.state.src}
-						key="test"
-						alt="test"
-						style={{
-							maxWidth: '600px',
-							visibility: this.state.image.visibility
-						}}
-					/>
+					{this.renderImage()}
 				</Modal.Content>
 				<Modal.Actions>
 					<Button color="green" onClick={this.handleClose} inverted>
@@ -98,4 +106,8 @@ class OpenImageModal extends React.Component {
 	}
 }
 
-export default OpenImageModal;
+function mapStateToProps({ images }) {
+	return { images };
+}
+
+export default connect(mapStateToProps, actions)(OpenImageModal);

@@ -33,29 +33,35 @@ function collect(connect, monitor) {
 
 class ImageArea extends React.Component {
 	static propTypes = {
+		target: PropTypes.string.isRequired,
 		connectDropTarget: PropTypes.func.isRequired,
 		isOver: PropTypes.bool.isRequired,
 		canDrop: PropTypes.bool.isRequired
 	};
 
-	renderConnectors({ imageActions, id }) {
-		const actions = _.filter(imageActions[id], action => {
+	renderConnectors({ imageActions, target }) {
+		const actions = _.filter(imageActions[target], action => {
 			if (!action) return;
 			return !!action.id || action.id === 0;
 		});
 
-		const openFileConnector = !!imageActions[id][OPEN_IMAGE] ? (
+		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
 			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} />
 		) : (
 			''
 		);
 
-		// const writeFileConnector = !!imageActions[id][WRITE_FILE] ? (<ConnectorModal key={WRITE_FILE} type={WRITE_FILE} />) : ('');
+		// const writeFileConnector = !!imageActions[target][WRITE_FILE] ? (<ConnectorModal key={WRITE_FILE} type={WRITE_FILE} />) : ('');
 
 		const ret = [
 			openFileConnector,
 			..._.map(actions, action => (
-				<ConnectorModal key={action.id} {...action} actions={actions} />
+				<ConnectorModal
+					key={action.id}
+					{...action}
+					target={target}
+					actions={actions}
+				/>
 			))
 		];
 

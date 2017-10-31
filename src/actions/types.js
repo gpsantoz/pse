@@ -2,6 +2,7 @@ export const ADD_PROCESSING_BLOCK = 'ADD_PROCESSING_BLOCK';
 export const REMOVE_PROCESSING_BLOCK = 'REMOVE_PROCESSING_BLOCK';
 export const ADD_OPEN_IMAGE_BLOCK = 'ADD_OPEN_IMAGE_BLOCK';
 export const ADD_WRITE_FILE_BLOCK = 'ADD_WRITE_FILE_BLOCK';
+export const ADD_PIXEL_DATA = 'ADD_PIXEL_DATA';
 export const AREA_1 = 'area_1';
 export const AREA_2 = 'area_2';
 export const OPEN_IMAGE = 'abrir_imagem';

@@ -1,12 +1,20 @@
 import React from 'react';
-import * as actions from '../../actions';
 import { connect } from 'react-redux';
+import * as actions from '../../actions';
+import PropTypes from 'prop-types';
 import { Button, Header, Modal, Icon } from 'semantic-ui-react';
 import ButtonBlock from './ButtonBlock';
 import OpenImageModal from './OpenImageModal';
 import { OPEN_IMAGE } from '../../actions/types';
 
 class ConnectorModal extends React.Component {
+	static propTypes = {
+		id: PropTypes.number.isRequired,
+		type: PropTypes.string.isRequired,
+		target: PropTypes.string.isRequired,
+		actions: PropTypes.array.isRequired
+	};
+
 	state = { modalOpen: false };
 
 	handleOpen = () => this.setState({ modalOpen: true });
