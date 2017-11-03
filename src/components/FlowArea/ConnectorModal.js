@@ -31,9 +31,10 @@ class ConnectorModal extends React.Component {
 	};
 
 	render() {
-		const { type } = this.props;
+		const { type, target } = this.props;
 
-		if (type === OPEN_IMAGE) return <OpenImageModal type={type} />;
+		if (type === OPEN_IMAGE)
+			return <OpenImageModal type={type} target={target} />;
 
 		return (
 			<Modal

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { Button, Header, Modal, Icon } from 'semantic-ui-react';
 import ButtonBlock from './ButtonBlock';
+import { writeImageData } from '../../lib/web-dsp/WebDSP';
 
 class OpenImageModal extends React.Component {
 	state = {
@@ -27,18 +28,32 @@ class OpenImageModal extends React.Component {
 
 	handleFileUpload(e) {
 		debugger;
-
 		const selectedFile = e.target.files[0];
 		const reader = new FileReader();
 
-		const imgtag = document.getElementById('originalImage');
+		const imgtag = document.getElementById('original-image');
 		imgtag.title = selectedFile.name;
 
 		reader.onload = function(event) {
 			imgtag.src = event.target.result;
+			const canvas = document.getElementById('image-canvas');
+			const ctx = canvas.getContext('2d');
+			ctx.drawImage(imgtag, 0, 0);
+			let pixels = ctx.getImageData(0, 0, imgtag.width, imgtag.height);
+			writeImageData(canvas, pixels.data, pixels.width, pixels.height);
 		};
 
 		reader.readAsDataURL(selectedFile);
+
+		// const img = document.getElementById('orig');
+		// const canvas = document.getElementById('test-canvas');
+		// const ctx = canvas.getContext('2d');
+		// ctx.drawImage(img, 0, 0);
+		// let pixels = ctx.getImageData(0, 0, img.width, img.height);
+		// pixels.data.set(coreDSP[filter](pixels.data));
+		// writeImageData(canvas, pixels.data, pixels.width, pixels.height);
+
+		// addPixelData = (pixels, target)
 
 		this.setState({
 			...this.state,
@@ -51,16 +66,22 @@ class OpenImageModal extends React.Component {
 
 	renderImage() {
 		return (
-			<img
-				id="originalImage"
-				srcSet={this.state.src}
-				key="test"
-				alt="test"
-				style={{
-					maxWidth: '600px',
-					visibility: this.state.image.visibility
-				}}
-			/>
+			<div>
+				<canvas
+					id="image-canvas"
+					style={{ visibility: this.state.image.visibility }}
+				/>
+				<img
+					id="original-image"
+					srcSet={this.state.src}
+					key="test"
+					alt="test"
+					style={{
+						maxWidth: '600px',
+						display: 'none'
+					}}
+				/>
+			</div>
 		);
 	}
 
