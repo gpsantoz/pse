@@ -3,10 +3,10 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Header from './Header';
 import Test from './Test';
-import LeftMenu from './LeftMenu/LeftMenu';
-import FlowArea from './FlowArea/FlowArea';
+import LeftMenu from './LeftMenu';
+import FilterImage from './FilterImage';
+import FlowArea from './FlowArea';
 import OpenImage from './OpenImage';
 import Histogram from './Histogram';
 
@@ -31,7 +31,6 @@ class App extends Component {
 			<DragDropContextProvider backend={HTML5Backend}>
 				<BrowserRouter>
 					<div className="container" style={{ marginTop: '20px' }}>
-						<Header />
 						<div>
 							<Route exact path="/" component={Content} />
 							<Route exact path="/test" component={Test} />
@@ -43,7 +42,7 @@ class App extends Component {
 							<Route
 								exact
 								path="/filter/:target/:id"
-								component={Test}
+								component={FilterImage}
 							/>
 							<Route
 								exact

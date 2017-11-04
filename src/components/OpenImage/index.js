@@ -100,13 +100,17 @@ class OpenImage extends React.Component {
 		);
 	}
 
-	handleSave() {
+	savePixels() {
 		if (!this.state.image.hasImage) return;
 		const canvas = document.getElementById('image-canvas');
 		const pixels = canvas
 			.getContext('2d')
 			.getImageData(0, 0, canvas.width, canvas.height);
 		this.props.addPixelData(pixels, this.props.match.params.target);
+	}
+
+	handleSave() {
+		this.savePixels.apply(this);
 		this.props.history.push('/');
 	}
 
@@ -126,20 +130,31 @@ class OpenImage extends React.Component {
 		);
 	}
 
+	renderHistograms() {
+		debugger;
+		this.savePixels.apply(this);
+		this.props.history.push('/histogram');
+	}
+
 	render() {
 		return (
 			<Grid>
 				<Grid.Row>{this.renderInput.apply(this)}</Grid.Row>
 				<Grid.Row columns={1}>{this.renderCanvas.apply(this)}</Grid.Row>
-				<Grid.Row columns={4}>
+				<Grid.Row columns={6}>
+					{this.renderNavigationButton('red', 'Voltar', () =>
+						this.props.history.push('/')
+					)}
 					{this.renderNavigationButton(
 						'green',
 						'Salvar',
 						this.handleSave.bind(this),
 						!this.state.image.hasImage
 					)}
-					{this.renderNavigationButton('red', 'Voltar', () =>
-						this.props.history.push('/')
+					{this.renderNavigationButton(
+						'green',
+						'Histogramas',
+						this.renderHistograms.bind(this)
 					)}
 				</Grid.Row>
 			</Grid>

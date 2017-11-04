@@ -15,8 +15,8 @@ export const addWriteFileBlock = (type, target) => {
 export const addProcessingBlock = (type, target) => {
 	return { type: ADD_PROCESSING_BLOCK, payload: { type, target } };
 };
-export const removeProcessingBlock = id => {
-	return { type: REMOVE_PROCESSING_BLOCK, payload: { id } };
+export const removeProcessingBlock = (id, target) => {
+	return { type: REMOVE_PROCESSING_BLOCK, payload: { id, target } };
 };
 
 export const addPixelData = (pixels, target) => {

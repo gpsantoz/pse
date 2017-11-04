@@ -1,11 +1,9 @@
 import _ from 'lodash';
 import {
 	ADD_OPEN_IMAGE_BLOCK,
-	ADD_WRITE_FILE_BLOCK,
 	ADD_PROCESSING_BLOCK,
 	REMOVE_PROCESSING_BLOCK,
 	OPEN_IMAGE,
-	WRITE_FILE,
 	AREA_1,
 	AREA_2
 } from '../actions/types';
@@ -13,11 +11,11 @@ import {
 const initialState = {
 	[AREA_1]: {
 		[OPEN_IMAGE]: null,
-		[WRITE_FILE]: null
+		id: 0
 	},
 	[AREA_2]: {
 		[OPEN_IMAGE]: null,
-		[WRITE_FILE]: null
+		id: 0
 	}
 };
 
@@ -32,18 +30,10 @@ export default (state = initialState, action) => {
 				...state,
 				[target]: { ...state[target], [OPEN_IMAGE]: {} }
 			};
-		case ADD_WRITE_FILE_BLOCK:
-			target = action.payload.target;
-			if (!state[target][OPEN_IMAGE]) return state;
-
-			return {
-				...state,
-				[target]: { ...state[target], [WRITE_FILE]: {} }
-			};
 		case ADD_PROCESSING_BLOCK:
 			target = action.payload.target;
 			type = action.payload.type;
-			id = _.size(state[target]) - 2;
+			id = state[target].id++;
 			if (!state[target][OPEN_IMAGE]) return state;
 
 			return {
@@ -51,8 +41,23 @@ export default (state = initialState, action) => {
 				[target]: { ...state[target], [id]: { type, id } }
 			};
 		case REMOVE_PROCESSING_BLOCK:
-			const test = _.filter(state, con => con.id !== action.payload.id);
-			return test;
+			target = action.payload.target;
+
+			const filterBlocks = _.filter(state[target], block => {
+				debugger;
+				return (
+					block.id === undefined ||
+					block.id !== Number(action.payload.id)
+				);
+			});
+			return {
+				...state,
+				[target]: {
+					...filterBlocks,
+					[OPEN_IMAGE]: state[target][OPEN_IMAGE],
+					id: state[target].id
+				}
+			};
 		default:
 			return state;
 	}

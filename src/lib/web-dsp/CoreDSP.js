@@ -5,19 +5,19 @@ export default class CoreDSP {
 		this.mag = 127;
 		this.mult = 2;
 		this.adj = 4;
-		this.grayScale = grayScale;
+		this.grayscale = grayscale;
 		this.brighten = brighten;
 		this.invert = invert;
 		this.noise = noise;
-		this.multiFilter = multiFilter;
+		this.multi_filter = multiFilter;
 		this.sunset = sunset;
-		this.analogTV = analog;
+		this.analog = analog;
 		this.emboss = emboss;
-		this.sobelFilter = sobelFilter;
-		this.convFilter = convFilter;
+		this.sobel = sobel;
+		this.conv_filter = convFilter;
 		this.blur = blur;
 		this.sharpen = sharpen;
-		this.strongSharpen = strongSharpen;
+		this.strong_sharpen = strongSharpen;
 		this.urple = urple;
 		this.forest = forest;
 		this.romance = romance;
@@ -26,12 +26,11 @@ export default class CoreDSP {
 		this.underground = underground;
 		this.rooster = rooster;
 		this.mist = mist;
-		this.moss = mist;
 		this.tingle = tingle;
 		this.kaleidoscope = tingle;
 		this.bacteria = bacteria;
 		this.clarity = clarity;
-		this.goodMorning = goodMorning;
+		this.good_morning = goodMorning;
 		this.acid = acid;
 		this.dewdrops = dewdrops;
 		this.destruction = destruction;
@@ -69,7 +68,7 @@ function getHistograms(data) {
 	return histogram;
 }
 
-function grayScale(data) {
+function grayscale(data) {
 	for (let i = 0; i < data.length; i += 4) {
 		let red = data[i];
 		let a = data[i + 3];
@@ -121,11 +120,11 @@ function multiFilter(data, width, filterType, mag, mult, adj) {
 } // output needs to be clamped to match C++ filters
 
 //to bind arguments in the right order
-const bindLastArgs = (func, ...boundArgs) => {
+function bindLastArgs(func, ...boundArgs) {
 	return function(...baseArgs) {
 		return func(...baseArgs, ...boundArgs);
 	};
-};
+}
 
 const sunset = bindLastArgs(multiFilter, 4, 127, 2, 4);
 const analog = bindLastArgs(multiFilter, 7, 127, 2, 4);
@@ -154,6 +153,7 @@ const convFilter = (
 	bias = 0,
 	count = 1
 ) => {
+	debugger;
 	const w = kernel[0].length;
 	const h = kernel.length;
 	const half = Math.floor(h / 2);
@@ -225,7 +225,7 @@ const destruction = bindLastArgs(
 	[[-1, -1, 4], [-1, 9, -1], [0, -1, 0]],
 	2
 );
-const sobelFilter = (data, width, height, invert = false) => {
+const sobel = (data, width, height, invert = false) => {
 	let wid = width;
 	let hei = height;
 	let grayData = new Int32Array(wid * hei);
