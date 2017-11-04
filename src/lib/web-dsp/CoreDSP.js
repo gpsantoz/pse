@@ -1,4 +1,4 @@
-// fallback extravaganza
+import _ from 'lodash';
 
 export default class CoreDSP {
 	constructor() {
@@ -41,26 +41,54 @@ export default class CoreDSP {
 		this.sCoreDSPp = twisted;
 		this.security = security;
 		this.robbery = security;
+		this.getHistograms = getHistograms;
 	}
 }
+
+function getNewHistogramArray() {
+	return _.chain(_.range(0, 256, 1))
+		.map(elem => {
+			return { nivel: `Nível: ${elem}`, Quantidade: 0 };
+		})
+		.value();
+}
+
+function getHistograms(data) {
+	const histogram = {
+		redArray: getNewHistogramArray(),
+		greenArray: getNewHistogramArray(),
+		blueArray: getNewHistogramArray()
+	};
+
+	for (let i = 4; i < data.length; i += 4) {
+		histogram.redArray[data[i]].Quantidade++;
+		histogram.greenArray[data[i + 1]].Quantidade++;
+		histogram.blueArray[data[i + 2]].Quantidade++;
+	}
+
+	return histogram;
+}
+
 function grayScale(data) {
 	for (let i = 0; i < data.length; i += 4) {
-		let r = data[i];
+		let red = data[i];
 		let a = data[i + 3];
 		// let brightness = (r*.21+g*.72+b*.07);
 
-		data[i] = r;
-		data[i + 1] = r;
-		data[i + 2] = r;
+		data[i] = red;
+		data[i + 1] = red;
+		data[i + 2] = red;
 		data[i + 3] = a;
 	}
 	return data;
 }
 function brighten(data, brightness = 25) {
 	for (let i = 0; i < data.length; i += 4) {
-		data[i] = (data[i] + brightness) > 255 ? 255 : (data[i] + brightness);
-		data[i + 1] = (data[i + 1] + brightness) > 255 ? 255 : (data[i + 1] + brightness);
-		data[i + 2] = (data[i + 2] + brightness) > 255 ? 255 : (data[i + 2] + brightness);
+		data[i] = data[i] + brightness > 255 ? 255 : data[i] + brightness;
+		data[i + 1] =
+			data[i + 1] + brightness > 255 ? 255 : data[i + 1] + brightness;
+		data[i + 2] =
+			data[i + 2] + brightness > 255 ? 255 : data[i + 2] + brightness;
 	}
 	return data;
 }
@@ -94,7 +122,7 @@ function multiFilter(data, width, filterType, mag, mult, adj) {
 
 //to bind arguments in the right order
 const bindLastArgs = (func, ...boundArgs) => {
-	return function (...baseArgs) {
+	return function(...baseArgs) {
 		return func(...baseArgs, ...boundArgs);
 	};
 };

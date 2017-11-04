@@ -7,6 +7,8 @@ import Header from './Header';
 import Test from './Test';
 import LeftMenu from './LeftMenu/LeftMenu';
 import FlowArea from './FlowArea/FlowArea';
+import OpenImage from './OpenImage';
+import Histogram from './Histogram';
 
 const Content = () => {
 	return (
@@ -33,6 +35,21 @@ class App extends Component {
 						<div>
 							<Route exact path="/" component={Content} />
 							<Route exact path="/test" component={Test} />
+							<Route
+								exact
+								path="/open/:target/"
+								component={OpenImage}
+							/>
+							<Route
+								exact
+								path="/filter/:target/:id"
+								component={Test}
+							/>
+							<Route
+								exact
+								path="/histogram"
+								component={Histogram}
+							/>
 						</div>
 					</div>
 				</BrowserRouter>

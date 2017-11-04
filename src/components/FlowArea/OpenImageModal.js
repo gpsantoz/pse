@@ -27,28 +27,26 @@ class OpenImageModal extends React.Component {
 	};
 
 	handleFileUpload(e) {
-		debugger;
-		const selectedFile = e.target.files[0];
-		const reader = new FileReader();
+		if (!e || !e.target) return;
+		const image = new Image();
+		const fr = new FileReader();
+		fr.onload = createImage.bind(this);
+		fr.readAsDataURL(e.target.files[0]);
 
-		const imgtag = document.getElementById('original-image');
-		imgtag.title = selectedFile.name;
+		function createImage() {
+			image.onload = imageLoaded.bind(this);
+			image.src = fr.result;
+		}
 
-		reader.onload = function(event) {
-			imgtag.src = event.target.result;
+		function imageLoaded() {
 			const canvas = document.getElementById('image-canvas');
+			canvas.width = image.width;
+			canvas.height = image.height;
 			const ctx = canvas.getContext('2d');
-			ctx.drawImage(imgtag, 0, 0);
-			let pixels = ctx.getImageData(0, 0, imgtag.width, imgtag.height);
-			writeImageData(canvas, pixels.data, pixels.width, pixels.height);
-		};
-
-		reader.readAsDataURL(selectedFile);
-
-		// const img = document.getElementById('orig');
-		// const canvas = document.getElementById('test-canvas');
-		// const ctx = canvas.getContext('2d');
-		// ctx.drawImage(img, 0, 0);
+			ctx.drawImage(image, 0, 0);
+			const pixels = ctx.getImageData(0, 0, image.width, image.height);
+			this.props.addPixelData(pixels, this.props.target);
+		}
 		// let pixels = ctx.getImageData(0, 0, img.width, img.height);
 		// pixels.data.set(coreDSP[filter](pixels.data));
 		// writeImageData(canvas, pixels.data, pixels.width, pixels.height);
@@ -64,12 +62,29 @@ class OpenImageModal extends React.Component {
 		});
 	}
 
+	renderCanvas() {
+		debugger;
+		const canvas = document.getElementById('image-canvas');
+		const { images, target } = this.props;
+		if (images[target] && !!canvas) {
+			const { pixels } = images[target];
+
+			canvas.width = pixels.width;
+			canvas.height = pixels.height;
+
+			writeImageData(canvas, pixels.data, pixels.width, pixels.height);
+		}
+	}
+
 	renderImage() {
 		return (
 			<div>
 				<canvas
 					id="image-canvas"
-					style={{ visibility: this.state.image.visibility }}
+					style={{
+						visibility: this.state.image.visibility,
+						maxWidth: '400px'
+					}}
 				/>
 				<img
 					id="original-image"
@@ -94,6 +109,7 @@ class OpenImageModal extends React.Component {
 				onClose={this.handleClose}
 				basic
 				size="small"
+				onOpen={this.renderCanvas.bind(this)}
 			>
 				<Header icon="pencil" content="Open Image" />
 				<Modal.Content>

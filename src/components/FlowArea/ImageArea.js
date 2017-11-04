@@ -46,7 +46,11 @@ class ImageArea extends React.Component {
 		});
 
 		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
-			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} />
+			<ConnectorModal
+				key={OPEN_IMAGE}
+				type={OPEN_IMAGE}
+				target={target}
+			/>
 		) : (
 			''
 		);
@@ -82,7 +86,6 @@ class ImageArea extends React.Component {
 		return connectDropTarget(
 			<div style={{ ...style, backgroundColor }}>
 				{this.renderConnectors(this.props)}
-				<h3>{}</h3>
 			</div>
 		);
 	}
