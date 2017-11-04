@@ -14,7 +14,8 @@ const style = {
 		marginTop: '20px'
 	},
 	canvas: {
-		maxWidth: '100%'
+		maxWidth: '100%',
+		height: 'auto'
 	},
 	navigationButton: {
 		minWidth: '120px'

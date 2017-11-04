@@ -29,10 +29,6 @@ export default [
 			},
 			{
 				color: 'yellow',
-				label: 'Multi Filter'
-			},
-			{
-				color: 'yellow',
 				label: 'Sunset'
 			},
 			{
@@ -50,10 +46,6 @@ export default [
 			{
 				color: 'yellow',
 				label: 'Sobel Invertido'
-			},
-			{
-				color: 'yellow',
-				label: 'Conv Filter'
 			},
 			{
 				color: 'yellow',
