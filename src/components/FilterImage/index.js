@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
-import { Button, Grid } from 'semantic-ui-react';
+import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 
@@ -11,7 +11,8 @@ const coreDSP = new CoreDSP();
 
 const style = {
 	container: {
-		marginTop: '20px'
+		marginTop: '20px',
+		width: '100%'
 	},
 	canvas: {
 		maxWidth: '100%',
@@ -218,6 +219,17 @@ class FilterImage extends React.Component {
 		return (
 			<div style={style.container}>
 				<Grid>
+					<Grid.Row>
+						<Message style={style.container}>
+							<Message.Header>Filtros</Message.Header>
+							<p>
+								Essa imagem possui todos os filtros, anteriores
+								ao clicado, aplicados. <br />
+								Caso deseje, você pode voltar, excluir o filtro
+								ou realizar o download da imagem.
+							</p>
+						</Message>
+					</Grid.Row>
 					<Grid.Row columns={6}>
 						<Grid.Column>
 							{this.renderNavigationButton('red', 'Voltar', () =>

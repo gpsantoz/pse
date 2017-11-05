@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import { Button, Grid } from 'semantic-ui-react';
+import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 
 const style = {
@@ -16,6 +16,9 @@ const style = {
 	},
 	navigationButton: {
 		minWidth: '120px'
+	},
+	container: {
+		width: '100%'
 	}
 };
 
@@ -139,6 +142,18 @@ class OpenImage extends React.Component {
 	render() {
 		return (
 			<Grid>
+				<Grid.Row>
+					<Message style={style.container}>
+						<Message.Header>Abrir imagem</Message.Header>
+						<p>
+							Clique em "Escolher arquivo", selecione uma imagem
+							do seu computador e clique em salvar. <br />Você
+							também pode clicar em Histogramas para visualizar os
+							histogramas das imagens selecionadas ou clicar em
+							voltar.
+						</p>
+					</Message>
+				</Grid.Row>
 				<Grid.Row>{this.renderInput.apply(this)}</Grid.Row>
 				<Grid.Row columns={1}>{this.renderCanvas.apply(this)}</Grid.Row>
 				<Grid.Row columns={6}>

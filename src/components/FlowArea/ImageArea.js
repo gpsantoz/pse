@@ -55,8 +55,6 @@ class ImageArea extends React.Component {
 			''
 		);
 
-		// const writeFileConnector = !!imageActions[target][WRITE_FILE] ? (<ConnectorModal key={WRITE_FILE} type={WRITE_FILE} />) : ('');
-
 		const ret = [
 			openFileConnector,
 			..._.map(actions, action => (
@@ -84,8 +82,11 @@ class ImageArea extends React.Component {
 		}
 
 		return connectDropTarget(
-			<div style={{ ...style, backgroundColor }}>
-				{this.renderConnectors(this.props)}
+			<div>
+				<h3>{_.startCase(this.props.target)}</h3>
+				<div style={{ ...style, backgroundColor }}>
+					{this.renderConnectors(this.props)}
+				</div>
 			</div>
 		);
 	}
