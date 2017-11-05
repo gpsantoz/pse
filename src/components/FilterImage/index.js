@@ -215,6 +215,21 @@ class FilterImage extends React.Component {
 		link.download = 'download.png';
 	}
 
+	renderHistogram() {
+		const canvas = document.getElementById('image-canvas');
+		const ctx = canvas.getContext('2d');
+		const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		const location = {
+			pathname: '/histogram',
+			state: {
+				pixels,
+				target: this.props.match.params.target
+			}
+		};
+
+		this.props.history.push(location);
+	}
+
 	render() {
 		return (
 			<div style={style.container}>
@@ -226,7 +241,10 @@ class FilterImage extends React.Component {
 								Essa imagem possui todos os filtros, anteriores
 								ao clicado, aplicados. <br />
 								Caso deseje, você pode voltar, excluir o filtro
-								ou realizar o download da imagem.
+								ou realizar o download da imagem. <br />
+								O botão "Histograma" irá exibir os Histogramas
+								R, G e B da imagem filtrada e da imagem
+								original.
 							</p>
 						</Message>
 					</Grid.Row>
@@ -254,6 +272,13 @@ class FilterImage extends React.Component {
 							>
 								Download
 							</Button>
+						</Grid.Column>
+						<Grid.Column>
+							{this.renderNavigationButton(
+								'blue',
+								'Histograma',
+								this.renderHistogram.bind(this)
+							)}
 						</Grid.Column>
 					</Grid.Row>
 					<Grid.Row>

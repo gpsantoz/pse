@@ -32,9 +32,8 @@ class Histogram extends React.Component {
 			</BarChart>
 		);
 	}
-	renderHistograms(target, title) {
-		if (!this.props.images || !this.props.images[target]) return;
-		const { pixels } = this.props.images[target];
+
+	renderHistogram(title, pixels) {
 		const histograms = coreDSP.getHistograms(pixels.data);
 		return (
 			<Grid divided centered style={{ marginTop: '10px' }}>
@@ -61,6 +60,19 @@ class Histogram extends React.Component {
 				</Grid.Row>
 			</Grid>
 		);
+	}
+
+	renderHistograms(target, title) {
+		debugger;
+		if (
+			!this.props.images ||
+			!this.props.images[target] ||
+			(this.props.location.state &&
+				this.props.location.state.target !== target)
+		)
+			return;
+		const { pixels } = this.props.images[target];
+		return this.renderHistogram(title, pixels);
 	}
 
 	renderNavigationButton(color, label, handleClick, disabled = false) {
@@ -91,6 +103,14 @@ class Histogram extends React.Component {
 		);
 	}
 
+	renderFilterHistogram() {
+		if (!this.props.location.state) return '';
+		return this.renderHistogram(
+			'Imagem filtrada',
+			this.props.location.state.pixels
+		);
+	}
+
 	render() {
 		if (!this.props.images[AREA_1] && !this.props.images[AREA_1])
 			return (
@@ -109,6 +129,8 @@ class Histogram extends React.Component {
 			);
 		return (
 			<div style={style.container}>
+				{this.renderFilterHistogram.apply(this)}
+				<Divider />
 				{this.renderHistograms(AREA_1, 'Histograma Imagem 1')}
 				<Divider />
 				{this.renderHistograms(AREA_2, 'Histograma Imagem 2')}
