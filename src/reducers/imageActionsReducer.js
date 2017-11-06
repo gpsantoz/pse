@@ -44,11 +44,7 @@ export default (state = initialState, action) => {
 			target = action.payload.target;
 
 			const filterBlocks = _.filter(state[target], block => {
-				debugger;
-				return (
-					block.id === undefined ||
-					block.id !== Number(action.payload.id)
-				);
+				return block.id === undefined || block.id !== Number(action.payload.id);
 			});
 			return {
 				...state,

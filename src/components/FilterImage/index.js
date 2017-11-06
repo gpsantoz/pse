@@ -37,7 +37,6 @@ class FilterImage extends React.Component {
 		}
 
 		function imageLoaded() {
-			debugger;
 			const canvas = document.getElementById('image-canvas');
 			canvas.width = image.width;
 			canvas.height = image.height;
@@ -91,9 +90,7 @@ class FilterImage extends React.Component {
 				pixels.data.set(coreDSP.sobel(pixels.data, width, height));
 				break;
 			case 'sobel_invertido':
-				pixels.data.set(
-					coreDSP.sobel(pixels.data, width, height, true)
-				);
+				pixels.data.set(coreDSP.sobel(pixels.data, width, height, true));
 				break;
 			case 'gaussian_blur':
 				pixels.data.set(coreDSP.blur(pixels.data, width, height));
@@ -102,17 +99,13 @@ class FilterImage extends React.Component {
 				pixels.data.set(coreDSP.sharpen(pixels.data, width, height));
 				break;
 			case 'uber_sharpen':
-				pixels.data.set(
-					coreDSP.strong_sharpen(pixels.data, width, height)
-				);
+				pixels.data.set(coreDSP.strong_sharpen(pixels.data, width, height));
 				break;
 			case 'clarity':
 				pixels.data.set(coreDSP.clarity(pixels.data, width, height));
 				break;
 			case 'good_morning':
-				pixels.data.set(
-					coreDSP.good_morning(pixels.data, width, height)
-				);
+				pixels.data.set(coreDSP.good_morning(pixels.data, width, height));
 				break;
 			case 'acid':
 				pixels.data.set(coreDSP.acid(pixels.data, width, height));
@@ -151,9 +144,7 @@ class FilterImage extends React.Component {
 				pixels.data.set(coreDSP.dewdrops(pixels.data, width, height));
 				break;
 			case 'color_destruction':
-				pixels.data.set(
-					coreDSP.destruction(pixels.data, width, height)
-				);
+				pixels.data.set(coreDSP.destruction(pixels.data, width, height));
 				break;
 			case 'hulk_edge':
 				pixels.data.set(coreDSP.hulk(pixels.data, width));
@@ -186,7 +177,6 @@ class FilterImage extends React.Component {
 			_.forEach(actions, action => {
 				if (!action || !action.type) return;
 				if (action.id <= id) {
-					debugger;
 					this.handleFilter(action.type, filterPixels);
 				}
 			});
@@ -209,7 +199,6 @@ class FilterImage extends React.Component {
 	}
 
 	downloadImage() {
-		debugger;
 		const link = document.getElementById('download');
 		link.href = document.getElementById('image-canvas').toDataURL();
 		link.download = 'download.png';
@@ -238,13 +227,12 @@ class FilterImage extends React.Component {
 						<Message style={style.container}>
 							<Message.Header>Filtros</Message.Header>
 							<p>
-								Essa imagem possui todos os filtros, anteriores
-								ao clicado, aplicados. <br />
-								Caso deseje, você pode voltar, excluir o filtro
-								ou realizar o download da imagem. <br />
-								O botão "Histograma" irá exibir os Histogramas
-								R, G e B da imagem filtrada e da imagem
-								original.
+								Essa imagem possui todos os filtros, anteriores ao clicado,
+								aplicados. <br />
+								Caso deseje, você pode voltar, excluir o filtro ou realizar o
+								download da imagem. <br />
+								O botão "Histograma" irá exibir os Histogramas R, G e B da
+								imagem filtrada e da imagem original.
 							</p>
 						</Message>
 					</Grid.Row>

@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Grid, Label, Divider, Message } from 'semantic-ui-react';
 import { BarChart, Bar, Tooltip, CartesianGrid, XAxis, YAxis } from 'recharts';
+import psnr from 'psnr';
+import mse from 'mse';
+import ssim from 'ssim';
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 import { AREA_1, AREA_2 } from '../../actions/types';
 
@@ -36,7 +39,7 @@ class Histogram extends React.Component {
 	renderHistogram(title, pixels) {
 		const histograms = coreDSP.getHistograms(pixels.data);
 		return (
-			<Grid divided centered style={{ marginTop: '10px' }}>
+			<Grid divided centered style={{ marginTop: '30px' }}>
 				<h1>{title}</h1>
 				<Grid.Row columns={3}>
 					<Grid.Column>
@@ -63,12 +66,10 @@ class Histogram extends React.Component {
 	}
 
 	renderHistograms(target, title) {
-		debugger;
 		if (
 			!this.props.images ||
 			!this.props.images[target] ||
-			(this.props.location.state &&
-				this.props.location.state.target !== target)
+			(this.props.location.state && this.props.location.state.target !== target)
 		)
 			return;
 		const { pixels } = this.props.images[target];
@@ -111,17 +112,58 @@ class Histogram extends React.Component {
 		);
 	}
 
+	renderComparisonData() {
+		let calcMSE;
+		let calcPSNR;
+		let calcSSIM;
+
+		if (this.props.location.state) {
+			const { target, pixels } = this.props.location.state;
+			const originalImage = this.props.images[target].pixels;
+			calcMSE = mse(originalImage.data, pixels.data);
+			calcPSNR = psnr(originalImage.data, pixels.data);
+			calcSSIM = ssim(originalImage.data, pixels.data);
+		} else if (this.props.images[AREA_1] && this.props.images[AREA_2]) {
+			const imageOne = this.props.images[AREA_1].pixels;
+			const imageTwo = this.props.images[AREA_2].pixels;
+			calcMSE = mse(imageOne.data, imageTwo.data);
+			calcPSNR = psnr(imageOne.data, imageTwo.data);
+			calcSSIM = ssim(imageOne.data, imageTwo.data);
+		} else {
+			return '';
+		}
+
+		calcPSNR = calcPSNR === Infinity;
+
+		return (
+			<Message floating style={style.container}>
+				<Message.Header>Cálculos das imagens</Message.Header>
+				<Grid centered style={{ marginTop: '10px' }}>
+					<Grid.Row columns={3}>
+						<Grid.Column>
+							<b>MSE:</b> {calcMSE ? parseFloat(calcMSE).toFixed(2) : '-'}
+						</Grid.Column>
+						<Grid.Column>
+							<b>PSNR:</b> {calcPSNR ? parseFloat(calcPSNR).toFixed(2) : '-'}
+						</Grid.Column>
+						<Grid.Column>
+							<b>SSIM:</b> {calcSSIM ? parseFloat(calcSSIM).toFixed(2) : '-'}
+						</Grid.Column>
+					</Grid.Row>
+				</Grid>
+			</Message>
+		);
+	}
+
 	render() {
 		if (!this.props.images[AREA_1] && !this.props.images[AREA_1])
 			return (
 				<div>
-					<Message negative style={style.container}>
-						<Message.Header>
-							Nenhuma imagem carregada!!!
-						</Message.Header>
+					<Message floating style={style.container}>
+						<Message.Header>Nenhuma imagem carregada!!!</Message.Header>
 						<p>
-							Favor realizar o upload de pelo menos uma imagem no
-							fluxo de blocos.
+							Favor realizar o upload de pelo menos uma imagem no fluxo de
+							blocos.
 						</p>
 					</Message>
 					{this.renderNavigation()}
@@ -129,10 +171,9 @@ class Histogram extends React.Component {
 			);
 		return (
 			<div style={style.container}>
+				{this.renderComparisonData()}
 				{this.renderFilterHistogram.apply(this)}
-				<Divider />
 				{this.renderHistograms(AREA_1, 'Histograma Imagem 1')}
-				<Divider />
 				{this.renderHistograms(AREA_2, 'Histograma Imagem 2')}
 				{this.renderNavigation()}
 			</div>

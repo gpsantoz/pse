@@ -112,8 +112,7 @@ function noise(data) {
 function multiFilter(data, width, filterType, mag, mult, adj) {
 	for (let i = 0; i < data.length; i += filterType) {
 		if (i % 4 !== 3) {
-			data[i] =
-				mag + mult * data[i] - data[i + adj] - data[i + width * 4];
+			data[i] = mag + mult * data[i] - data[i + adj] - data[i + width * 4];
 		}
 	}
 	return data;
@@ -153,7 +152,6 @@ const convFilter = (
 	bias = 0,
 	count = 1
 ) => {
-	debugger;
 	const w = kernel[0].length;
 	const h = kernel.length;
 	const half = Math.floor(h / 2);
@@ -167,8 +165,7 @@ const convFilter = (
 
 				for (let cy = 0; cy < h; ++cy) {
 					for (let cx = 0; cx < w; ++cx) {
-						const cpx =
-							((y + (cy - half)) * width + (x + (cx - half))) * 4;
+						const cpx = ((y + (cy - half)) * width + (x + (cx - half))) * 4;
 						r += data[cpx + 0] * kernel[cy][cx];
 						g += data[cpx + 1] * kernel[cy][cx];
 						b += data[cpx + 2] * kernel[cy][cx];
@@ -275,9 +272,7 @@ const sobel = (data, width, height, invert = false) => {
 					getPixel(x - 1, y + 1) +
 					(getPixel(x, y + 1) << 1) +
 					getPixel(x + 1, y + 1);
-				let mag = Math.floor(
-					Math.sqrt(newX * newX + newY * newY) >>> 0
-				);
+				let mag = Math.floor(Math.sqrt(newX * newX + newY * newY) >>> 0);
 				if (mag > 255) mag = 255;
 				if (invert) mag = 255 - mag;
 				data[(wid * y + x) * 4] = mag;

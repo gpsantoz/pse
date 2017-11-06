@@ -13,13 +13,12 @@ class FlowArea extends React.Component {
 	render() {
 		return (
 			<div>
-				<Message style={style.container}>
+				<Message floating style={style.container}>
 					<Message.Header>Fluxos de edição</Message.Header>
 					<p>
-						Arraste um dos blocos ao lado e solte em um dos fluxos
-						abaixo.
-						<br />Cada fluxo necessita de um bloco de abrir a imagem
-						para que outros blocos sejam adicionados.
+						Arraste um dos blocos ao lado e solte em um dos fluxos abaixo.
+						<br />Cada fluxo necessita de um bloco de abrir a imagem para que
+						outros blocos sejam adicionados.
 					</p>
 				</Message>
 				<ImageArea id={AREA_1} target={AREA_1} />

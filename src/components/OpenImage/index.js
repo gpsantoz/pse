@@ -134,7 +134,6 @@ class OpenImage extends React.Component {
 	}
 
 	renderHistograms() {
-		debugger;
 		this.savePixels.apply(this);
 		this.props.history.push('/histogram');
 	}
@@ -146,11 +145,10 @@ class OpenImage extends React.Component {
 					<Message style={style.container}>
 						<Message.Header>Abrir imagem</Message.Header>
 						<p>
-							Clique em "Escolher arquivo", selecione uma imagem
-							do seu computador e clique em salvar. <br />Você
-							também pode clicar em Histogramas para visualizar os
-							histogramas das imagens selecionadas ou clicar em
-							voltar.
+							Clique em "Escolher arquivo", selecione uma imagem do seu
+							computador e clique em salvar. <br />Você também pode clicar em
+							Histogramas para visualizar os histogramas das imagens
+							selecionadas ou clicar em voltar.
 						</p>
 					</Message>
 				</Grid.Row>
