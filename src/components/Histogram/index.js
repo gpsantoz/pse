@@ -133,8 +133,6 @@ class Histogram extends React.Component {
 			return '';
 		}
 
-		calcPSNR = calcPSNR === Infinity;
-
 		return (
 			<Message floating style={style.container}>
 				<Message.Header>Cálculos das imagens</Message.Header>
