@@ -2,10 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../actions';
 import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
+import NavigationButtons from '../shared/NavigationButtons';
 
 const coreDSP = new CoreDSP();
 
@@ -17,36 +17,10 @@ const style = {
 	canvas: {
 		maxWidth: '100%',
 		height: 'auto'
-	},
-	navigationButton: {
-		minWidth: '120px'
 	}
 };
 
 class FilterImage extends React.Component {
-	handleFileUpload(e) {
-		if (!e || !e.target) return;
-		const image = new Image();
-		const fr = new FileReader();
-		fr.onload = createImage.bind(this);
-		fr.readAsDataURL(e.target.files[0]);
-
-		function createImage() {
-			image.onload = imageLoaded.bind(this);
-			image.src = fr.result;
-		}
-
-		function imageLoaded() {
-			const canvas = document.getElementById('image-canvas');
-			canvas.width = image.width;
-			canvas.height = image.height;
-			const ctx = canvas.getContext('2d');
-			ctx.drawImage(image, 0, 0);
-			const pixels = ctx.getImageData(0, 0, image.width, image.height);
-			this.props.addPixelData(pixels, this.props.match.params.target);
-		}
-	}
-
 	renderNavigationButton(color, label, handleClick) {
 		return (
 			<Grid.Column>
@@ -192,33 +166,6 @@ class FilterImage extends React.Component {
 		}
 	}
 
-	removeBlock() {
-		const { target, id } = this.props.match.params;
-		this.props.removeProcessingBlock(id, target);
-		this.props.history.push('/');
-	}
-
-	downloadImage() {
-		const link = document.getElementById('download');
-		link.href = document.getElementById('image-canvas').toDataURL();
-		link.download = 'download.png';
-	}
-
-	renderHistogram() {
-		const canvas = document.getElementById('image-canvas');
-		const ctx = canvas.getContext('2d');
-		const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-		const location = {
-			pathname: '/histogram',
-			state: {
-				pixels,
-				target: this.props.match.params.target
-			}
-		};
-
-		this.props.history.push(location);
-	}
-
 	render() {
 		return (
 			<div style={style.container}>
@@ -236,39 +183,10 @@ class FilterImage extends React.Component {
 							</p>
 						</Message>
 					</Grid.Row>
-					<Grid.Row columns={6}>
-						<Grid.Column>
-							{this.renderNavigationButton('red', 'Voltar', () =>
-								this.props.history.push('/')
-							)}
-						</Grid.Column>
-						<Grid.Column>
-							{this.renderNavigationButton(
-								'red',
-								'Excluir',
-								this.removeBlock.bind(this)
-							)}
-						</Grid.Column>
-						<Grid.Column>
-							<Button
-								inverted
-								color="blue"
-								onClick={this.downloadImage}
-								style={style.navigationButton}
-								as="a"
-								id="download"
-							>
-								Download
-							</Button>
-						</Grid.Column>
-						<Grid.Column>
-							{this.renderNavigationButton(
-								'blue',
-								'Histograma',
-								this.renderHistogram.bind(this)
-							)}
-						</Grid.Column>
-					</Grid.Row>
+					<NavigationButtons
+						target={this.props.match.params.target}
+						id={this.props.match.params.id}
+					/>
 					<Grid.Row>
 						<canvas id="image-canvas" style={style.canvas} />
 					</Grid.Row>
@@ -282,4 +200,4 @@ function mapStateToProps({ images, imageActions }) {
 	return { images, imageActions };
 }
 
-export default connect(mapStateToProps, actions)(withRouter(FilterImage));
+export default connect(mapStateToProps)(withRouter(FilterImage));

@@ -4,7 +4,8 @@ const style = {
 	node: {
 		display: 'flex',
 		fontSize: '16px',
-		margin: '2px 0'
+		margin: '2px 0',
+		borderLeft: '2px solid #d3d3d3'
 	},
 	arrowRight: {
 		width: 0,

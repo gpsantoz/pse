@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Grid, Label, Divider, Message } from 'semantic-ui-react';
+import { Button, Grid, Label, Message } from 'semantic-ui-react';
 import { BarChart, Bar, Tooltip, CartesianGrid, XAxis, YAxis } from 'recharts';
 import psnr from 'psnr';
 import mse from 'mse';

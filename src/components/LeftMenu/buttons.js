@@ -1,3 +1,5 @@
+import { CUSTOM_FILTER } from '../../actions/types';
+
 export default [
 	{
 		label: 'Interface',
@@ -11,6 +13,10 @@ export default [
 	{
 		label: 'Processamento',
 		buttons: [
+			{
+				color: 'green',
+				label: CUSTOM_FILTER
+			},
 			{
 				color: 'yellow',
 				label: 'Grayscale'

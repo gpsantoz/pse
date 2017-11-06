@@ -3,9 +3,12 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"jimp": "0.2.27",
 		"lodash": "^4.17.4",
 		"material-ui": "^0.19.2",
 		"materialize-css": "^0.100.2",
+		"mse": "^0.1.0",
+		"psnr": "^0.0.1",
 		"react": "^16.0.0",
 		"react-dnd": "^2.5.3",
 		"react-dnd-html5-backend": "^2.5.3",
@@ -20,8 +23,6 @@
 		"redux-thunk": "^2.2.0",
 		"semantic-ui-css": "^2.2.12",
 		"semantic-ui-react": "^0.74.2",
-		"psnr": "^0.0.1",
-		"mse": "^0.1.0",
 		"ssim": "^0.0.0"
 	},
 	"scripts": {

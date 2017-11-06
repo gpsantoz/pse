@@ -3,12 +3,15 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+
 import Test from './Test';
-import LeftMenu from './LeftMenu';
+
+import CustomFilter from './CustomFilter';
 import FilterImage from './FilterImage';
 import FlowArea from './FlowArea';
-import OpenImage from './OpenImage';
 import Histogram from './Histogram';
+import LeftMenu from './LeftMenu';
+import OpenImage from './OpenImage';
 
 const Content = () => {
 	return (
@@ -36,19 +39,12 @@ class App extends Component {
 							<Route exact path="/test" component={Test} />
 							<Route
 								exact
-								path="/open/:target/"
-								component={OpenImage}
+								path="/custom/:target/:id"
+								component={CustomFilter}
 							/>
-							<Route
-								exact
-								path="/filter/:target/:id"
-								component={FilterImage}
-							/>
-							<Route
-								exact
-								path="/histogram"
-								component={Histogram}
-							/>
+							<Route exact path="/filter/:target/:id" component={FilterImage} />
+							<Route exact path="/histogram" component={Histogram} />
+							<Route exact path="/open/:target/" component={OpenImage} />
 						</div>
 					</div>
 				</BrowserRouter>

@@ -1,10 +1,11 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 import PropTypes from 'prop-types';
 import ButtonBlock from './ButtonBlock';
-import { OPEN_IMAGE } from '../../actions/types';
+import { OPEN_IMAGE, CUSTOM_FILTER } from '../../actions/types';
 
 class ConnectorModal extends React.Component {
 	static propTypes = {
@@ -21,6 +22,11 @@ class ConnectorModal extends React.Component {
 		history.push(`/open/${target}`);
 	}
 
+	handleCustomFilter() {
+		const { history, target, id } = this.props;
+		history.push(`/custom/${target}/${id}`);
+	}
+
 	handleFilter() {
 		const { history, target, id } = this.props;
 		history.push(`/filter/${target}/${id}`);
@@ -33,19 +39,21 @@ class ConnectorModal extends React.Component {
 	render() {
 		const { type } = this.props;
 
-		if (type === OPEN_IMAGE)
+		if (type === OPEN_IMAGE) {
+			return (
+				<ButtonBlock content={type} onClick={this.handleOpenImage.bind(this)} />
+			);
+		} else if (type === _.snakeCase(CUSTOM_FILTER)) {
 			return (
 				<ButtonBlock
 					content={type}
-					onClick={this.handleOpenImage.bind(this)}
+					onClick={this.handleCustomFilter.bind(this)}
 				/>
 			);
+		}
 
 		return (
-			<ButtonBlock
-				content={type}
-				onClick={this.handleFilter.bind(this)}
-			/>
+			<ButtonBlock content={type} onClick={this.handleFilter.bind(this)} />
 		);
 	}
 }
