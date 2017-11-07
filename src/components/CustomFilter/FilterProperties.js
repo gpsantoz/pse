@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
@@ -100,16 +99,40 @@ class FilterProperties extends React.Component {
 		});
 	};
 
+	setInput(e, { value }, x, y) {
+		let matrix = this.state.conv.mask;
+		matrix[x][y] = value;
+		this.setState({
+			...this.state,
+			conv: {
+				selected: true,
+				size: this.state.conv.size,
+				mask: matrix
+			}
+		});
+	}
+
 	renderConvolutionInputs = () => {
 		let ret = [];
-
-		for (var x = 0; x < this.state.conv.size; x++) {
-			ret.push(<Form.Group />);
-			debugger;
-			ret[x].push(<Form.Group inline />);
-			for (var y = 0; y < this.state.conv.size; y++) {
-				ret[x].push(<Form.Input value={this.state.conv.mask[x][y]} />);
+		for (let x = 0; x < this.state.conv.size; x++) {
+			let column = [];
+			for (let y = 0; y < this.state.conv.size; y++) {
+				column.push(
+					<Form.Input
+						key={`input${x + y}`}
+						type="number"
+						style={{ width: '3.5em' }}
+						value={this.state.conv.mask[x][y]}
+						onChange={(e, data) => this.setInput(e, data, x, y)}
+					/>
+				);
 			}
+			ret.push(
+				<Form.Group key={`form_group_${x}`}>
+					<Form.Group inline key={`form_group_inline${x}`} />
+					{column}
+				</Form.Group>
+			);
 		}
 
 		return ret;

@@ -28,12 +28,12 @@ class FilterImage extends React.Component {
 							</p>
 						</Message>
 					</Grid.Row>
-					<Grid.Row columns={2}>
-						<Grid.Column width={10}>
-							<canvas id="image-canvas" style={style.canvas} />
-						</Grid.Column>
-						<Grid.Column width={4}>
+					<Grid.Row columns={1}>
+						<Grid.Column>
 							<FilterProperties />
+						</Grid.Column>
+						<Grid.Column>
+							<canvas id="image-canvas" style={style.canvas} />
 						</Grid.Column>
 					</Grid.Row>
 					<NavigationButtons
