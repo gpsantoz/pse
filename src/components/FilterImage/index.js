@@ -16,6 +16,8 @@ const style = {
 	},
 	canvas: {
 		maxWidth: '100%',
+		maxHeight: '500px',
+		width: 'auto',
 		height: 'auto'
 	}
 };

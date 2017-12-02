@@ -61,34 +61,12 @@ class FilterProperties extends React.Component {
 	}
 
 	handleChangeMatrixRadio = (e, { value }) => {
-		let matrix;
-		switch (value) {
-			case 3:
-				matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-				break;
-			case 5:
-				matrix = [
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0]
-				];
-				break;
-			case 7:
-				matrix = [
-					[0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0],
-					[0, 0, 0, 0, 0, 0, 0]
-				];
-				break;
-			default:
-				break;
+		let matrix = new Array(value);
+
+		for (var index = 0; index < value; index++) {
+			matrix[index] = new Array(value);
 		}
+
 		this.setState({
 			...this.state,
 			conv: {

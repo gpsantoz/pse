@@ -13,10 +13,10 @@ export default [
 	{
 		label: 'Processamento',
 		buttons: [
-			{
-				color: 'green',
-				label: CUSTOM_FILTER
-			},
+			// {
+			// 	color: 'green',
+			// 	label: CUSTOM_FILTER
+			// },
 			{
 				color: 'yellow',
 				label: 'Grayscale'

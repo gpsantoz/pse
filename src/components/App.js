@@ -42,9 +42,9 @@ class App extends Component {
 								path="/custom/:target/:id"
 								component={CustomFilter}
 							/>
+							<Route exact path="/open/:target/" component={OpenImage} />
 							<Route exact path="/filter/:target/:id" component={FilterImage} />
 							<Route exact path="/histogram" component={Histogram} />
-							<Route exact path="/open/:target/" component={OpenImage} />
 						</div>
 					</div>
 				</BrowserRouter>
