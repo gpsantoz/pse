@@ -1,11 +1,19 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
+import { promisify } from 'util';
 import * as actions from '../../actions';
 import { withRouter } from 'react-router-dom';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import { Grid, Checkbox, Form } from 'semantic-ui-react';
+import { Grid, Checkbox, Form, Button, Divider } from 'semantic-ui-react';
 //import Jimp from 'jimp';
 /* global Jimp */
+
+const style = {
+	filters: {
+		marginBottom: '20px'
+	}
+};
 
 class FilterProperties extends React.Component {
 	state = {
@@ -36,6 +44,7 @@ class FilterProperties extends React.Component {
 			async blob => {
 				const url = URL.createObjectURL(blob);
 				const image = await Jimp.read(url);
+				debugger;
 				image[filter](...params);
 				writeImageData(
 					canvas,
@@ -50,21 +59,33 @@ class FilterProperties extends React.Component {
 		);
 	}
 
-	renderCheckbox(label, filter, ...params) {
+	applySelectedFilters = () => {
+		_.map(this.state, filter => {
+			if (!filter.filter) return;
+			this.applyJimpFilter(filter.filter, filter.params);
+		});
+	};
+
+	renderCheckbox = (label, filter, params) => {
 		return (
 			<Checkbox
 				toggle
 				label={label}
-				onClick={() => this.applyJimpFilter(filter, ...params)}
+				disabled={!this.state.conv.selected}
+				onClick={(event, { checked }) => {
+					const selectedFilter = checked ? { label, filter, params } : null;
+					this.setState({ ...this.state, [filter]: selectedFilter });
+				}}
 			/>
 		);
-	}
+	};
 
 	handleChangeMatrixRadio = (e, { value }) => {
 		let matrix = new Array(value);
 
 		for (var index = 0; index < value; index++) {
 			matrix[index] = new Array(value);
+			matrix[index].fill(0);
 		}
 
 		this.setState({
@@ -77,7 +98,7 @@ class FilterProperties extends React.Component {
 		});
 	};
 
-	setInput(e, { value }, x, y) {
+	setInput = (e, { value }, x, y) => {
 		let matrix = this.state.conv.mask;
 		matrix[x][y] = value;
 		this.setState({
@@ -88,7 +109,7 @@ class FilterProperties extends React.Component {
 				mask: matrix
 			}
 		});
-	}
+	};
 
 	renderConvolutionInputs = () => {
 		let ret = [];
@@ -119,10 +140,12 @@ class FilterProperties extends React.Component {
 	render() {
 		return (
 			<Grid>
-				<Grid.Row>
+				<Grid.Row columns={2}>
 					<Grid.Column>
 						<Form>
-							<Form.Field>Matrix de Convolução</Form.Field>
+							<Form.Field style={{ fontWeight: 700 }}>
+								Matrix de Convolução
+							</Form.Field>
 							<Form.Group inline>
 								<label>Tamanho:</label>
 								<Form.Radio
@@ -146,6 +169,23 @@ class FilterProperties extends React.Component {
 							</Form.Group>
 							{this.renderConvolutionInputs()}
 						</Form>
+					</Grid.Column>
+					<Grid.Column>
+						<div style={style.filters}>
+							<h4>Selecione os filtros</h4>
+						</div>
+						<div style={style.filters}>
+							{this.renderCheckbox(
+								'Convolução',
+								'convolution',
+								this.state.conv.mask
+							)}
+						</div>
+						<div style={style.filters}>
+							<Button basic color="green" onClick={this.applySelectedFilters}>
+								Aplicar
+							</Button>
+						</div>
 					</Grid.Column>
 				</Grid.Row>
 			</Grid>
