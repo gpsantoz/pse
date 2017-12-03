@@ -36,6 +36,10 @@ class FilterImage extends React.Component {
 							</p>
 						</Message>
 					</Grid.Row>
+					<NavigationButtons
+						target={this.props.match.params.target}
+						id={this.props.match.params.id}
+					/>
 					<Grid.Row columns={1}>
 						<Dimmer active={this.state.isLoading}>
 							<Loader />
@@ -47,10 +51,6 @@ class FilterImage extends React.Component {
 							<canvas id="image-canvas" style={style.canvas} />
 						</Grid.Column>
 					</Grid.Row>
-					<NavigationButtons
-						target={this.props.match.params.target}
-						id={this.props.match.params.id}
-					/>
 				</Grid>
 			</div>
 		);
