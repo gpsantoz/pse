@@ -46,11 +46,7 @@ class ImageArea extends React.Component {
 		});
 
 		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
-			<ConnectorModal
-				key={OPEN_IMAGE}
-				type={OPEN_IMAGE}
-				target={target}
-			/>
+			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target={target} />
 		) : (
 			''
 		);

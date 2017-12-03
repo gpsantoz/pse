@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Message } from 'semantic-ui-react';
+import { Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import FilterProperties from './FilterProperties';
 import NavigationButtons from '../shared/NavigationButtons';
 
@@ -15,6 +15,14 @@ const style = {
 };
 
 class FilterImage extends React.Component {
+	state = {
+		isLoading: false
+	};
+
+	handleLoading = isLoading => {
+		this.setState({ isLoading });
+	};
+
 	render() {
 		return (
 			<div style={style.container}>
@@ -29,8 +37,11 @@ class FilterImage extends React.Component {
 						</Message>
 					</Grid.Row>
 					<Grid.Row columns={1}>
+						<Dimmer active={this.state.isLoading}>
+							<Loader />
+						</Dimmer>
 						<Grid.Column>
-							<FilterProperties />
+							<FilterProperties handleLoading={this.handleLoading.bind(this)} />
 						</Grid.Column>
 						<Grid.Column>
 							<canvas id="image-canvas" style={style.canvas} />

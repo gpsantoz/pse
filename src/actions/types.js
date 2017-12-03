@@ -3,6 +3,7 @@ export const REMOVE_PROCESSING_BLOCK = 'REMOVE_PROCESSING_BLOCK';
 export const ADD_OPEN_IMAGE_BLOCK = 'ADD_OPEN_IMAGE_BLOCK';
 export const ADD_WRITE_FILE_BLOCK = 'ADD_WRITE_FILE_BLOCK';
 export const ADD_PIXEL_DATA = 'ADD_PIXEL_DATA';
+export const SET_CUSTOM_FILTER_STATE = 'SET_CUSTOM_FILTER_STATE';
 export const CUSTOM_FILTER = 'Custom Filter';
 export const AREA_1 = 'fluxo_1';
 export const AREA_2 = 'fluxo_2';

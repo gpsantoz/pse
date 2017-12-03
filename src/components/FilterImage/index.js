@@ -2,12 +2,11 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Button, Grid, Message } from 'semantic-ui-react';
+import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import CoreDSP from '../../lib/web-dsp/CoreDSP';
+import { handleFilter } from '../shared/handleFilter';
 import NavigationButtons from '../shared/NavigationButtons';
-
-const coreDSP = new CoreDSP();
+/* global Jimp */
 
 const style = {
 	container: {
@@ -23,6 +22,9 @@ const style = {
 };
 
 class FilterImage extends React.Component {
+	state = {
+		isLoading: true
+	};
 	renderNavigationButton(color, label, handleClick) {
 		return (
 			<Grid.Column>
@@ -38,106 +40,9 @@ class FilterImage extends React.Component {
 		);
 	}
 
-	handleFilter(filter, pixels) {
-		const { width, height } = pixels;
-		switch (filter) {
-			case 'grayscale':
-				pixels.data.set(coreDSP.grayscale(pixels.data));
-				break;
-			case 'brighten':
-				pixels.data.set(coreDSP.brighten(pixels.data));
-				break;
-			case 'invert':
-				pixels.data.set(coreDSP.invert(pixels.data));
-				break;
-			case 'noise':
-				pixels.data.set(coreDSP.noise(pixels.data));
-				break;
-			case 'sunset':
-				pixels.data.set(coreDSP.sunset(pixels.data, width));
-				break;
-			case 'analog':
-				pixels.data.set(coreDSP.analog(pixels.data, width));
-				break;
-			case 'emboss':
-				pixels.data.set(coreDSP.emboss(pixels.data, width));
-				break;
-			case 'sobel':
-				pixels.data.set(coreDSP.sobel(pixels.data, width, height));
-				break;
-			case 'sobel_invertido':
-				pixels.data.set(coreDSP.sobel(pixels.data, width, height, true));
-				break;
-			case 'gaussian_blur':
-				pixels.data.set(coreDSP.blur(pixels.data, width, height));
-				break;
-			case 'sharpen':
-				pixels.data.set(coreDSP.sharpen(pixels.data, width, height));
-				break;
-			case 'uber_sharpen':
-				pixels.data.set(coreDSP.strong_sharpen(pixels.data, width, height));
-				break;
-			case 'clarity':
-				pixels.data.set(coreDSP.clarity(pixels.data, width, height));
-				break;
-			case 'good_morning':
-				pixels.data.set(coreDSP.good_morning(pixels.data, width, height));
-				break;
-			case 'acid':
-				pixels.data.set(coreDSP.acid(pixels.data, width, height));
-				break;
-			case 'urple':
-				pixels.data.set(coreDSP.urple(pixels.data, width));
-				break;
-			case 'forest':
-				pixels.data.set(coreDSP.forest(pixels.data, width));
-				break;
-			case 'romance':
-				pixels.data.set(coreDSP.romance(pixels.data, width));
-				break;
-			case 'hippo':
-				pixels.data.set(coreDSP.hippo(pixels.data, width));
-				break;
-			case 'longhorn':
-				pixels.data.set(coreDSP.longhorn(pixels.data, width));
-				break;
-			case 'underground':
-				pixels.data.set(coreDSP.underground(pixels.data, width));
-				break;
-			case 'rooster':
-				pixels.data.set(coreDSP.rooster(pixels.data, width));
-				break;
-			case 'mist':
-				pixels.data.set(coreDSP.mist(pixels.data, width));
-				break;
-			case 'kaleidoscope':
-				pixels.data.set(coreDSP.kaleidoscope(pixels.data, width));
-				break;
-			case 'bacteria':
-				pixels.data.set(coreDSP.bacteria(pixels.data, width));
-				break;
-			case 'dewdrops':
-				pixels.data.set(coreDSP.dewdrops(pixels.data, width, height));
-				break;
-			case 'color_destruction':
-				pixels.data.set(coreDSP.destruction(pixels.data, width, height));
-				break;
-			case 'hulk_edge':
-				pixels.data.set(coreDSP.hulk(pixels.data, width));
-				break;
-			case 'ghost':
-				pixels.data.set(coreDSP.ghost(pixels.data, width));
-				break;
-			case 'twisted':
-				pixels.data.set(coreDSP.twisted(pixels.data, width));
-				break;
-			case 'security':
-				pixels.data.set(coreDSP.security(pixels.data, width));
-				break;
-			default:
-				break;
-		}
-	}
+	handleLoading = isLoading => {
+		this.setState({ isLoading });
+	};
 
 	componentDidMount() {
 		const canvas = document.getElementById('image-canvas');
@@ -153,17 +58,46 @@ class FilterImage extends React.Component {
 			_.forEach(actions, action => {
 				if (!action || !action.type) return;
 				if (action.id <= id) {
-					this.handleFilter(action.type, filterPixels);
+					handleFilter(action.type, filterPixels);
 				}
 			});
 
 			canvas.width = filterPixels.width;
 			canvas.height = filterPixels.height;
+
 			writeImageData(
 				canvas,
 				filterPixels.data,
 				filterPixels.width,
 				filterPixels.height
+			);
+
+			canvas.toBlob(
+				async blob => {
+					const { images, imageActions } = this.props;
+					const { target, id } = this.props.match.params;
+					const actions = imageActions[target];
+
+					const url = URL.createObjectURL(blob);
+					const image = await Jimp.read(url);
+
+					if (!!actions.customState)
+						_.map(actions.customState, filter => {
+							if (!filter || !filter.filter) return;
+							image[filter.filter](...filter.params);
+						});
+
+					writeImageData(
+						canvas,
+						image.bitmap.data,
+						image.bitmap.width,
+						image.bitmap.height
+					);
+					URL.revokeObjectURL(url);
+					this.handleLoading(false);
+				},
+				'image/png',
+				1
 			);
 		}
 	}
@@ -190,6 +124,9 @@ class FilterImage extends React.Component {
 						id={this.props.match.params.id}
 					/>
 					<Grid.Row>
+						<Dimmer active={this.state.isLoading}>
+							<Loader />
+						</Dimmer>
 						<canvas id="image-canvas" style={style.canvas} />
 					</Grid.Row>
 				</Grid>

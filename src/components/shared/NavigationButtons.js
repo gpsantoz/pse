@@ -47,11 +47,29 @@ class NavigationButtons extends React.Component {
 		this.props.history.push('/');
 	}
 
-	downloadImage() {
+	canvasToBlobPromisify = canvas => {
+		return new Promise((resolve, reject) => {
+			canvas.toBlob(
+				async blob => {
+					const url = URL.createObjectURL(blob);
+					const link = { href: url, download: 'download.png' };
+					resolve(link);
+					//URL.revokeObjectURL(url);
+				},
+				'image/png',
+				1
+			);
+		});
+	};
+
+	downloadImage = async () => {
 		const link = document.getElementById('download');
-		link.href = document.getElementById('image-canvas').toDataURL();
-		link.download = 'download.png';
-	}
+		const canvas = document.getElementById('image-canvas');
+		const newLink = await this.canvasToBlobPromisify(canvas);
+		debugger;
+		link.href = newLink.href;
+		link.download = newLink.download;
+	};
 
 	render() {
 		return (
