@@ -1,3 +1,9 @@
 # PSE Image
 
-A PSE to play around with image manipulation.
+Um PSE para manipulação de imagens
+
+## Instruções
+
+- Clone esse repositório
+- Execute npm install
+- Execute npm start
