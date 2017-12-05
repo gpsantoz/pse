@@ -4,6 +4,8 @@ Um PSE para manipulação de imagens
 
 ## Instruções
 
+Necessário Node e Yarn instalados.
+
 - Clone esse repositório
-- Execute npm install
-- Execute npm start
+- Execute yarn install
+- Execute yarn start
