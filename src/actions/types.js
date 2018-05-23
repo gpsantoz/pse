@@ -10,3 +10,6 @@ export const AREA_2 = 'fluxo_2';
 export const OPEN_IMAGE = 'abrir_imagem';
 export const WRITE_FILE = 'gravar_arquivo';
 export const CONNECTORS = 'conectores';
+export const NEAREST_NEIGHBOR_INT = 'Interpolação pelo vizinho mais próximo';
+export const BICUBIC_INT = 'Interpolação Bicúbica';
+export const BILIENEAR_NEIGHBOR_INT = 'Interpolação Bilinear';

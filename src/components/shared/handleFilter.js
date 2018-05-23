@@ -1,9 +1,24 @@
+import _ from 'lodash';
+import {
+  NEAREST_NEIGHBOR_INT,
+  BICUBIC_INT,
+  BILIENEAR_NEIGHBOR_INT,
+} from '../../actions/types';
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 const coreDSP = new CoreDSP();
 
 export const handleFilter = (filter, pixels) => {
   const { width, height } = pixels;
   switch (filter) {
+    case _.snakeCase(NEAREST_NEIGHBOR_INT):
+      pixels.data.set(coreDSP.nearestNeighborInt(pixels.data));
+      break;
+    case _.snakeCase(BICUBIC_INT):
+      pixels.data.set(coreDSP.bicubicInt(pixels.data));
+      break;
+    case _.snakeCase(BILIENEAR_NEIGHBOR_INT):
+      pixels.data.set(coreDSP.bilinearInt(pixels.data));
+      break;
     case 'grayscale':
       pixels.data.set(coreDSP.grayscale(pixels.data));
       break;

@@ -1,4 +1,9 @@
-import { CUSTOM_FILTER } from '../../actions/types';
+import {
+  CUSTOM_FILTER,
+  NEAREST_NEIGHBOR_INT,
+  BICUBIC_INT,
+  BILIENEAR_NEIGHBOR_INT,
+} from '../../actions/types';
 
 export default [
   {
@@ -15,15 +20,15 @@ export default [
     buttons: [
       {
         color: 'orange',
-        label: 'Interpolação pelo vizinho mais próximo',
+        label: NEAREST_NEIGHBOR_INT,
       },
       {
         color: 'orange',
-        label: 'Interpolação Bicúbica',
+        label: BICUBIC_INT,
       },
       {
         color: 'orange',
-        label: 'Interpolação Bilinear',
+        label: BILIENEAR_NEIGHBOR_INT,
       },
       {
         color: 'green',
