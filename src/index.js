@@ -11,16 +11,15 @@ import './index.css';
 
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
-	reducers /* preloadedState, */,
-	window.__REDUX_DEVTOOLS_EXTENSION__ &&
-		window.__REDUX_DEVTOOLS_EXTENSION__(),
-	applyMiddleware(reduxThunk)
+  reducers /* preloadedState, */,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(reduxThunk)
 );
 /* eslint-enable */
 
 ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>,
-	document.getElementById('root')
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );

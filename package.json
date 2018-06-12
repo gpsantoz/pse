@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"flow-bin": "^0.74.0",
 		"jimp": "0.2.27",
 		"lodash": "^4.17.4",
 		"material-ui": "^0.19.2",

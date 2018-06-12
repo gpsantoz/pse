@@ -1,12 +1,10 @@
-import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
-import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import { handleFilter } from '../shared/handleFilter';
 import NavigationButtons from '../shared/NavigationButtons';
-/* global Jimp */
+import { writeImageData } from '../../lib/web-dsp/WebDSP';
+import { bicubic, bilinear } from '../shared/handleScaling';
 
 const style = {
   container: {
@@ -21,7 +19,7 @@ const style = {
   },
 };
 
-class FilterImage extends React.Component {
+class ScalingImage extends React.Component {
   state = {
     isLoading: true,
   };
@@ -46,61 +44,19 @@ class FilterImage extends React.Component {
 
   componentDidMount() {
     const canvas = document.getElementById('image-canvas');
-    const { images, imageActions } = this.props;
-    const { target, id } = this.props.match.params;
-    const actions = imageActions[target];
+    const { images } = this.props;
+    const { target } = this.props.match.params;
+    const { pixels } = images[target];
+    const image = new ImageData(pixels.width, pixels.height);
 
-    if (images[target] && !!canvas && !!actions) {
-      const { pixels } = images[target];
-      const filterPixels = new ImageData(pixels.width, pixels.height);
-      filterPixels.data.set(pixels.data);
+    image.data.set(pixels.data);
 
-      _.forEach(actions, action => {
-        if (!action || !action.type) {return;}
-        if (action.id <= id) {
-          handleFilter(action.type, filterPixels);
-        }
-      });
+    canvas.width = image.width;
+    canvas.height = image.height;
 
-      canvas.width = filterPixels.width;
-      canvas.height = filterPixels.height;
+    writeImageData(canvas, image.data, image.width, image.height);
 
-      writeImageData(
-        canvas,
-        filterPixels.data,
-        filterPixels.width,
-        filterPixels.height
-      );
-
-      canvas.toBlob(
-        async blob => {
-          const { images, imageActions } = this.props;
-          const { target, id } = this.props.match.params;
-          const actions = imageActions[target];
-
-          const url = URL.createObjectURL(blob);
-          const image = await Jimp.read(url);
-
-          if (actions.customState) {
-            _.map(actions.customState, filter => {
-              if (!filter || !filter.filter) {return;}
-              image[filter.filter](...filter.params);
-            });
-          }
-
-          writeImageData(
-            canvas,
-            image.bitmap.data,
-            image.bitmap.width,
-            image.bitmap.height
-          );
-          URL.revokeObjectURL(url);
-          this.handleLoading(false);
-        },
-        'image/png',
-        1
-      );
-    }
+    this.handleLoading(false);
   }
 
   render() {
@@ -140,4 +96,4 @@ function mapStateToProps({ images, imageActions }) {
   return { images, imageActions };
 }
 
-export default connect(mapStateToProps)(withRouter(FilterImage));
+export default connect(mapStateToProps)(withRouter(ScalingImage));

@@ -41,30 +41,7 @@ export default class CoreDSP {
     this.security = security;
     this.robbery = security;
     this.getHistograms = getHistograms;
-    this.nearestNeighborInt = nearestNeighborInt;
-    this.bicubicInt = bicubicInt;
-    this.bilinearInt = bilinearInt;
   }
-}
-
-function nearestNeighborInt(data) {
-  let tempData = new Uint8ClampedArray(data.length);
-
-  for (let i = 0; i < data.length; i += 4) {
-    tempData[i] = 255; //r
-    tempData[i + 1] = 255; //g
-    tempData[i + 2] = 255; //b
-  }
-
-  return tempData;
-}
-
-function bicubicInt(data) {
-  return data;
-}
-
-function bilinearInt(data) {
-  return data;
 }
 
 function getNewHistogramArray() {
