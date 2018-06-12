@@ -43,18 +43,41 @@ class ScalingImage extends React.Component {
   };
 
   componentDidMount() {
-    const canvas = document.getElementById('image-canvas');
+    const loadCanvas = document.getElementById('load-canvas');
+    const dispCanvas = document.getElementById('disp-canvas');
+
     const { images } = this.props;
     const { target } = this.props.match.params;
     const { pixels } = images[target];
-    const image = new ImageData(pixels.width, pixels.height);
 
-    image.data.set(pixels.data);
+    const sourceImage = new ImageData(pixels.width, pixels.height);
 
-    canvas.width = image.width;
-    canvas.height = image.height;
+    let scale = 5.0;
+    let newWidth = Math.ceil(sourceImage.width * scale);
+    let newHeight = Math.ceil(sourceImage.height * scale);
 
-    writeImageData(canvas, image.data, image.width, image.height);
+    const destImage = new ImageData(newWidth, newHeight);
+
+    sourceImage.data.set(pixels.data);
+
+    loadCanvas.width = sourceImage.width;
+    loadCanvas.height = sourceImage.height;
+
+    writeImageData(
+      loadCanvas,
+      sourceImage.data,
+      sourceImage.width,
+      sourceImage.height
+    );
+
+    bilinear(sourceImage, destImage, scale);
+
+    writeImageData(
+      dispCanvas,
+      destImage.data,
+      destImage.width,
+      destImage.height
+    );
 
     this.handleLoading(false);
   }
@@ -84,7 +107,8 @@ class ScalingImage extends React.Component {
             <Dimmer active={this.state.isLoading}>
               <Loader />
             </Dimmer>
-            <canvas id="image-canvas" style={style.canvas} />
+            <canvas id="load-canvas" style={style.canvas} />
+            <canvas id="disp-canvas" style={style.canvas} />
           </Grid.Row>
         </Grid>
       </div>
