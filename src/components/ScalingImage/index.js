@@ -1,10 +1,16 @@
+import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import NavigationButtons from '../shared/NavigationButtons';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import { bicubic, bilinear } from '../shared/handleScaling';
+import { nearest, bicubic, bilinear } from '../shared/handleScaling';
+import {
+  NEAREST_NEIGHBOR_INT,
+  BICUBIC_INT,
+  BILIENEAR_NEIGHBOR_INT,
+} from '../../actions/types';
 
 const style = {
   container: {
@@ -16,6 +22,7 @@ const style = {
     maxHeight: '500px',
     width: 'auto',
     height: 'auto',
+    imageRendering: '-webkit-optimize-contrast',
   },
 };
 
@@ -43,26 +50,30 @@ class ScalingImage extends React.Component {
   };
 
   componentDidMount() {
+    // load global
     const loadCanvas = document.getElementById('load-canvas');
     const dispCanvas = document.getElementById('disp-canvas');
-
-    const { images } = this.props;
-    const { target } = this.props.match.params;
+    const { images, imageActions } = this.props;
+    const { target, id } = this.props.match.params;
     const { pixels } = images[target];
+    const actions = imageActions[target];
 
+    // setup source image
     const sourceImage = new ImageData(pixels.width, pixels.height);
-
-    let scale = 5.0;
-    let newWidth = Math.ceil(sourceImage.width * scale);
-    let newHeight = Math.ceil(sourceImage.height * scale);
-
-    const destImage = new ImageData(newWidth, newHeight);
 
     sourceImage.data.set(pixels.data);
 
     loadCanvas.width = sourceImage.width;
     loadCanvas.height = sourceImage.height;
 
+    // setup dest image
+    let scale = 5.0;
+    let newWidth = Math.ceil(sourceImage.width * scale);
+    let newHeight = Math.ceil(sourceImage.height * scale);
+
+    const destImage = new ImageData(newWidth, newHeight);
+
+    // write source image
     writeImageData(
       loadCanvas,
       sourceImage.data,
@@ -70,15 +81,32 @@ class ScalingImage extends React.Component {
       sourceImage.height
     );
 
-    bilinear(sourceImage, destImage, scale);
+    // run algorithm
+    if (actions[id] && actions[id].type) {
+      switch (actions[id].type) {
+        case _.snakeCase(NEAREST_NEIGHBOR_INT):
+          nearest(sourceImage, destImage, scale);
+          break;
+        case _.snakeCase(BICUBIC_INT):
+          bicubic(sourceImage, destImage, scale);
+          break;
+        case _.snakeCase(BILIENEAR_NEIGHBOR_INT):
+          bilinear(sourceImage, destImage, scale);
+          break;
+        default:
+          break;
+      }
+    }
 
+    // write dest image
     writeImageData(
-      dispCanvas,
+      loadCanvas,
       destImage.data,
       destImage.width,
       destImage.height
     );
 
+    // hide loading
     this.handleLoading(false);
   }
 

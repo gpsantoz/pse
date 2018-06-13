@@ -294,3 +294,26 @@ export function bicubic(srcImg, destImg, scale) {
     }
   }
 }
+
+export function nearest(srcImg, destImg, scale) {
+  // Takes an image and a scaling factor and returns the scaled image
+
+  // The original image is drawn into an offscreen canvas of the same size
+  // and copied, pixel by pixel into another offscreen canvas with the
+  // new size.
+
+  var widthScaled = srcImg.width * scale;
+  var heightScaled = srcImg.height * scale;
+
+  for (var y = 0; y < heightScaled; y++) {
+    for (var x = 0; x < widthScaled; x++) {
+      var index =
+        (Math.floor(y / scale) * srcImg.width + Math.floor(x / scale)) * 4;
+      var indexScaled = (y * widthScaled + x) * 4;
+      destImg.data[indexScaled] = srcImg.data[index];
+      destImg.data[indexScaled + 1] = srcImg.data[index + 1];
+      destImg.data[indexScaled + 2] = srcImg.data[index + 2];
+      destImg.data[indexScaled + 3] = srcImg.data[index + 3];
+    }
+  }
+}
