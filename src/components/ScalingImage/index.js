@@ -52,7 +52,6 @@ class ScalingImage extends React.Component {
   componentDidMount() {
     // load global
     const loadCanvas = document.getElementById('load-canvas');
-    const dispCanvas = document.getElementById('disp-canvas');
     const { images, imageActions } = this.props;
     const { target, id } = this.props.match.params;
     const { pixels } = images[target];
@@ -72,14 +71,6 @@ class ScalingImage extends React.Component {
     let newHeight = Math.ceil(sourceImage.height * scale);
 
     const destImage = new ImageData(newWidth, newHeight);
-
-    // write source image
-    writeImageData(
-      loadCanvas,
-      sourceImage.data,
-      sourceImage.width,
-      sourceImage.height
-    );
 
     // run algorithm
     if (actions[id] && actions[id].type) {
@@ -136,7 +127,6 @@ class ScalingImage extends React.Component {
               <Loader />
             </Dimmer>
             <canvas id="load-canvas" style={style.canvas} />
-            <canvas id="disp-canvas" style={style.canvas} />
           </Grid.Row>
         </Grid>
       </div>

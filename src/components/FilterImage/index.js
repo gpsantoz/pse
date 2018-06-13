@@ -6,7 +6,12 @@ import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import { handleFilter } from '../shared/handleFilter';
 import NavigationButtons from '../shared/NavigationButtons';
-/* global Jimp */
+import { nearest, bicubic, bilinear } from '../shared/handleScaling';
+import {
+  NEAREST_NEIGHBOR_INT,
+  BICUBIC_INT,
+  BILIENEAR_NEIGHBOR_INT,
+} from '../../actions/types';
 
 const style = {
   container: {
@@ -44,22 +49,60 @@ class FilterImage extends React.Component {
     this.setState({ isLoading });
   };
 
+  handleScaling = (type, loadCanvas, pixels) => {
+    // setup source image
+    const sourceImage = new ImageData(pixels.width, pixels.height);
+
+    sourceImage.data.set(pixels.data);
+
+    loadCanvas.width = sourceImage.width;
+    loadCanvas.height = sourceImage.height;
+
+    // setup dest image
+    let scale = 5.0;
+    let newWidth = Math.ceil(sourceImage.width * scale);
+    let newHeight = Math.ceil(sourceImage.height * scale);
+
+    const destImage = new ImageData(newWidth, newHeight);
+
+    if (type) {
+      switch (type) {
+        case _.snakeCase(NEAREST_NEIGHBOR_INT):
+          nearest(sourceImage, destImage, scale);
+          break;
+        case _.snakeCase(BICUBIC_INT):
+          bicubic(sourceImage, destImage, scale);
+          break;
+        case _.snakeCase(BILIENEAR_NEIGHBOR_INT):
+          bilinear(sourceImage, destImage, scale);
+          break;
+        default:
+          return pixels;
+      }
+    }
+
+    return destImage;
+  };
+
   componentDidMount() {
     const canvas = document.getElementById('image-canvas');
     const { images, imageActions } = this.props;
     const { target, id } = this.props.match.params;
     const actions = imageActions[target];
+    const { blocks } = imageActions;
 
-    if (images[target] && !!canvas && !!actions) {
+    if (
+      images[target] &&
+      !!canvas &&
+      !!actions &&
+      actions[id].type == 'ver_imagem'
+    ) {
       const { pixels } = images[target];
-      const filterPixels = new ImageData(pixels.width, pixels.height);
-      filterPixels.data.set(pixels.data);
+      var filterPixels = pixels;
 
-      _.forEach(actions, action => {
-        if (!action || !action.type) {return;}
-        if (action.id <= id) {
-          handleFilter(action.type, filterPixels);
-        }
+      _.forEach(blocks, block => {
+        handleFilter(block, filterPixels);
+        filterPixels = this.handleScaling(block, canvas, filterPixels);
       });
 
       canvas.width = filterPixels.width;
@@ -71,36 +114,9 @@ class FilterImage extends React.Component {
         filterPixels.width,
         filterPixels.height
       );
-
-      canvas.toBlob(
-        async blob => {
-          const { images, imageActions } = this.props;
-          const { target, id } = this.props.match.params;
-          const actions = imageActions[target];
-
-          const url = URL.createObjectURL(blob);
-          const image = await Jimp.read(url);
-
-          if (actions.customState) {
-            _.map(actions.customState, filter => {
-              if (!filter || !filter.filter) {return;}
-              image[filter.filter](...filter.params);
-            });
-          }
-
-          writeImageData(
-            canvas,
-            image.bitmap.data,
-            image.bitmap.width,
-            image.bitmap.height
-          );
-          URL.revokeObjectURL(url);
-          this.handleLoading(false);
-        },
-        'image/png',
-        1
-      );
     }
+
+    this.handleLoading(false);
   }
 
   render() {

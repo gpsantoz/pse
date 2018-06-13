@@ -13,6 +13,10 @@ export default [
         color: 'blue',
         label: 'Abrir imagem',
       },
+      {
+        color: 'blue',
+        label: 'Ver imagem',
+      },
     ],
   },
   {

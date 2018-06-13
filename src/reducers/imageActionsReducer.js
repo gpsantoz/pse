@@ -18,6 +18,7 @@ const initialState = {
     [OPEN_IMAGE]: null,
     id: 0,
   },
+  blocks: [],
 };
 
 export default (state = initialState, action) => {
@@ -46,6 +47,14 @@ export default (state = initialState, action) => {
         return state;
       }
 
+      if (!state.blocks.includes(type)) {
+        return {
+          ...state,
+          [target]: { ...state[target], [id]: { type, id } },
+          blocks: [...state.blocks, type],
+        };
+      }
+
       return {
         ...state,
         [target]: { ...state[target], [id]: { type, id } },
@@ -62,6 +71,7 @@ export default (state = initialState, action) => {
         [target]: {
           ...filterBlocks,
           [OPEN_IMAGE]: state[target][OPEN_IMAGE],
+          blocks: [...filterBlocks.map(block => block.type)],
           id: state[target].id,
           customState:
             state[target][action.payload.id].type === 'custom_filter'
