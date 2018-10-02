@@ -11,6 +11,7 @@ import FlowArea from './FlowArea';
 import Histogram from './Histogram';
 import LeftMenu from './LeftMenu';
 import OpenImage from './OpenImage';
+import Header from './Header';
 
 const Content = () => {
   return (
@@ -33,6 +34,7 @@ class App extends Component {
       <DragDropContextProvider backend={HTML5Backend}>
         <BrowserRouter>
           <div className="container" style={{ marginTop: '20px' }}>
+            <Header />
             <div>
               <Route exact path="/" component={Content} />
               <Route exact path="/test" component={Test} />
