@@ -12,6 +12,7 @@ import Histogram from './Histogram';
 import LeftMenu from './LeftMenu';
 import OpenImage from './OpenImage';
 import Header from './Header';
+import MorphologicalFiltering from './MorphologicalFiltering';
 
 const Content = () => {
   return (
@@ -50,6 +51,7 @@ class App extends Component {
                 path="/scaling/:target/:id"
                 component={ScalingImage}
               />
+              <Route exact path="/morphological/:target/:id" component={MorphologicalFiltering} />
               <Route exact path="/histogram" component={Histogram} />
             </div>
           </div>

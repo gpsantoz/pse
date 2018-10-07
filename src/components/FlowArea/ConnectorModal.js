@@ -11,6 +11,7 @@ import {
   NEAREST_NEIGHBOR_INT,
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
+  MORPHOLOGICAL_FILTERING,
 } from '../../actions/types';
 
 class ConnectorModal extends React.Component {
@@ -43,6 +44,11 @@ class ConnectorModal extends React.Component {
     history.push(`/scaling/${target}/${id}`);
   }
 
+  handleMorphologicalFilter() {
+    const { history, target, id } = this.props;
+    history.push(`/morphological/${target}/${id}`);
+  }
+
   handleRemove() {
     this.props.removeProcessingBlock(this.props.id);
   }
@@ -68,6 +74,10 @@ class ConnectorModal extends React.Component {
     ) {
       return (
         <ButtonBlock content={type} onClick={this.handleScaling.bind(this)} />
+      );
+    } else if (type === _.snakeCase(MORPHOLOGICAL_FILTERING)) {
+      return (
+        <ButtonBlock content={type} onClick={this.handleMorphologicalFilter.bind(this)} />
       );
     }
 

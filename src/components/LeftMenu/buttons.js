@@ -3,6 +3,7 @@ import {
   NEAREST_NEIGHBOR_INT,
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
+  MORPHOLOGICAL_FILTERING,
 } from '../../actions/types';
 
 export default [
@@ -22,6 +23,10 @@ export default [
   {
     label: 'Processamento',
     buttons: [
+      {
+        color: 'pink',
+        label: MORPHOLOGICAL_FILTERING,
+      },
       {
         color: 'orange',
         label: NEAREST_NEIGHBOR_INT,

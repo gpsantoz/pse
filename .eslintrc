@@ -1,1 +1,4 @@
 extends: 'fbjs'
+"rules": {
+    "indent": 0
+}
