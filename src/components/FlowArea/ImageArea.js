@@ -27,7 +27,7 @@ function collect(connect, monitor) {
 	return {
 		connectDropTarget: connect.dropTarget(),
 		isOver: monitor.isOver(),
-		canDrop: monitor.canDrop()
+		canDrop: monitor.canDrop(),
 	};
 }
 
@@ -36,7 +36,7 @@ class ImageArea extends React.Component {
 		target: PropTypes.string.isRequired,
 		connectDropTarget: PropTypes.func.isRequired,
 		isOver: PropTypes.bool.isRequired,
-		canDrop: PropTypes.bool.isRequired
+		canDrop: PropTypes.bool.isRequired,
 	};
 
 	renderConnectors({ imageActions, target }) {
@@ -48,8 +48,8 @@ class ImageArea extends React.Component {
 		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
 			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target={target} />
 		) : (
-			''
-		);
+				''
+			);
 
 		const ret = [
 			openFileConnector,
