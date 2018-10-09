@@ -12,9 +12,6 @@ const style = {
   inputButton: {
     marginTop: '10px',
   },
-  input: {
-    maxWidth: '300px',
-  },
   navigationButton: {
     minWidth: '120px',
   },
@@ -70,6 +67,7 @@ class ImageUploader extends React.Component {
       canvas.height = image.height;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(image, 0, 0);
+      this.handleSave();
     }
     this.setState({
       image: {
@@ -77,6 +75,8 @@ class ImageUploader extends React.Component {
         visibility: 'inherit',
       },
     });
+
+  
   }
 
   renderInput() {
@@ -122,7 +122,6 @@ class ImageUploader extends React.Component {
 
   handleSave() {
     this.savePixels.apply(this);
-    //this.props.history.push('/');
   }
 
   renderNavigationButton(color, label, handleClick, disabled = false) {
@@ -143,11 +142,9 @@ class ImageUploader extends React.Component {
 
   renderHistograms() {
     this.savePixels.apply(this);
-    //this.props.history.push('/histogram');
   }
 
   render() {
-    console.log(this.props)
     return (
       <Grid>
         <Grid.Row>
@@ -164,15 +161,6 @@ class ImageUploader extends React.Component {
         <Grid.Row>{this.renderInput.apply(this)}</Grid.Row>
         <Grid.Row columns={1}>{this.renderCanvas.apply(this)}</Grid.Row>
         <Grid.Row columns={6}>
-          {/* {this.renderNavigationButton('red', 'Voltar', () =>
-            //this.props.history.push('/')
-          )} */}
-          {this.renderNavigationButton(
-            'green',
-            'Salvar',
-            this.handleSave.bind(this),
-            !this.state.image.hasImage
-          )}
           {this.renderNavigationButton(
             'green',
             'Histogramas',

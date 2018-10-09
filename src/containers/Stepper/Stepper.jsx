@@ -33,7 +33,7 @@ class Stepper extends React.Component {
         e.preventDefault()
         handleClick(2)
       }}>
-      <i class="list ol icon"></i>
+      <i class="image icon"></i>
         <div class="content">
           <div class="title">Resultado</div>
           <div class="description">Veja a imagem processada</div>

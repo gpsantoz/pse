@@ -1,15 +1,14 @@
 import _ from 'lodash';
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
-import LeftMenu from '../../components/LeftMenu'
-import FlowArea from '../../components/FlowArea'
-import { Stepper, ImageUploader, Result } from '../'
+
+import { Stepper, ImageUploader, Filters, Result } from '../'
 import { Logo } from '../../components'
 
 class Home extends React.Component {
 
   state = {
-    step: 1
+    step: 0
   }
 
   setStep(stepNumber){
@@ -28,16 +27,7 @@ class Home extends React.Component {
         )
       case 1:
         return (
-          <Grid stackable celled>
-            <Grid.Row centered>
-              <Grid.Column width={4}>
-                <LeftMenu />
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <FlowArea />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+            <Filters />
         )
       case 2:
         return (

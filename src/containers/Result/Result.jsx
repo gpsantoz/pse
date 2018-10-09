@@ -118,7 +118,7 @@ class Result extends React.Component {
     return (
       <div style={style.container}>
         <Grid>
-          <Grid.Row>
+          <Grid.Row centered>
             <Message style={style.container}>
               <Message.Header>Filtros</Message.Header>
               <p>

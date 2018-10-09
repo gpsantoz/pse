@@ -30,6 +30,7 @@ class FilterImage extends React.Component {
   state = {
     isLoading: true,
   };
+  
   renderNavigationButton(color, label, handleClick) {
     return (
       <Grid.Column>
@@ -120,6 +121,7 @@ class FilterImage extends React.Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div style={style.container}>
         <Grid>
@@ -137,7 +139,7 @@ class FilterImage extends React.Component {
             </Message>
           </Grid.Row>
           <NavigationButtons
-            target='AREA_1'
+            target={this.props.match.params.target}
             id={this.props.match.params.id}
           />
           <Grid.Row>
