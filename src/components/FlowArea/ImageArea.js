@@ -46,7 +46,7 @@ class ImageArea extends React.Component {
 		});
 
 		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
-			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target={target} />
+			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target="fluxo_1" />
 		) : (
 				''
 			);
@@ -57,7 +57,7 @@ class ImageArea extends React.Component {
 				<ConnectorModal
 					key={action.id}
 					{...action}
-					target={target}
+					target="fluxo_1"
 					actions={actions}
 				/>
 			))

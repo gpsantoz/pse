@@ -18,7 +18,6 @@ class ConnectorModal extends React.Component {
   static propTypes = {
     id: PropTypes.number,
     type: PropTypes.string.isRequired,
-    target: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
   };
 

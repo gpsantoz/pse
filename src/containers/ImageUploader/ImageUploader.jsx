@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import './style.css'
+import './style.css';
 
 const style = {
   canvasColumn: {
-    height: '300px',
   },
   inputButton: {
     marginTop: '10px',
@@ -16,7 +15,7 @@ const style = {
     minWidth: '120px',
   },
   container: {
-    width: '100%',
+    
   },
 };
 
@@ -30,10 +29,8 @@ class ImageUploader extends React.Component {
 
   componentDidMount() {
     const canvas = document.getElementById('image-canvas');
-    const {
-      images
-    } = this.props;
-    const target = 'fluxo_1'
+    const { images } = this.props;
+    const target = 'fluxo_1';
     if (images[target] && !!canvas) {
       const { pixels } = images[target];
       canvas.width = pixels.width;
@@ -75,21 +72,28 @@ class ImageUploader extends React.Component {
         visibility: 'inherit',
       },
     });
-
-  
   }
 
   renderInput() {
     return (
       <Grid.Column>
-        <Button basic color="blue" style={style.inputButton}>
-          <input
-            id="image-input"
-            type="file"
-            style={style.input}
-            onChange={this.handleFileUpload.bind(this)}
-          />
-        </Button>
+        <div class=""
+          class={`ui placeholder ${this.props.images["fluxo_1"] ? 'hidden' : 'image-not-found'}`}>
+          <div class="ui icon header image-not-found">
+            <i class="image file outline icon" />
+            Nenhuma imagem encontrada.
+          </div>
+        </div>
+        <div className="ui primary button">
+            <input
+              id="image-input"
+              type="file"
+              className="file-input"
+              style={style.input}
+              onChange={this.handleFileUpload.bind(this)}
+            />
+            <label htmlFor="image-input">Enviar Imagem</label>
+          </div>
       </Grid.Column>
     );
   }
@@ -147,8 +151,8 @@ class ImageUploader extends React.Component {
   render() {
     return (
       <Grid>
-        <Grid.Row>
-          <Message  className='upload-tips' style={style.container}>
+        <Grid.Row centered>
+          <Message style={style.container}>
             <Message.Header>Abrir imagem</Message.Header>
             <p>
               Clique em "Escolher arquivo", selecione uma imagem do seu
@@ -158,15 +162,8 @@ class ImageUploader extends React.Component {
             </p>
           </Message>
         </Grid.Row>
-        <Grid.Row>{this.renderInput.apply(this)}</Grid.Row>
         <Grid.Row columns={1}>{this.renderCanvas.apply(this)}</Grid.Row>
-        <Grid.Row columns={6}>
-          {this.renderNavigationButton(
-            'green',
-            'Histogramas',
-            this.renderHistograms.bind(this)
-          )}
-        </Grid.Row>
+        <Grid.Row>{this.renderInput.apply(this)}</Grid.Row>
       </Grid>
     );
   }

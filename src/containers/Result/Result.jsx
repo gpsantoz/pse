@@ -15,8 +15,7 @@ import {
 
 const style = {
   container: {
-    marginTop: '20px',
-    width: '100%',
+    marginTop: '20px'
   },
   canvas: {
     maxWidth: '100%',
@@ -131,16 +130,17 @@ class Result extends React.Component {
               </p>
             </Message>
           </Grid.Row>
-          <NavigationButtons
-            target='AREA_1'
-            id={this.props.match.params.id}
-          />
-          <Grid.Row>
+          
+          <Grid.Row centered>
             <Dimmer active={this.state.isLoading}>
               <Loader />
             </Dimmer>
             <canvas id="image-canvas" style={style.canvas} />
           </Grid.Row>
+          {/* <NavigationButtons
+            target='AREA_1'
+            id={this.props.match.params.id}
+          /> */}
         </Grid>
       </div>
     );
