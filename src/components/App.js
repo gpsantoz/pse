@@ -12,21 +12,7 @@ import Histogram from './Histogram';
 import LeftMenu from './LeftMenu';
 import OpenImage from './OpenImage';
 import Header from './Header';
-
-const Content = () => {
-  return (
-    <Grid stackable celled>
-      <Grid.Row>
-        <Grid.Column width={4}>
-          <LeftMenu />
-        </Grid.Column>
-        <Grid.Column width={12}>
-          <FlowArea />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  );
-};
+import { Home } from '../containers'
 
 class App extends Component {
   render() {
@@ -36,7 +22,7 @@ class App extends Component {
           <div className="container" style={{ marginTop: '20px' }}>
             <Header />
             <div>
-              <Route exact path="/" component={Content} />
+              <Route exact path="/" component={Home} />
               <Route exact path="/test" component={Test} />
               <Route
                 exact

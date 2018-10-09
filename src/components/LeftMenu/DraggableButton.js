@@ -20,6 +20,8 @@ const buttonSource = {
     if (dropResult) {
       const type = _.snakeCase(item.name);
       const target = _.snakeCase(dropResult.name);
+
+      console.log(type + target)
       switch (type) {
         case 'abrir_imagem':
           props.addOpenImageBlock(type, target);
@@ -51,6 +53,7 @@ class DraggableButton extends Component {
   };
 
   render() {
+    console.log(this.props)
     const { isDragging, connectDragSource } = this.props;
     const { color, label } = this.props;
     const opacity = isDragging ? 0.4 : 1;

@@ -6,15 +6,10 @@ import {
   SET_CUSTOM_FILTER_STATE,
   OPEN_IMAGE,
   AREA_1,
-  AREA_2,
 } from '../actions/types';
 
 const initialState = {
   [AREA_1]: {
-    [OPEN_IMAGE]: null,
-    id: 0,
-  },
-  [AREA_2]: {
     [OPEN_IMAGE]: null,
     id: 0,
   },
@@ -25,20 +20,10 @@ export default (state = initialState, action) => {
   let target, type, id;
 
   switch (action.type) {
-    case ADD_OPEN_IMAGE_BLOCK:
-      target = action.payload.target;
-
-      return {
-        ...state,
-        [target]: { ...state[target], [OPEN_IMAGE]: {} },
-      };
     case ADD_PROCESSING_BLOCK:
       target = action.payload.target;
       type = action.payload.type;
       id = state[target].id++;
-      if (!state[target][OPEN_IMAGE]) {
-        return state;
-      }
 
       if (
         type === 'custom_filter' &&

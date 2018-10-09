@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import { handleFilter } from '../shared/handleFilter';
-import NavigationButtons from '../shared/NavigationButtons';
-import { nearest, bicubic, bilinear } from '../shared/handleScaling';
+import { handleFilter } from '../../components/shared/handleFilter';
+import NavigationButtons from '../../components/shared/NavigationButtons';
+import { nearest, bicubic, bilinear } from '../../components/shared/handleScaling';
 import {
   NEAREST_NEIGHBOR_INT,
   BICUBIC_INT,
@@ -26,7 +26,7 @@ const style = {
   },
 };
 
-class FilterImage extends React.Component {
+class Result extends React.Component {
   state = {
     isLoading: true,
   };
@@ -87,16 +87,12 @@ class FilterImage extends React.Component {
   componentDidMount() {
     const canvas = document.getElementById('image-canvas');
     const { images, imageActions } = this.props;
-    const { target, id } = this.props.match.params;
+    const target = 'fluxo_1';
+    const { id } = this.props.match.params;
     const actions = imageActions[target];
     const { blocks } = imageActions;
 
-    if (
-      images[target] &&
-      !!canvas &&
-      !!actions &&
-      actions[id].type == 'ver_imagem'
-    ) {
+    //ver imagem
       const { pixels } = images[target];
       var filterPixels = pixels;
 
@@ -114,9 +110,8 @@ class FilterImage extends React.Component {
         filterPixels.width,
         filterPixels.height
       );
-    }
 
-    this.handleLoading(false);
+      this.handleLoading(false);
   }
 
   render() {
@@ -156,4 +151,4 @@ function mapStateToProps({ images, imageActions }) {
   return { images, imageActions };
 }
 
-export default connect(mapStateToProps)(withRouter(FilterImage));
+export default connect(mapStateToProps)(withRouter(Result));

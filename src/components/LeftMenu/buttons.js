@@ -7,19 +7,6 @@ import {
 
 export default [
   {
-    label: 'Interface',
-    buttons: [
-      {
-        color: 'blue',
-        label: 'Abrir imagem',
-      },
-      {
-        color: 'blue',
-        label: 'Ver imagem',
-      },
-    ],
-  },
-  {
     label: 'Processamento',
     buttons: [
       {
