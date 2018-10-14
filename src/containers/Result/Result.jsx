@@ -13,6 +13,8 @@ import {
   BILIENEAR_NEIGHBOR_INT,
 } from '../../actions/types';
 
+import { Histogram } from '../'
+
 const style = {
   container: {
     marginTop: '20px'
@@ -117,17 +119,10 @@ class Result extends React.Component {
     return (
       <div style={style.container}>
         <Grid>
+          
           <Grid.Row centered>
             <Message style={style.container}>
-              <Message.Header>Filtros</Message.Header>
-              <p>
-                Essa imagem possui todos os filtros, anteriores ao clicado,
-                aplicados. <br />
-                Caso deseje, você pode voltar, excluir o filtro ou realizar o
-                download da imagem. <br />
-                O botão "Histograma" irá exibir os Histogramas R, G e B da
-                imagem filtrada e da imagem original.
-              </p>
+              <Message.Header>Imagem Processada</Message.Header>
             </Message>
           </Grid.Row>
           
@@ -137,6 +132,18 @@ class Result extends React.Component {
             </Dimmer>
             <canvas id="image-canvas" style={style.canvas} />
           </Grid.Row>
+
+           <Grid.Row centered>
+            <Message style={style.container}>
+              <Message.Header>Histograma da Imagem Processada</Message.Header>
+            </Message>
+          </Grid.Row>
+
+            <Grid.Row centered>
+            <Histogram />
+          </Grid.Row>
+
+
           {/* <NavigationButtons
             target='AREA_1'
             id={this.props.match.params.id}

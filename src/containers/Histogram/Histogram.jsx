@@ -154,7 +154,7 @@ class Histogram extends React.Component {
 	}
 
 	render() {
-		if (!this.props.images[AREA_1] && !this.props.images[AREA_1])
+		if (!this.props.images[AREA_1])
 			return (
 				<div>
 					<Message floating style={style.container}>
@@ -171,8 +171,7 @@ class Histogram extends React.Component {
 			<div style={style.container}>
 				{this.renderComparisonData()}
 				{this.renderFilterHistogram.apply(this)}
-				{this.renderHistograms(AREA_1, 'Histograma Imagem 1')}
-				{this.renderHistograms(AREA_2, 'Histograma Imagem 2')}
+				{this.renderHistograms(AREA_1, 'Histograma da Imagem')}
 				{this.renderNavigation()}
 			</div>
 		);

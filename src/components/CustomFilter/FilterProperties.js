@@ -44,19 +44,6 @@ class FilterProperties extends React.Component {
 		});
 	}
 
-	loadImageToCanvasTest = async () => {
-		const canvas = document.getElementById('image-canvas');
-		canvas.width = 1280;
-		canvas.height = 960;
-		const ctx = canvas.getContext('2d');
-		let img = await this.loadImage('http://localhost:3000/eu.jpg');
-		ctx.drawImage(img, 0, 0);
-		const pixels = canvas
-			.getContext('2d')
-			.getImageData(0, 0, canvas.width, canvas.height);
-		this.props.addPixelData(pixels, this.props.match.params.target);
-	};
-
 	loadImageToCanvas = () => {
 		const canvas = document.getElementById('image-canvas');
 		const { images, imageActions } = this.props;

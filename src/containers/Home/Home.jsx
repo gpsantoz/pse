@@ -42,8 +42,6 @@ class Home extends React.Component {
   }
 
   render(){
-    console.log(this.props)
-    console.log("home")
     return(
       <Grid stackable celled>
       <Grid.Row>

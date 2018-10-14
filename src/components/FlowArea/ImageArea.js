@@ -67,6 +67,8 @@ class ImageArea extends React.Component {
 	}
 
 	render() {
+		console.log("Image actions")
+		console.log(this.props.imageActions)
 		const { canDrop, isOver, connectDropTarget } = this.props;
 		const isActive = canDrop && isOver;
 

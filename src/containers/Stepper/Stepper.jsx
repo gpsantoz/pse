@@ -20,7 +20,7 @@ class Stepper extends React.Component {
   }
 
   componentDidMount(){
-    this.setState({images: this.props.images})
+    //this.setState({images: this.props.images})
   }
 
   render(){

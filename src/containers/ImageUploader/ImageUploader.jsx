@@ -77,9 +77,9 @@ class ImageUploader extends React.Component {
   renderInput() {
     return (
       <Grid.Column>
-        <div class={`ui placeholder ${this.props.images["fluxo_1"] ? 'hidden' : 'image-not-found'}`}>
-          <div class="ui icon header image-not-found">
-            <i class="image file outline icon" />
+        <div className={`ui placeholder ${this.props.images["fluxo_1"] ? 'hidden' : 'image-not-found'}`}>
+          <div className="ui icon header image-not-found">
+            <i className="image file outline icon" />
             Nenhuma imagem encontrada.
           </div>
         </div>
