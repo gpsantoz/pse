@@ -14,6 +14,7 @@ import {
 } from '../../actions/types';
 
 import { Histogram } from '../'
+import './style.css'
 
 const style = {
   container: {
@@ -119,13 +120,13 @@ class Result extends React.Component {
     return (
       <div style={style.container}>
         <Grid>
-          
+
           <Grid.Row centered>
             <Message style={style.container}>
               <Message.Header>Imagem Processada</Message.Header>
             </Message>
           </Grid.Row>
-          
+
           <Grid.Row centered>
             <Dimmer active={this.state.isLoading}>
               <Loader />
@@ -139,9 +140,9 @@ class Result extends React.Component {
             </Message>
           </Grid.Row>
 
-            <Grid.Row centered>
+            <Grid.Row centered className="histogram-container">
             <Histogram />
-          </Grid.Row>
+            </Grid.Row>
 
 
           {/* <NavigationButtons

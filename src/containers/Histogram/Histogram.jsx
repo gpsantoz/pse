@@ -39,8 +39,7 @@ class Histogram extends React.Component {
 	renderHistogram(title, pixels) {
 		const histograms = coreDSP.getHistograms(pixels.data);
 		return (
-			<Grid divided centered style={{ marginTop: '30px' }}>
-				<h1>{title}</h1>
+			<Grid divided centered>
 				<Grid.Row columns={3}>
 					<Grid.Column>
 						<Label as="a" color="red" ribbon>
