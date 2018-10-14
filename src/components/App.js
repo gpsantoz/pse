@@ -5,7 +5,6 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import Test from './Test';
 import CustomFilter from './CustomFilter';
 import FilterImage from './FilterImage';
-import ScalingImage from './ScalingImage';
 import { Home } from '../containers'
 
 class App extends Component {
@@ -24,11 +23,6 @@ class App extends Component {
                 component={CustomFilter}
               />
               <Route exact path="/filter/:target/:id" component={FilterImage} />
-              <Route
-                exact
-                path="/scaling/:target/:id"
-                component={ScalingImage}
-              />
               {/* <Route exact path="/morphological/:target/:id" component={MorphologicalFiltering} /> */}
               {/* <Route exact path="/histogram" component={Histogram} /> */}
             </div>

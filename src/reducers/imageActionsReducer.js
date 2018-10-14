@@ -67,8 +67,6 @@ export default (state = initialState, action) => {
       };
 
     case REMOVE_ALL_PROCESSING_BLOCKS:
-      console.log("remover blocos")
-      console.log(state)
       return {
         ...state, [AREA_1]: {
           [OPEN_IMAGE]: null,

@@ -153,25 +153,12 @@ class Histogram extends React.Component {
 	}
 
 	render() {
-		if (!this.props.images[AREA_1])
-			return (
-				<div>
-					<Message floating style={style.container}>
-						<Message.Header>Nenhuma imagem carregada!!!</Message.Header>
-						<p>
-							Favor realizar o upload de pelo menos uma imagem no fluxo de
-							blocos.
-						</p>
-					</Message>
-					{this.renderNavigation()}
-				</div>
-			);
 		return (
 			<div style={style.container}>
 				{this.renderComparisonData()}
 				{this.renderFilterHistogram.apply(this)}
 				{this.renderHistograms(AREA_1, 'Histograma da Imagem')}
-				{this.renderNavigation()}
+				{/* {this.renderNavigation()} */}
 			</div>
 		);
 	}

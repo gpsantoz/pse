@@ -10,7 +10,7 @@ class Stepper extends React.Component {
   handleStep(element, images){
     switch(element)
     {
-      case 0: 
+      case 0:
         return images["fluxo_1"] ? 'completed' : ''
       case 1:
         return images["fluxo_1"] ? '' : 'disabled'
@@ -24,8 +24,6 @@ class Stepper extends React.Component {
   }
 
   render(){
-    console.log("new props")
-    console.log(this.props)
     const images = this.props.images
     const handleClick = this.props.handleClick
     return(

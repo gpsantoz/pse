@@ -1,5 +1,4 @@
 import {
-  ADD_OPEN_IMAGE_BLOCK,
   ADD_WRITE_FILE_BLOCK,
   ADD_PROCESSING_BLOCK,
   REMOVE_PROCESSING_BLOCK,
@@ -8,9 +7,6 @@ import {
   ADD_PIXEL_DATA,
 } from './types';
 
-export const addOpenImageBlock = (type, target) => {
-  return { type: ADD_OPEN_IMAGE_BLOCK, payload: { type, target } };
-};
 export const addWriteFileBlock = (type, target) => {
   return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };
 };
@@ -30,6 +26,7 @@ export const removeAllProcessingBlocks = (target) => {
   return { type: REMOVE_ALL_PROCESSING_BLOCKS, payload: { target } };
 };
 
-export const addPixelData = (pixels, target) => {
-  return { type: ADD_PIXEL_DATA, payload: { pixels, target } };
+export const addPixelData = (pixels, originalPixels, target) => {
+  console.log("set image data")
+  return { type: ADD_PIXEL_DATA, payload: { pixels, originalPixels, target } };
 };

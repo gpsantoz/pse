@@ -34,7 +34,7 @@ class Home extends React.Component {
         return (
           <Grid>
             <Grid.Row centered>
-              <Result />
+              <Result step={this.state.step}/>
             </Grid.Row>
           </Grid>
         )

@@ -11,8 +11,6 @@ import { AREA_1 } from '../../actions/types';
 class Filters extends React.Component {
 
   render(){
-    console.log("Entrando na tela de filtros")
-    console.log(this.props)
     return(
       <Grid stackable celled>
       <Grid.Row centered>
