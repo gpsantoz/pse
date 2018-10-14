@@ -15,7 +15,7 @@ const style = {
     minWidth: '120px',
   },
   container: {
-    
+
   },
 };
 
@@ -120,7 +120,8 @@ class ImageUploader extends React.Component {
     const pixels = canvas
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
-    this.props.addPixelData(pixels, 'fluxo_1');
+    const originalPixels = pixels;
+    this.props.addPixelData(pixels, originalPixels, 'fluxo_1');
   }
 
   handleSave() {

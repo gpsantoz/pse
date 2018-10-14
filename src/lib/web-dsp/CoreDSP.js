@@ -26,6 +26,7 @@ export default class CoreDSP {
     this.underground = underground;
     this.rooster = rooster;
     this.mist = mist;
+    this.histogramEqualization = histogramEqualization;
     this.tingle = tingle;
     this.kaleidoscope = tingle;
     this.bacteria = bacteria;
@@ -66,6 +67,56 @@ function getHistograms(data) {
   }
 
   return histogram;
+}
+
+function histogramEqualization (pixels, width, height) {
+  var newImageData = new ImageData(pixels, width, height)
+
+  var countR = new Array(),
+      countG = new Array(),
+      countB = new Array();
+  for (var i = 0; i < 256; i++) {
+      countR[i] = 0;
+      countG[i] = 0;
+      countB[i] = 0;
+  }
+  for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+          var a = ((y*width)+x)*4;
+          countR[pixels[a]]++;
+          countG[pixels[a+1]]++;
+          countB[pixels[a+2]]++;
+      }
+  }
+  var minR = 256,
+      minG = 256,
+      minB = 256;
+  for (var i = 1; i < 256; i++) {
+      countR[i] += countR[i-1];
+      countG[i] += countG[i-1];
+      countB[i] += countB[i-1];
+
+      minR = ((countR[i] != 0) && (countR[i] < minR)) ? countR[i] : minR;
+      minG = ((countG[i] != 0) && (countG[i] < minG)) ? countG[i] : minG;
+      minB = ((countB[i] != 0) && (countB[i] < minB)) ? countB[i] : minB;
+  }
+  for (var i = 0; i < 256; i++) {
+      countR[i] = ((countR[i]-minR)/((width*height)-minR))*255;
+      countG[i] = ((countG[i]-minG)/((width*height)-minG))*255;
+      countB[i] = ((countB[i]-minB)/((width*height)-minB))*255;
+  }
+
+  for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+          var a = ((y*width)+x)*4;
+          newImageData.data[a] = countR[pixels[a]];
+          newImageData.data[a+1] = countG[pixels[a+1]];
+          newImageData.data[a+2] = countB[pixels[a+2]];
+          newImageData.data[a+3] = pixels[a+3];
+      }
+  }
+
+  return newImageData;
 }
 
 function grayscale(data) {
