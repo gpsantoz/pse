@@ -2,9 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {  Message } from 'semantic-ui-react';
+import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import elem1 from '../../assets/images/elemento_estruturante_1.png';
 import elem2 from '../../assets/images/elemento_estruturante_2.png';
 import './style.css';
+
+const MORPH_3x3_CROSS_ELEMENT = ([0, 1, 0,
+								1, 1, 1,
+								0, 1, 0]);
+
+const MORPH_3x3_FULL_ELEMENT = ([1, 1, 1,
+								1, 1, 1,
+								1, 1, 1]);		
 
 
 class MorphologicalFiltering extends React.Component {
@@ -12,36 +21,126 @@ class MorphologicalFiltering extends React.Component {
 		image :null,
 		checkbox1: true,
 		checkbox2: false,
+		checkbox3: true,
+		checkbox4: false,
 		size: 3,
 	};
 
-	componentDidMount() {
-		// const canvas = document.getElementById('image-morp-canvas')
-		// const { id, target } = this.props.match.params;
-		// const { pixels } = images[target];
-		// const filterPixels = new ImageData(pixels.width, pixels.height);
-		// filterPixels.data.set(pixels.data);
-		// writeImageData(
-		// 	canvas,
-		// 	filterPixels.data,
-		// 	filterPixels.width,
-		// 	filterPixels.height
-		// );
-	}
 
 
 	applyFilter = () => {
+		let result;
 		const { width, height, data } = this.props.images.fluxo_1.pixels;
-		// let morph = new Morph(height, width, data);
-		// morph.erodeWithElement();
-		// console.log(morph);
+		if (this.state.checkbox1 && this.state.checkbox3) {
+			result = this.erosao(MORPH_3x3_FULL_ELEMENT, 3, width, height, data);
+		} else if (this.state.checkbox2 && this.state.checkbox3) {
+			result = this.erosao(MORPH_3x3_CROSS_ELEMENT, 3, width, height, data);
+		} else if (this.state.checkbox1 && this.state.checkbox4) {
+			result = this.dilatacao(MORPH_3x3_FULL_ELEMENT, 3, width, height, data);
+		} else if (this.state.checkbox2 && this.state.checkbox4) {
+			result = this.dilatacao(MORPH_3x3_CROSS_ELEMENT, 3, width, height, data);
+		}
+		console.log(result);
+		result = Uint8ClampedArray.from(result);
+		console.log(result);
+		const canvas = document.getElementById('image-morp-canvas');
+		const filterPixels = new ImageData(width, height);
+		filterPixels.data.set(result);
+		writeImageData(
+			canvas,
+			filterPixels.data,
+			filterPixels.width,
+			filterPixels.height
+		);
+	}
+
+	erosao = (el, sizeEl, width, height, data) => {
+		const result = [];
+		let i = height * width;
+		while (i > 0) {
+			result.push(0);
+			i--;
+		}
+		for (let x = 1; x < width - 1; x++) {
+			for (let y = 1; y < height - 1; y++) {
+				const i = y * width + x;
+				const mat = this.constructMatrixForIndex(i, el, sizeEl, height, data);
+				result[i] = this.erodeOp(mat, data);
+			}
+		}
+		return result;
+	}
+	
+	dilatacao = (el, sizeEl, width, height, data) => {
+		let result = Array.apply(
+			null,
+			new Array(height * width)).map(Number.prototype.valueOf,
+			0
+		);
+		for (let x = 1; x < width - 1; x++) {
+			for (let y = 1; y < height - 1; y++) {
+				const ind = x * height + y;
+				const mat = this.constructMatrixForIndex(ind, el, sizeEl, height, data);
+				result[ind] = this.dilateOp(mat, data);
+			}
+		}
+		return result;
+	}
+
+	constructMatrixForIndex = function(ind, el, d, height, data) {
+		if (!d) {
+			d = 3;
+		}
+		let mat = el;
+		const halfDim = Math.floor(d / 2);
+		const upperLeft = ((ind - (height * halfDim))) - 1;
+	
+		let count = 0;
+		for (let x = 0; x < d * d; x++) {
+			const j = upperLeft + (x % d) + height * Math.floor(x / d);
+			if (j < data.length && j >= 0) {
+				mat[count] = data[j];
+			}
+			count++;
+		}
+		return mat;
+	}
+
+	erodeOp = (el, data) => {
+		for (let i = 0; i < 9; i++) {
+			if (el[i] == -1) {
+				continue;
+			}
+			if (el[i] != data[i] && el[i] != 1) {
+				return 0;
+			}
+		}
+		return 1;
+	}
+
+	dilateOp = (el, data) => {
+		for (let j = 0; j < 9; j++) {
+			if (el[j] == -1) {
+				continue;
+			}
+			if (el[j] == 1 && data[j] == 1) {
+				return 1;
+			}
+		}
+		return 0;
 	}
 
 	toogleCheckbox = (index) => {
 		if (index === 1) {
 			this.setState({ checkbox1: true,  checkbox2: false});
-		} else {
+		} else if (index === 2) {
 			this.setState({ checkbox1: false,  checkbox2: true});
+		}
+
+		if (index === 3) {
+			this.setState({ checkbox3: true,  checkbox4: false});
+		} else if (index === 4) {
+			this.setState({ checkbox3: false,  checkbox4: true});
 		}
 	}
 
@@ -83,46 +182,71 @@ class MorphologicalFiltering extends React.Component {
 					<div class="ui form">
 						<div class="grouped fields">
 							<label for="fruit">Selecione o elemento estruturante:</label>
-						<div class="field">
-							<div class="ui radio checkbox">
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input
+										type="radio"
+										name="elem1"
+										checked={this.state.checkbox1}
+										tabindex="0"
+										onClick={() => this.toogleCheckbox(1)}
+									/>
+									<label>Imagem 1</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input
+										type="radio"
+										name="elem2"
+										checked={this.state.checkbox2}
+										tabindex="0"
+										onClick={() => this.toogleCheckbox(2)}/>
+									<label>Imagem 2</label>
+								</div>
+							</div>
+							<div class="field">
 								<input
-									type="radio"
-									name="elem1"
-									checked={this.state.checkbox1}
-									tabindex="0"
-									onClick={() => this.toogleCheckbox(1)}
+									type="number"
+									placeholder={tamanho}
+									onChange={this.handleSize}
+									value={this.state.size}
+									disabled
 								/>
-								<label>Imagem 1</label>
 							</div>
-						</div>
-						<div class="field">
-							<div class="ui radio checkbox">
-								<input
-									type="radio"
-									name="elem2"
-									checked={this.state.checkbox2}
-									tabindex="0"
-									onClick={() => this.toogleCheckbox(2)}/>
-								<label>Imagem 2</label>
+							<label for="fruit">Selecione a operação:</label>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input
+										type="radio"
+										name="elem3"
+										checked={this.state.checkbox3}
+										tabindex="0"
+										onClick={() => this.toogleCheckbox(3)}
+									/>
+									<label>Erosão</label>
+								</div>
 							</div>
-						</div>
-						<div class="field">
-							<input
-								type="number"
-								placeholder={tamanho}
-								onChange={this.handleSize}
-								value={this.state.size}
-							/>
-						</div>
-						<div class="field">
-							<button
-								onClick={() => this.applyFilter()}
-							>
-							OK
-							</button>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input
+										type="radio"
+										name="elem4"
+										checked={this.state.checkbox4}
+										tabindex="0"
+										onClick={() => this.toogleCheckbox(4)}/>
+									<label>Dilatação</label>
+								</div>
+							</div>
+							<div class="field">
+								<button
+									onClick={() => this.applyFilter()}
+								>
+								OK
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
 				</div>
 			</div>
 		);
@@ -138,6 +262,7 @@ class MorphologicalFiltering extends React.Component {
 						Filtros Morfológicos
 					</Message.Header>
 					{this.renderOpcoes()}
+					<canvas id="image-morp-canvas" style={{ resizeMode: 'contain', maxWidth: 500, maxHeight: 500 }} />
 				</Message>
 			</div>
 		);
