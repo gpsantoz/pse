@@ -42,7 +42,6 @@ class MorphologicalFiltering extends React.Component {
 		}
 		console.log(result);
 		result = Uint8ClampedArray.from(result);
-		console.log(result);
 		const canvas = document.getElementById('image-morp-canvas');
 		const filterPixels = new ImageData(width, height);
 		filterPixels.data.set(result);
@@ -72,16 +71,13 @@ class MorphologicalFiltering extends React.Component {
 	}
 	
 	dilatacao = (el, sizeEl, width, height, data) => {
-		let result = Array.apply(
-			null,
-			new Array(height * width)).map(Number.prototype.valueOf,
-			0
-		);
+		const result = new Array(width * height).fill(0);
 		for (let x = 1; x < width - 1; x++) {
 			for (let y = 1; y < height - 1; y++) {
 				const ind = x * height + y;
 				const mat = this.constructMatrixForIndex(ind, el, sizeEl, height, data);
-				result[ind] = this.dilateOp(mat, data);
+				//result[ind] = this.dilateOp(el, data);
+				result[ind] = this.dilateOp(el, mat);
 			}
 		}
 		return result;
