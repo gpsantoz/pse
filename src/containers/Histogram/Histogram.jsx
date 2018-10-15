@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Button, Grid, Label, Message } from 'semantic-ui-react';
 import { BarChart, Bar, Tooltip, CartesianGrid, XAxis, YAxis } from 'recharts';
 import psnr from 'psnr';
@@ -64,14 +62,9 @@ class Histogram extends React.Component {
 		);
 	}
 
-	renderHistograms(target, title) {
-		if (
-			!this.props.images ||
-			!this.props.images[target] ||
-			(this.props.location.state && this.props.location.state.target !== target)
-		)
+	renderHistograms(pixels, title) {
+		if (!pixels)
 			return;
-		const { pixels } = this.props.images[target];
 		return this.renderHistogram(title, pixels);
 	}
 
@@ -153,19 +146,16 @@ class Histogram extends React.Component {
 	}
 
 	render() {
+    const { pixels } = this.props
 		return (
 			<div style={style.container}>
-				{this.renderComparisonData()}
-				{this.renderFilterHistogram.apply(this)}
-				{this.renderHistograms(AREA_1, 'Histograma da Imagem')}
+				{/* {this.renderComparisonData()} */}
+				{/* {this.renderFilterHistogram.apply(this)} */}
+				{this.renderHistograms(pixels, 'Histograma da Imagem')}
 				{/* {this.renderNavigation()} */}
 			</div>
 		);
 	}
 }
 
-function mapStateToProps({ images }) {
-	return { images };
-}
-
-export default connect(mapStateToProps, null)(withRouter(Histogram));
+export default Histogram;

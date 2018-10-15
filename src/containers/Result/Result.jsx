@@ -118,6 +118,9 @@ class Result extends React.Component {
   }
 
   render() {
+    const { images } = this.props;
+    const target = 'fluxo_1';
+    const { pixels } = images[target];
     return (
       <div style={style.container}>
         <Grid>
@@ -139,7 +142,7 @@ class Result extends React.Component {
           </Grid.Row>
 
             <Grid.Row centered className="histogram-container">
-            <Histogram />
+            <Histogram pixels={pixels}/>
             </Grid.Row>
 
           {/* <NavigationButtons
