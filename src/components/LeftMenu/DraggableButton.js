@@ -5,6 +5,12 @@ import { DragSource } from 'react-dnd';
 import { Button } from 'semantic-ui-react';
 import * as actions from '../../actions';
 import { connect } from 'react-redux';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import {
+	ERRO_FORMATO_ARQUIVO_BMP,
+} from '../../Constants';
 
 const buttonSource = {
   beginDrag(props) {
@@ -20,8 +26,6 @@ const buttonSource = {
     if (dropResult) {
       const type = _.snakeCase(item.name);
       const target = _.snakeCase(dropResult.name);
-
-      console.log(type + target)
       switch (type) {
         case 'abrir_imagem':
           props.addOpenImageBlock(type, target);
@@ -51,23 +55,72 @@ class DraggableButton extends Component {
     label: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
   };
+  state = {
+    openModal: false,
+  }
+
+  componentWillReceiveProps() {
+    if (this.props.label === 'Filtro Morfólogico' && this.props.isDragging) {
+      const pertence = this.binaryImage();
+        if (!pertence) {
+          this.setState({
+            openModal: true,
+          });
+        }
+    }
+  }
+
+
+	binaryImage = () => {
+    const vet = this.props.images.fluxo_1.pixels;
+    for (let i = 0; i < vet.height * vet.width; i++) {
+      if (vet.data[i] !== 0 && vet.data[i] !== 255) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  handleClose = () => {
+    // const obj = Object.values(this.props.imageActions.fluxo_1);
+    // const id = obj[obj.length - 1] - 1;
+    // console.log(id);
+    // this.props.removeProcessingBlock('filtro_morfologico', id);
+    this.setState({ openModal: false });
+  };
 
   render() {
-    console.log(this.props)
     const { isDragging, connectDragSource } = this.props;
     const { color, label } = this.props;
     const opacity = isDragging ? 0.4 : 1;
-
     return connectDragSource(
       <div>
         <Button basic color={color} style={{ width: 200, opacity }}>
           {label}
         </Button>
+        {
+          this.state.openModal ? 
+          <Dialog
+            open
+            onClose={this.handleClose}
+          >
+            <DialogContent>
+              <DialogContentText>
+                {ERRO_FORMATO_ARQUIVO_BMP}
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>     : null
+        }
+
       </div>
     );
   }
 }
 
-export default connect(null, actions)(
+function mapStateToProps({ images, imageActions }) {
+  return { images, imageActions };
+}
+
+export default connect(mapStateToProps, actions)(
   DragSource('draggableButton', buttonSource, collect)(DraggableButton)
 );

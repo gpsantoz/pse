@@ -1,0 +1,18 @@
+.container{
+    margin-top: 20px;
+}
+.container .headerMain{
+    display: flex !important;
+    justify-content: space-around;
+}
+.container .grid{
+    margin-top: 10px;
+}
+.container .row {
+    display: flex;
+    justify-content: center;
+}
+.container .grid .column .imagem{
+    height: 100px;
+    width: 100px;
+}

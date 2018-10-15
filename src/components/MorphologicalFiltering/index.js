@@ -1,138 +1,144 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Grid, Message, Label, Icon, Dimmer, Loader } from 'semantic-ui-react';
-import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import NavigationButtons from '../shared/NavigationButtons';
-import { styles } from './styles';
-import {
-	ERRO_FORMATO_ARQUIVO_BMP,
-	ERRO_IMAGEM_VAZIA,
-} from './../../Constants';
+import {  Message } from 'semantic-ui-react';
+import elem1 from '../../assets/images/elemento_estruturante_1.png';
+import elem2 from '../../assets/images/elemento_estruturante_2.png';
+import {Morph} from '../../lib/morph/morph';
+import './style.css';
 
 
 class MorphologicalFiltering extends React.Component {
 	state = {
-		redArray: [],
-		greenArray: [],
-		blueArray: [],
-		hasImage: false,
-		imgSrc: null,
-		erro: '',
-		isLoading: true,
+		image :null,
+		checkbox1: true,
+		checkbox2: false,
+		size: 3,
 	};
 
 	componentDidMount() {
-		const { images } = this.props;
-		if (images === {}) {
-			this.setState({
-				erro: ERRO_IMAGEM_VAZIA,
-				hasImage: false,
-				isLoading: false,
-			});
+		// const canvas = document.getElementById('image-morp-canvas')
+		// const { id, target } = this.props.match.params;
+		// const { pixels } = images[target];
+		// const filterPixels = new ImageData(pixels.width, pixels.height);
+		// filterPixels.data.set(pixels.data);
+		// writeImageData(
+		// 	canvas,
+		// 	filterPixels.data,
+		// 	filterPixels.width,
+		// 	filterPixels.height
+		// );
+	}
+
+
+	applyFilter = () => {
+		const { width, height, data } = this.props.images.fluxo_1.pixels;
+		let morph = new Morph(height, width, data);
+		morph.erodeWithElement();
+		console.log(morph);
+	}
+
+	toogleCheckbox = (index) => {
+		if (index === 1) {
+			this.setState({ checkbox1: true,  checkbox2: false});
 		} else {
-			const pertence = this.binaryImage();
-			if (!pertence) {
-				this.setState({
-					erro: ERRO_FORMATO_ARQUIVO_BMP,
-					hasImage: false,
-					isLoading: false,
-				});
-			} else {
-				const canvas = document.getElementById('image-canvas');
-				this.setState({ hasImage: true, isLoading: false });
-			}
+			this.setState({ checkbox1: false,  checkbox2: true});
 		}
 	}
 
-	binaryImage = () => {
-		const { target } = { ...this.props.match.params };
-		if (this.props.images[`${target}`]) {
-			const vet = this.props.images[`${target}`].pixels;
-			for (let i = 0; i < vet.height * vet.width; i++) {
-				if (vet.data[i] !== 0 && vet.data[i] !== 255) {
-					return false;
-				}
-			}
-			return true;
-		} else {
-			this.setState({
-				erro: ERRO_IMAGEM_VAZIA,
-				hasImage: false,
-				isLoading: false,
-			});
-		}
-		return false;
+	handleSize = (valor) => {
+		console.log(valor);
+		this.setState({ size: valor.target.value});
+	}
+	renderOpcoes = () => {
+		const { width, height } = this.props.images.fluxo_1.pixels;
+		const tamanho = width > height ? 
+		`tamanho menor que ${height}` : `tamanho < ${width}`;
+		return (
+			<div className="ui equal width grid">
+				<div className="column">
+					<div className="row">
+						<div className="column">
+							<img className="imagem" src={elem1} />
+						</div>
+					</div>
+					<div className="row">
+						<div className="column">
+						<label>Imagem 1</label>
+						</div>
+					</div>
+				</div>
+				<div className="column">
+					<div className="row">
+						<div className="column">
+							<img className="imagem" src={elem2} />
+						</div>
+					</div>
+					<div className="row">
+						<div className="column">
+						<label>Imagem 2</label>
+						</div>
+					</div>
+				</div>
+				<div className="column">
+					<div class="ui form">
+						<div class="grouped fields">
+							<label for="fruit">Selecione o elemento estruturante:</label>
+						<div class="field">
+							<div class="ui radio checkbox">
+								<input
+									type="radio"
+									name="elem1"
+									checked={this.state.checkbox1}
+									tabindex="0"
+									onClick={() => this.toogleCheckbox(1)}
+								/>
+								<label>Imagem 1</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui radio checkbox">
+								<input
+									type="radio"
+									name="elem2"
+									checked={this.state.checkbox2}
+									tabindex="0"
+									onClick={() => this.toogleCheckbox(2)}/>
+								<label>Imagem 2</label>
+							</div>
+						</div>
+						<div class="field">
+							<input
+								type="number"
+								placeholder={tamanho}
+								onChange={this.handleSize}
+								value={this.state.size}
+							/>
+						</div>
+						<div class="field">
+							<button
+								onClick={() => this.applyFilter()}
+							>
+							OK
+							</button>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		);
 	}
 
-	handleCarregarImagem = (e) => {
-		if (!e || !e.target || !e.target.files.length) {
-			return;
-		}
-		let image = new Image();
-		let fr = new FileReader();
-		fr.onload = createImage.bind(this);
-		fr.readAsDataURL(e.target.files[0]);
-		function createImage() {
-			image.src = fr.result;
-			if (image.src.indexOf('/bmp') !== -1) {
-				this.setState({ hasImage: true, imgSrc: image.src, erro: '' });
-			} else {
-				this.setState({ hasImage: false, erro: ERRO_FORMATO_ARQUIVO_BMP });
-
-			}
-		}
-	}
-
-	renderErro = () =>
-		<Grid.Row>
-			<Grid.Column style={{ textAlign: 'center' }}>
-				<Label style={{ width: '350px' }}>
-					<Icon name="warning sign" color="red" /> {this.state.erro}
-				</Label>
-			</Grid.Column>
-		</Grid.Row>;
-
-	renderOpcoes = () =>
-		<Grid.Row>
-			<Grid.Column style={{ textAlign: 'center' }}>
-				<figure id="figure-area">
-					<img
-						id="orig"
-						src={this.state.imgSrc}
-						alt="canvas area"
-						style={styles.img}
-					/>
-				</figure>
-			</Grid.Column>
-		</Grid.Row>;
 
 
 	render() {
 		return (
 			<div>
-				<Message floating style={styles.container}>
-					<Message.Header style={styles.header}>
+				<Message floating className="container" >
+					<Message.Header className="headerMain">
 						Filtros Morfológicos
 					</Message.Header>
-					<Grid centered style={styles.grid}>
-						{this.state.erro ? this.renderErro() : null}
-						<Grid.Row>
-							<Grid.Column style={{ textAlign: 'center' }}>
-								<Dimmer active={this.state.isLoading}>
-									<Loader />
-								</Dimmer>
-								<canvas id="image-canvas" style={styles.img} />
-							</Grid.Column>
-						</Grid.Row>
-						{
-							this.state.hasImage ?
-								<NavigationButtons
-									target={this.props.match.params.target}
-									id={this.props.match.params.id}
-								/> : null
-						}
-					</Grid>
+					{this.renderOpcoes()}
 				</Message>
 			</div>
 		);

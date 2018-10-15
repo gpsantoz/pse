@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@material-ui/core": "^3.2.0",
 		"flow-bin": "^0.74.0",
 		"jimp": "0.2.27",
 		"lodash": "^4.17.4",
@@ -10,7 +11,7 @@
 		"materialize-css": "^0.100.2",
 		"mse": "^0.1.0",
 		"psnr": "^0.0.1",
-		"react": "^16.0.0",
+		"react": "^16.3.0",
 		"react-dnd": "^2.5.3",
 		"react-dnd-html5-backend": "^2.5.3",
 		"react-dom": "^16.0.0",

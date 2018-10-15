@@ -7,8 +7,9 @@ import CustomFilter from './CustomFilter';
 import FilterImage from './FilterImage';
 import ScalingImage from './ScalingImage';
 import Histogram from './Histogram';
+import MorphologicalFiltering from './MorphologicalFiltering';
 import Header from './Header';
-import { Home } from '../containers'
+import { Home } from '../containers';
 
 class App extends Component {
   render() {
@@ -31,7 +32,7 @@ class App extends Component {
                 path="/scaling/:target/:id"
                 component={ScalingImage}
               />
-              {/* <Route exact path="/morphological/:target/:id" component={MorphologicalFiltering} /> */}
+              <Route exact path="/morphological/:target/:id" component={MorphologicalFiltering} />
               <Route exact path="/histogram" component={Histogram} />
             </div>
           </div>
