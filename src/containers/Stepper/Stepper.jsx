@@ -48,7 +48,7 @@ class Stepper extends React.Component {
           <div className="description">Adicione os blocos dos filtros</div>
         </div>
       </div>
-      <div className={`link step ${this.props.step == 2 ? 'active' : ''}`} onClick={(e) => {
+      <div className={`link step ${this.props.step == 2 ? 'active' : ''}${this.handleStep(1, images)}`} onClick={(e) => {
         e.preventDefault()
         handleClick(2)
       }}>

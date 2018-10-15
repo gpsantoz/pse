@@ -155,10 +155,7 @@ class ImageUploader extends React.Component {
           <Message style={style.container}>
             <Message.Header>Abrir imagem</Message.Header>
             <p>
-              Clique em "Escolher arquivo", selecione uma imagem do seu
-              computador e clique em salvar. <br />Você também pode clicar em
-              Histogramas para visualizar os histogramas das imagens
-              selecionadas ou clicar em voltar.
+              Clique em "Enviar imagem" e selecione uma imagem do seu computador. <br />
             </p>
           </Message>
         </Grid.Row>
