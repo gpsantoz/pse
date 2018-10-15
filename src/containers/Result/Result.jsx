@@ -5,13 +5,18 @@ import { withRouter } from 'react-router-dom';
 import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import { handleFilter } from '../../components/shared/handleFilter';
-import NavigationButtons from '../../components/shared/NavigationButtons';
 import { nearest, bicubic, bilinear } from '../../components/shared/handleScaling';
 import {
   NEAREST_NEIGHBOR_INT,
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
 } from '../../actions/types';
+
+import { Histogram } from '../'
+import './style.css'
+
+import CoreDSP from '../../lib/web-dsp/CoreDSP';
+const coreDSP = new CoreDSP();
 
 const style = {
   container: {
@@ -84,33 +89,32 @@ class Result extends React.Component {
   };
 
   componentDidMount() {
-    const canvas = document.getElementById('image-canvas');
+    const canvas = document.getElementById('image-result-canvas');
     const { images, imageActions } = this.props;
     const target = 'fluxo_1';
     const { id } = this.props.match.params;
     const actions = imageActions[target];
     const { blocks } = imageActions;
-
     //ver imagem
-      const { pixels } = images[target];
-      var filterPixels = pixels;
+    const { pixels } = images[target];
+    var filterPixels = pixels;
 
-      _.forEach(blocks, block => {
-        handleFilter(block, filterPixels);
-        filterPixels = this.handleScaling(block, canvas, filterPixels);
-      });
+    _.forEach(blocks, block => {
+      handleFilter(block, filterPixels);
+      filterPixels = this.handleScaling(block, canvas, filterPixels);
+    });
 
-      canvas.width = filterPixels.width;
-      canvas.height = filterPixels.height;
+    canvas.width = filterPixels.width;
+    canvas.height = filterPixels.height;
 
-      writeImageData(
-        canvas,
-        filterPixels.data,
-        filterPixels.width,
-        filterPixels.height
-      );
+    writeImageData(
+      canvas,
+      filterPixels.data,
+      filterPixels.width,
+      filterPixels.height
+    );
 
-      this.handleLoading(false);
+    this.handleLoading(false);
   }
 
   render() {
@@ -119,24 +123,25 @@ class Result extends React.Component {
         <Grid>
           <Grid.Row centered>
             <Message style={style.container}>
-              <Message.Header>Filtros</Message.Header>
-              <p>
-                Essa imagem possui todos os filtros, anteriores ao clicado,
-                aplicados. <br />
-                Caso deseje, você pode voltar, excluir o filtro ou realizar o
-                download da imagem. <br />
-                O botão "Histograma" irá exibir os Histogramas R, G e B da
-                imagem filtrada e da imagem original.
-              </p>
+              <Message.Header>Imagem Processada</Message.Header>
             </Message>
           </Grid.Row>
-          
           <Grid.Row centered>
             <Dimmer active={this.state.isLoading}>
               <Loader />
             </Dimmer>
-            <canvas id="image-canvas" style={style.canvas} />
+            <canvas id="image-result-canvas" style={style.canvas} />
           </Grid.Row>
+           <Grid.Row centered>
+            <Message style={style.container}>
+              <Message.Header>Histograma da Imagem Processada</Message.Header>
+            </Message>
+          </Grid.Row>
+
+            <Grid.Row centered className="histogram-container">
+            <Histogram />
+            </Grid.Row>
+
           {/* <NavigationButtons
             target='AREA_1'
             id={this.props.match.params.id}

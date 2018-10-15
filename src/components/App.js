@@ -33,7 +33,7 @@ class App extends Component {
                 component={ScalingImage}
               />
               <Route exact path="/morphological/:target/:id" component={MorphologicalFiltering} />
-              <Route exact path="/histogram" component={Histogram} />
+              {/* <Route exact path="/histogram" component={Histogram} /> */}
             </div>
           </div>
         </BrowserRouter>

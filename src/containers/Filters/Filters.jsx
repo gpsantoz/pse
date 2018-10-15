@@ -1,9 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
-import './style.css'
-import { Grid, Message } from 'semantic-ui-react';
+import './style.css';
+import { connect } from 'react-redux';
+import { Grid, Message, Button } from 'semantic-ui-react';
 import LeftMenu from '../../components/LeftMenu';
 import FlowArea from '../../components/FlowArea';
+import * as actions from '../../actions';
+import { AREA_1 } from '../../actions/types';
 
 class Filters extends React.Component {
 
@@ -24,6 +27,10 @@ class Filters extends React.Component {
 						</Message>
 
           <FlowArea />
+          <Button onClick={(e) => {
+            e.preventDefault();
+            this.props.removeAllProcessingBlocks(AREA_1);
+          }}>Remover Filtros</Button>
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -31,4 +38,9 @@ class Filters extends React.Component {
   }
 }
 
-export default Filters;
+function mapStateToProps({ images }) {
+  return { images };
+}
+
+export default connect(mapStateToProps, actions)(Filters);
+

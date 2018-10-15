@@ -34,7 +34,7 @@ class Home extends React.Component {
         return (
           <Grid>
             <Grid.Row centered>
-              <Result />
+              <Result step={this.state.step}/>
             </Grid.Row>
           </Grid>
         )
@@ -42,8 +42,6 @@ class Home extends React.Component {
   }
 
   render(){
-    console.log(this.props)
-    console.log("home")
     return(
       <Grid stackable celled>
       <Grid.Row>

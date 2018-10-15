@@ -7,7 +7,6 @@ class FlowArea extends React.Component {
 	render() {
 		return (
 			<Grid>
-
 				<Grid.Row>
 					<Grid.Column>
 						<ImageArea id={AREA_1} target={AREA_1} />

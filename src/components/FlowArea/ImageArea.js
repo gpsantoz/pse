@@ -79,7 +79,7 @@ class ImageArea extends React.Component {
 
 		return connectDropTarget(
 			<div>
-				<h3>{_.startCase(this.props.target)}</h3>
+				<h3>Fluxo</h3>
 				<div style={{ ...style, backgroundColor }}>
 					{this.renderConnectors(this.props)}
 				</div>

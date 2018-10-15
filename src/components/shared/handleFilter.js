@@ -10,6 +10,9 @@ export const handleFilter = (filter, pixels) => {
     case 'brighten':
       pixels.data.set(coreDSP.brighten(pixels.data));
       break;
+    case 'histogram_equalization':
+      pixels.data.set(coreDSP.histogramEqualization(pixels.data, width, height));
+      break;
     case 'invert':
       pixels.data.set(coreDSP.invert(pixels.data));
       break;

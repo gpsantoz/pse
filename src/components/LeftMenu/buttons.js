@@ -16,6 +16,10 @@ export default [
       },
       {
         color: 'orange',
+        label: 'Histogram Equalization'
+      },
+      {
+        color: 'orange',
         label: NEAREST_NEIGHBOR_INT,
       },
       {

@@ -39,8 +39,7 @@ class Histogram extends React.Component {
 	renderHistogram(title, pixels) {
 		const histograms = coreDSP.getHistograms(pixels.data);
 		return (
-			<Grid divided centered style={{ marginTop: '30px' }}>
-				<h1>{title}</h1>
+			<Grid divided centered>
 				<Grid.Row columns={3}>
 					<Grid.Column>
 						<Label as="a" color="red" ribbon>
@@ -154,26 +153,12 @@ class Histogram extends React.Component {
 	}
 
 	render() {
-		if (!this.props.images[AREA_1] && !this.props.images[AREA_1])
-			return (
-				<div>
-					<Message floating style={style.container}>
-						<Message.Header>Nenhuma imagem carregada!!!</Message.Header>
-						<p>
-							Favor realizar o upload de pelo menos uma imagem no fluxo de
-							blocos.
-						</p>
-					</Message>
-					{this.renderNavigation()}
-				</div>
-			);
 		return (
 			<div style={style.container}>
 				{this.renderComparisonData()}
 				{this.renderFilterHistogram.apply(this)}
-				{this.renderHistograms(AREA_1, 'Histograma Imagem 1')}
-				{this.renderHistograms(AREA_2, 'Histograma Imagem 2')}
-				{this.renderNavigation()}
+				{this.renderHistograms(AREA_1, 'Histograma da Imagem')}
+				{/* {this.renderNavigation()} */}
 			</div>
 		);
 	}
