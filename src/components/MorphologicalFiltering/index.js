@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import {  Message } from 'semantic-ui-react';
 import elem1 from '../../assets/images/elemento_estruturante_1.png';
 import elem2 from '../../assets/images/elemento_estruturante_2.png';
-import {Morph} from '../../lib/morph/morph';
 import './style.css';
 
 
@@ -33,9 +32,9 @@ class MorphologicalFiltering extends React.Component {
 
 	applyFilter = () => {
 		const { width, height, data } = this.props.images.fluxo_1.pixels;
-		let morph = new Morph(height, width, data);
-		morph.erodeWithElement();
-		console.log(morph);
+		// let morph = new Morph(height, width, data);
+		// morph.erodeWithElement();
+		// console.log(morph);
 	}
 
 	toogleCheckbox = (index) => {
