@@ -7,13 +7,13 @@ import elem1 from '../../assets/images/elemento_estruturante_1.png';
 import elem2 from '../../assets/images/elemento_estruturante_2.png';
 import './style.css';
 
-const MORPH_3x3_CROSS_ELEMENT = ([0, 1, 0,
-								1, 1, 1,
-								0, 1, 0]);
+const M_3x3_CROSS = [[0, 1, 0],
+								[1, 1, 1],
+								[0, 1, 0]];
 
-const MORPH_3x3_FULL_ELEMENT = ([1, 1, 1,
-								1, 1, 1,
-								1, 1, 1]);		
+const M_3x3_FULL = [[1, 1, 1],
+								[1, 1, 1],
+								[1, 1, 1]];
 
 
 class MorphologicalFiltering extends React.Component {
@@ -29,22 +29,30 @@ class MorphologicalFiltering extends React.Component {
 
 
 	applyFilter = () => {
+    let Img = require('image-js')
 		let result;
-		const { width, height, data } = this.props.images.fluxo_1.pixels;
+    const { width, height, data } = this.props.images.fluxo_1.pixels;
+
+    let imagem = new Img.Image(width, height, data)
+    imagem = imagem.grey()
+
+    let iterations = 1
+
 		if (this.state.checkbox1 && this.state.checkbox3) {
-			result = this.erosao(MORPH_3x3_FULL_ELEMENT, 3, width, height, data);
+			result = imagem.erode({kernel: M_3x3_CROSS, iterations: iterations})
 		} else if (this.state.checkbox2 && this.state.checkbox3) {
-			result = this.erosao(MORPH_3x3_CROSS_ELEMENT, 3, width, height, data);
+			result = imagem.erode({kernel: M_3x3_FULL, iterations: iterations})
 		} else if (this.state.checkbox1 && this.state.checkbox4) {
-			result = this.dilatacao(MORPH_3x3_FULL_ELEMENT, 3, width, height, data);
+			result = imagem.dilate({kernel: M_3x3_CROSS, iterations: iterations})
 		} else if (this.state.checkbox2 && this.state.checkbox4) {
-			result = this.dilatacao(MORPH_3x3_CROSS_ELEMENT, 3, width, height, data);
-		}
-		console.log(result);
-		result = Uint8ClampedArray.from(result);
-		const canvas = document.getElementById('image-morp-canvas');
-		const filterPixels = new ImageData(width, height);
-		filterPixels.data.set(result);
+			result = imagem.dilate({kernel: M_3x3_FULL, iterations: iterations})
+    }
+
+    result = result.rgba8()
+
+    const canvas = document.getElementById('image-morp-canvas');
+		const filterPixels = new ImageData(result.width, result.height);
+		filterPixels.data.set(result.data);
 		writeImageData(
 			canvas,
 			filterPixels.data,
@@ -69,7 +77,7 @@ class MorphologicalFiltering extends React.Component {
 		}
 		return result;
 	}
-	
+
 	dilatacao = (el, sizeEl, width, height, data) => {
 		const result = new Array(width * height).fill(0);
 		for (let x = 1; x < width - 1; x++) {
@@ -90,7 +98,7 @@ class MorphologicalFiltering extends React.Component {
 		let mat = el;
 		const halfDim = Math.floor(d / 2);
 		const upperLeft = ((ind - (height * halfDim))) - 1;
-	
+
 		let count = 0;
 		for (let x = 0; x < d * d; x++) {
 			const j = upperLeft + (x % d) + height * Math.floor(x / d);
@@ -146,7 +154,7 @@ class MorphologicalFiltering extends React.Component {
 	}
 	renderOpcoes = () => {
 		const { width, height } = this.props.images.fluxo_1.pixels;
-		const tamanho = width > height ? 
+		const tamanho = width > height ?
 		`tamanho menor que ${height}` : `tamanho < ${width}`;
 		return (
 			<div className="ui equal width grid">
