@@ -30,6 +30,8 @@ const style = {
   },
 };
 
+let processedImage = null
+
 class Result extends React.Component {
   state = {
     isLoading: true,
@@ -92,17 +94,20 @@ class Result extends React.Component {
     const canvas = document.getElementById('image-result-canvas');
     const { images, imageActions } = this.props;
     const target = 'fluxo_1';
-    const { id } = this.props.match.params;
-    const actions = imageActions[target];
     const { blocks } = imageActions;
     //ver imagem
     const { pixels } = images[target];
-    var filterPixels = pixels;
+
+    const filteredImage = new ImageData(pixels.width, pixels.height);
+    filteredImage.data.set(pixels.data);
+    var filterPixels = filteredImage
 
     _.forEach(blocks, block => {
       handleFilter(block, filterPixels);
       filterPixels = this.handleScaling(block, canvas, filterPixels);
     });
+
+    processedImage = filterPixels
 
     canvas.width = filterPixels.width;
     canvas.height = filterPixels.height;
@@ -142,7 +147,7 @@ class Result extends React.Component {
           </Grid.Row>
 
             <Grid.Row centered className="histogram-container">
-            <Histogram pixels={pixels}/>
+            <Histogram pixels={processedImage || pixels}/>
             </Grid.Row>
 
           {/* <NavigationButtons
