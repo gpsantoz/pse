@@ -23,32 +23,40 @@ class MorphologicalFiltering extends React.Component {
 		checkbox2: false,
 		checkbox3: true,
 		checkbox4: false,
+		checkbox5: false,
+		matrizPersonalizada: [[0, 0, 0],
+			[0, 0, 0],
+			[0, 0, 0]],
 		size: 3,
 	};
 
 
 
 	applyFilter = () => {
-    let Img = require('image-js')
+    let Img = require('image-js');
 		let result;
     const { width, height, data } = this.props.images.fluxo_1.pixels;
 
-    let imagem = new Img.Image(width, height, data)
-    imagem = imagem.grey()
+    let imagem = new Img.Image(width, height, data);
+    imagem = imagem.grey();
 
-    let iterations = 1
+    let iterations = 1;
 
 		if (this.state.checkbox1 && this.state.checkbox3) {
-			result = imagem.erode({kernel: M_3x3_CROSS, iterations: iterations})
+			result = imagem.erode({kernel: M_3x3_FULL, iterations: iterations});
 		} else if (this.state.checkbox2 && this.state.checkbox3) {
-			result = imagem.erode({kernel: M_3x3_FULL, iterations: iterations})
+			result = imagem.erode({kernel: M_3x3_CROSS, iterations: iterations});
+		} else if (this.state.checkbox5 && this.state.checkbox3) {
+			result = imagem.erode({kernel: this.state.matrizPersonalizada, iterations: iterations});
 		} else if (this.state.checkbox1 && this.state.checkbox4) {
-			result = imagem.dilate({kernel: M_3x3_CROSS, iterations: iterations})
+			result = imagem.dilate({kernel: M_3x3_FULL, iterations: iterations});
 		} else if (this.state.checkbox2 && this.state.checkbox4) {
-			result = imagem.dilate({kernel: M_3x3_FULL, iterations: iterations})
-    }
+			result = imagem.dilate({kernel: M_3x3_CROSS, iterations: iterations});
+    } else if (this.state.checkbox5 && this.state.checkbox4) {
+		result = imagem.dilate({kernel: this.state.matrizPersonalizad, iterations: iterations});
+	}
 
-    result = result.rgba8()
+    result = result.rgba8();
 
     const canvas = document.getElementById('image-morp-canvas');
 		const filterPixels = new ImageData(result.width, result.height);
@@ -61,84 +69,13 @@ class MorphologicalFiltering extends React.Component {
 		);
 	}
 
-	erosao = (el, sizeEl, width, height, data) => {
-		const result = [];
-		let i = height * width;
-		while (i > 0) {
-			result.push(0);
-			i--;
-		}
-		for (let x = 1; x < width - 1; x++) {
-			for (let y = 1; y < height - 1; y++) {
-				const i = y * width + x;
-				const mat = this.constructMatrixForIndex(i, el, sizeEl, height, data);
-				result[i] = this.erodeOp(mat, data);
-			}
-		}
-		return result;
-	}
-
-	dilatacao = (el, sizeEl, width, height, data) => {
-		const result = new Array(width * height).fill(0);
-		for (let x = 1; x < width - 1; x++) {
-			for (let y = 1; y < height - 1; y++) {
-				const ind = x * height + y;
-				const mat = this.constructMatrixForIndex(ind, el, sizeEl, height, data);
-				//result[ind] = this.dilateOp(el, data);
-				result[ind] = this.dilateOp(el, mat);
-			}
-		}
-		return result;
-	}
-
-	constructMatrixForIndex = function(ind, el, d, height, data) {
-		if (!d) {
-			d = 3;
-		}
-		let mat = el;
-		const halfDim = Math.floor(d / 2);
-		const upperLeft = ((ind - (height * halfDim))) - 1;
-
-		let count = 0;
-		for (let x = 0; x < d * d; x++) {
-			const j = upperLeft + (x % d) + height * Math.floor(x / d);
-			if (j < data.length && j >= 0) {
-				mat[count] = data[j];
-			}
-			count++;
-		}
-		return mat;
-	}
-
-	erodeOp = (el, data) => {
-		for (let i = 0; i < 9; i++) {
-			if (el[i] == -1) {
-				continue;
-			}
-			if (el[i] != data[i] && el[i] != 1) {
-				return 0;
-			}
-		}
-		return 1;
-	}
-
-	dilateOp = (el, data) => {
-		for (let j = 0; j < 9; j++) {
-			if (el[j] == -1) {
-				continue;
-			}
-			if (el[j] == 1 && data[j] == 1) {
-				return 1;
-			}
-		}
-		return 0;
-	}
-
 	toogleCheckbox = (index) => {
 		if (index === 1) {
-			this.setState({ checkbox1: true,  checkbox2: false});
+			this.setState({ checkbox1: true,  checkbox2: false, checkbox5: false});
 		} else if (index === 2) {
-			this.setState({ checkbox1: false,  checkbox2: true});
+			this.setState({ checkbox1: false,  checkbox2: true, checkbox5: false});
+		} else if (index === 5) {
+			this.setState({ checkbox1: false,  checkbox2: false, checkbox5: true});
 		}
 
 		if (index === 3) {
@@ -182,6 +119,7 @@ class MorphologicalFiltering extends React.Component {
 						</div>
 					</div>
 				</div>
+				{this.renderMatrixPersonalizada()}
 				<div className="column">
 					<div class="ui form">
 						<div class="grouped fields">
@@ -207,6 +145,17 @@ class MorphologicalFiltering extends React.Component {
 										tabindex="0"
 										onClick={() => this.toogleCheckbox(2)}/>
 									<label>Imagem 2</label>
+								</div>
+							</div>
+							<div class="field">
+								<div class="ui radio checkbox">
+									<input
+										type="radio"
+										name="elem5"
+										checked={this.state.checkbox5}
+										tabindex="0"
+										onClick={() => this.toogleCheckbox(5)}/>
+									<label>Personalizada</label>
 								</div>
 							</div>
 							<div class="field">
@@ -255,10 +204,45 @@ class MorphologicalFiltering extends React.Component {
 			</div>
 		);
 	}
+	handleMatriz = (type) => {
+		const { matrizPersonalizada } = this.state;
+			const i = Number(type.target.id) / 3;
+			const j = Number(type.target.id) % 3;
+			matrizPersonalizada[i][j] = type.target.value === '' ? 0 : Number(type.target.value);
+			this.setState({
+				matrizPersonalizada,
+			});
 
+	}
 
+	renderColuna = (i, j) =>
+		<div className="column">
+			<input
+				type="number"
+				id={i * 3 + j}
+				onChange={this.handleMatriz}
+				value={this.state.matrizPersonalizada[i][j]}
+			/>
+		</div>;
+	renderLinha = (l) => 
+		<div className="row">
+			{this.renderColuna(l, 0)}
+			{this.renderColuna(l, 1)}
+			{this.renderColuna(l, 2)}
+		</div>
+	renderMatrixPersonalizada = () =>
+		<div className="matrizPersonalizada">
+			<div className="ui equal width grid">
+				<div className="column">
+					{this.renderLinha(0)}
+					{this.renderLinha(1)}
+					{this.renderLinha(2)}
+				</div>
+			</div>
+		</div>;
 
 	render() {
+		console.log(this.state.matrizPersonalizada);
 		return (
 			<div>
 				<Message floating className="container" >

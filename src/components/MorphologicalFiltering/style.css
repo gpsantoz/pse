@@ -12,6 +12,9 @@
     display: flex;
     justify-content: center;
 }
+.container .matrizPersonalizada{
+    width: -webkit-fill-available;
+}
 .container .grid .column .imagem{
     height: 100px;
     width: 100px;
