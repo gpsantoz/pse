@@ -1,4 +1,4 @@
-import { ADD_PIXEL_DATA } from '../actions/types';
+import { ADD_PIXEL_DATA } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
   let target, pixels, originalPixels;

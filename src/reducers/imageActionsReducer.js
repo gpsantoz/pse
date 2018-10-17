@@ -6,7 +6,7 @@ import {
   SET_CUSTOM_FILTER_STATE,
   OPEN_IMAGE,
   AREA_1,
-} from '../actions/types';
+} from '../constants/actionTypes';
 
 const initialState = {
   [AREA_1]: {

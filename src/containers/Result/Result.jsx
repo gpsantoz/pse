@@ -10,7 +10,7 @@ import {
   NEAREST_NEIGHBOR_INT,
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
-} from '../../actions/types';
+} from '../../constants/actionTypes';
 
 import { Histogram } from '../'
 import './style.css'

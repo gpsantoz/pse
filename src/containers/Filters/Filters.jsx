@@ -6,7 +6,7 @@ import { Grid, Message, Button } from 'semantic-ui-react';
 import LeftMenu from '../../components/LeftMenu';
 import FlowArea from '../../components/FlowArea';
 import * as actions from '../../actions';
-import { AREA_1 } from '../../actions/types';
+import { AREA_1 } from '../../constants/actionTypes';
 
 class Filters extends React.Component {
 

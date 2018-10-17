@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
 import { connect } from 'react-redux';
 import ConnectorModal from './ConnectorModal';
-import { OPEN_IMAGE } from '../../actions/types';
+import { OPEN_IMAGE } from '../../constants/actionTypes';
 
 const areaTarget = {
 	drop(props) {

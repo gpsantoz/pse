@@ -5,7 +5,7 @@ import {
   REMOVE_ALL_PROCESSING_BLOCKS,
   SET_CUSTOM_FILTER_STATE,
   ADD_PIXEL_DATA,
-} from './types';
+} from '../constants/actionTypes';
 
 export const addWriteFileBlock = (type, target) => {
   return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };

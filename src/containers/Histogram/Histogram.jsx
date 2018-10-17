@@ -7,7 +7,7 @@ import psnr from 'psnr';
 import mse from 'mse';
 import ssim from 'ssim';
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
-import { AREA_1, AREA_2 } from '../../actions/types';
+import { AREA_1, AREA_2 } from '../../constants/actionTypes';
 
 const coreDSP = new CoreDSP();
 

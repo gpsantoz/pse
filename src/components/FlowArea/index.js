@@ -1,7 +1,7 @@
 import React from 'react';
 import { Message, Grid, Image } from 'semantic-ui-react';
 import ImageArea from './ImageArea';
-import { AREA_1, AREA_2 } from '../../actions/types';
+import { AREA_1, AREA_2 } from '../../constants/actionTypes';
 
 class FlowArea extends React.Component {
 	render() {

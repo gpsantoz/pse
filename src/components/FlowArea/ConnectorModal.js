@@ -12,7 +12,7 @@ import {
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
   MORPHOLOGICAL_FILTERING,
-} from '../../actions/types';
+} from '../../constants/actionTypes';
 
 class ConnectorModal extends React.Component {
   static propTypes = {

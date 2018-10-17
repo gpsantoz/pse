@@ -7,7 +7,7 @@ class Stepper extends React.Component {
   state = {
     images: {}
   }
-  handleStep(element, images){
+  styleStep(element, images){
     switch(element)
     {
       case 0:
@@ -20,7 +20,6 @@ class Stepper extends React.Component {
   }
 
   componentDidMount(){
-    //this.setState({images: this.props.images})
   }
 
   render(){
@@ -28,7 +27,7 @@ class Stepper extends React.Component {
     const handleClick = this.props.handleClick
     return(
         <div className="ui three steps">
-      <div className={`link step ${this.props.step == 0 ? 'active' : ''} ${this.handleStep(0, images)}`} onClick={(e) => {
+      <div className={`link step ${this.props.step == 0 ? 'active' : ''} ${this.styleStep(0, images)}`} onClick={(e) => {
         e.preventDefault()
         handleClick(0)
       }}>
@@ -38,7 +37,7 @@ class Stepper extends React.Component {
           <div className="description">Escolha a imagem</div>
         </div>
       </div>
-      <div className={`link step ${this.props.step == 1 ? 'active' : ''} ${this.handleStep(1, images)}`} onClick={(e) => {
+      <div className={`link step ${this.props.step == 1 ? 'active' : ''} ${this.styleStep(1, images)}`} onClick={(e) => {
         e.preventDefault()
         handleClick(1)
       }}>
