@@ -141,11 +141,6 @@ class Result extends React.Component {
             <Grid.Row centered className="histogram-container">
             <Histogram />
             </Grid.Row>
-
-          {/* <NavigationButtons
-            target='AREA_1'
-            id={this.props.match.params.id}
-          /> */}
         </Grid>
       </div>
     );
