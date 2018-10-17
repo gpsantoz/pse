@@ -158,7 +158,6 @@ class Histogram extends React.Component {
 				{this.renderComparisonData()}
 				{this.renderFilterHistogram.apply(this)}
 				{this.renderHistograms(AREA_1, 'Histograma da Imagem')}
-				{/* {this.renderNavigation()} */}
 			</div>
 		);
 	}
