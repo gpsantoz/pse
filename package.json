@@ -5,6 +5,7 @@
 	"dependencies": {
 		"@material-ui/core": "^3.2.0",
 		"flow-bin": "^0.74.0",
+		"image-js": "^0.21.4",
 		"jimp": "0.2.27",
 		"lodash": "^4.17.4",
 		"material-ui": "^0.19.2",
