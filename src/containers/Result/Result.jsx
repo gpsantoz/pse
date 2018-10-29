@@ -12,7 +12,7 @@ import {
   BILIENEAR_NEIGHBOR_INT,
 } from '../../constants/actionTypes';
 
-import { Histogram } from '../'
+import { Histogram } from '../../components'
 import './style.css'
 
 import CoreDSP from '../../lib/web-dsp/CoreDSP';

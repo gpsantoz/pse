@@ -7,6 +7,8 @@ import {
   ADD_PIXEL_DATA,
 } from '../constants/actionTypes';
 
+import * as loading from './loading/loading'
+
 export const addWriteFileBlock = (type, target) => {
   return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };
 };
@@ -27,6 +29,9 @@ export const removeAllProcessingBlocks = (target) => {
 };
 
 export const addPixelData = (pixels, originalPixels, target) => {
-  console.log("set image data")
   return { type: ADD_PIXEL_DATA, payload: { pixels, originalPixels, target } };
 };
+
+export {
+  loading
+}

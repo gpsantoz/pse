@@ -25,12 +25,14 @@ class Filters extends React.Component {
 								<br />
 							</p>
 						</Message>
-
           <FlowArea />
-          <Button onClick={(e) => {
+          <Button className="right floated" onClick={(e) => {
             e.preventDefault();
             this.props.removeAllProcessingBlocks(AREA_1);
           }}>Remover Filtros</Button>
+
+          <h3>Parâmetros e Pré-Visualização</h3>
+
         </Grid.Column>
       </Grid.Row>
     </Grid>

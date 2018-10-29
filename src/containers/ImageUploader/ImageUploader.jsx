@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import { bindActionCreators } from 'redux'
+import { loading } from '../../actions';
 import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import './style.css';
@@ -50,6 +51,8 @@ class ImageUploader extends React.Component {
     if (!e || !e.target || !e.target.files.length) {
       return;
     }
+    const { addLoading } = this.props;
+    addLoading()
     const image = new Image();
     const fr = new FileReader();
     fr.onload = createImage.bind(this);
@@ -149,6 +152,7 @@ class ImageUploader extends React.Component {
   }
 
   render() {
+    console.log(this)
     return (
       <Grid>
         <Grid.Row centered>
@@ -170,4 +174,8 @@ function mapStateToProps({ images }) {
   return { images };
 }
 
-export default connect(mapStateToProps, actions)(ImageUploader);
+const mapDispatchToProps = (dispatch) => ({
+  addLoading: bindActionCreators(loading.addLoading, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImageUploader);

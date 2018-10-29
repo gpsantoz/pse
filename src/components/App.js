@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -8,15 +9,18 @@ import FilterImage from './FilterImage';
 import ScalingImage from './ScalingImage';
 import MorphologicalFiltering from './MorphologicalFiltering';
 import { Home } from '../containers';
+import { Loader } from '../components';
 
 class App extends Component {
   render() {
+    const { loaders, hasLoading } = this.props
     return (
       <DragDropContextProvider backend={HTML5Backend}>
         <BrowserRouter>
           <div className="container" style={{ marginTop: '20px' }}>
             {/* <Header /> */}
             <div>
+              <Loader loading={loaders > 0 && hasLoading} />
               <Route exact path="/" component={Home} />
               <Route exact path="/test" component={Test} />
               <Route
@@ -40,4 +44,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = ({ loading }) => {
+  const { loaders, hasLoading } = loading
+
+  return {
+      loaders,
+      hasLoading
+  }
+}
+
+export default connect(mapStateToProps, null)(App)

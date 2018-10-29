@@ -15,3 +15,6 @@ export const MORPHOLOGICAL_FILTERING = 'Filtro Morfólogico';
 export const NEAREST_NEIGHBOR_INT = 'Interpolação pelo vizinho mais próximo';
 export const BICUBIC_INT = 'Interpolação Bicúbica';
 export const BILIENEAR_NEIGHBOR_INT = 'Interpolação Bilinear';
+export const ADD_LOADING = 'ADD_LOADING';
+export const REMOVE_LOADING = 'REMOVE_LOADING';
+export const SET_HAS_LOADING = 'SET_HAS_LOADING';

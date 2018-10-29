@@ -5,7 +5,7 @@ import { AREA_1, AREA_2 } from '../../constants/actionTypes';
 
 class FlowArea extends React.Component {
 	render() {
-		return (
+		return ( 
 			<Grid>
 				<Grid.Row>
 					<Grid.Column>

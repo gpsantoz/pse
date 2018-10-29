@@ -10,7 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import {
 	ERRO_FORMATO_ARQUIVO_BMP,
-} from '../../Constants';
+} from '../../constants/Constants';
 
 const buttonSource = {
   beginDrag(props) {
@@ -98,7 +98,7 @@ class DraggableButton extends Component {
         <Button basic color={color} style={{ width: 200, opacity }}>
           {label}
         </Button>
-        {
+        {/* {
           this.state.openModal ? 
           <Dialog
             open
@@ -110,7 +110,7 @@ class DraggableButton extends Component {
               </DialogContentText>
             </DialogContent>
           </Dialog>     : null
-        }
+        } */}
 
       </div>
     );

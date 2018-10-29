@@ -22,7 +22,7 @@ class Home extends React.Component {
         return (
           <Grid>
             <Grid.Row centered>
-              <ImageUploader />
+              <ImageUploader addLoading={this.addLoading} removeLoading={this.removeLoading}  />
             </Grid.Row>
           </Grid>
         )
@@ -42,6 +42,7 @@ class Home extends React.Component {
   }
 
   render(){
+    console.log(this)
     return(
       <Grid stackable celled>
       <Grid.Row>
