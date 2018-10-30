@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { loading, image } from '../../actions';
 import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import { ORIGINAL_IMAGE } from '../../constants/imageTypes';
+import { ORIGINAL_IMAGE, PROCESSED_IMAGE } from '../../constants/imageTypes';
 
 import './style.css';
 
@@ -129,6 +129,7 @@ class ImageUploader extends React.Component {
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
     this.props.addPixelData(pixels, ORIGINAL_IMAGE);
+//    this.props.addPixelData(pixels, PROCESSED_IMAGE);
     this.props.removeLoading()
   }
 
@@ -175,6 +176,7 @@ class ImageUploader extends React.Component {
 }
 
 function mapStateToProps({ images }) {
+  console.log(loading)
   return { images };
 }
 

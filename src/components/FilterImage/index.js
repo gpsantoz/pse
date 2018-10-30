@@ -87,10 +87,10 @@ class FilterImage extends React.Component {
 
   componentDidMount() {
     const canvas = document.getElementById('image-canvas');
-    const { images, imageActions } = this.props;
+    const { images, filters } = this.props;
     const { target, id } = this.props.match.params;
-    const actions = imageActions[target];
-    const { blocks } = imageActions;
+    const actions = filters[target];
+    const { blocks } = filters;
 
     if (
       images[target] &&
@@ -154,8 +154,8 @@ class FilterImage extends React.Component {
   }
 }
 
-function mapStateToProps({ images, imageActions }) {
-  return { images, imageActions };
+function mapStateToProps({ images, filters }) {
+  return { images, filters };
 }
 
 export default connect(mapStateToProps)(withRouter(FilterImage));

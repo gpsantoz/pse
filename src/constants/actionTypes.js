@@ -7,7 +7,7 @@ export const ADD_PIXEL_DATA = 'ADD_PIXEL_DATA';
 export const SET_CUSTOM_FILTER_STATE = 'SET_CUSTOM_FILTER_STATE';
 export const CUSTOM_FILTER = 'Custom Filter';
 export const ADD_FILTER_PARAMETER = 'ADD_FILTER_PARAMETER'
-
+export const PROCESS_FILTER = 'PROCESS_FILTER'
 export const AREA_1 = 'fluxo_1';
 export const AREA_2 = 'fluxo_2';
 export const OPEN_IMAGE = 'abrir_imagem';

@@ -1,10 +1,11 @@
-import _ from 'lodash';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { DragSource } from 'react-dnd';
-import { Button } from 'semantic-ui-react';
-import * as actions from '../../actions';
-import { connect } from 'react-redux';
+import _ from 'lodash'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { DragSource } from 'react-dnd'
+import { Button } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { filtersActions } from '../../actions'
+import { bindActionCreators } from 'redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -82,7 +83,7 @@ class DraggableButton extends Component {
   };
 
   handleClose = () => {
-    // const obj = Object.values(this.props.imageActions.fluxo_1);
+    // const obj = Object.values(this.props.filters.fluxo_1);
     // const id = obj[obj.length - 1] - 1;
     // console.log(id);
     // this.props.removeProcessingBlock('filtro_morfologico', id);
@@ -117,10 +118,17 @@ class DraggableButton extends Component {
   }
 }
 
-function mapStateToProps({ images, imageActions }) {
-  return { images, imageActions };
+function mapStateToProps({ images, filters }) {
+  return { images, filters };
 }
 
-export default connect(mapStateToProps, actions)(
+function mapDispatchToProps(dispatch) {
+  return {
+    addWriteFileBlock: bindActionCreators(filtersActions.addWriteFileBlock, dispatch),
+    addProcessingBlock: bindActionCreators(filtersActions.addProcessingBlock, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
   DragSource('draggableButton', buttonSource, collect)(DraggableButton)
 );

@@ -257,8 +257,8 @@ class MorphologicalFiltering extends React.Component {
 	}
 }
 
-function mapStateToProps({ images, imageActions }) {
-	return { images, imageActions };
+function mapStateToProps({ images, filters }) {
+	return { images, filters };
 }
 
 export default connect(mapStateToProps, null)(withRouter(MorphologicalFiltering));

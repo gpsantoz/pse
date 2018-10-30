@@ -16,13 +16,13 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  let target, type, id;
-
+  let target, type, id, parameters
   switch (action.type) {
     case ADD_PROCESSING_BLOCK:
       target = action.payload.target;
       type = action.payload.type;
       id = state[target].id++;
+      parameters = action.payload.parameters ? action.payload.parameters : null
 
       //TODO: Permitir apenas 1 custom filter
       // if (
@@ -35,15 +35,16 @@ export default (state = initialState, action) => {
       if (!state.blocks.includes(type)) {
         return {
           ...state,
-          [target]: { ...state[target], [id]: { type, id } },
+          [target]: { ...state[target], [id]: { type, id, parameters } },
           blocks: [...state.blocks, type],
         };
       }
 
       return {
         ...state,
-        [target]: { ...state[target], [id]: { type, id } },
+        [target]: { ...state[target], [id]: { type, id, parameters } },
       };
+      
     case REMOVE_PROCESSING_BLOCK:
       target = action.payload.target;
 

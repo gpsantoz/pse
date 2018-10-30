@@ -52,10 +52,10 @@ class ScalingImage extends React.Component {
   componentDidMount() {
     // load global
     const loadCanvas = document.getElementById('load-canvas');
-    const { images, imageActions } = this.props;
+    const { images, filters } = this.props;
     const { target, id } = this.props.match.params;
     const { pixels } = images[target];
-    const actions = imageActions[target];
+    const actions = filters[target];
 
     // setup source image
     const sourceImage = new ImageData(pixels.width, pixels.height);
@@ -134,8 +134,8 @@ class ScalingImage extends React.Component {
   }
 }
 
-function mapStateToProps({ images, imageActions }) {
-  return { images, imageActions };
+function mapStateToProps({ images, filters }) {
+  return { images, filters };
 }
 
 export default connect(mapStateToProps)(withRouter(ScalingImage));

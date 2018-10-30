@@ -40,13 +40,13 @@ class ImageArea extends React.Component {
 		canDrop: PropTypes.bool.isRequired,
 	};
 
-	renderConnectors({ imageActions, target }) {
-		const actions = _.filter(imageActions[target], action => {
+	renderConnectors({ filters, target }) {
+		const actions = _.filter(filters[target], action => {
 			if (!action) return;
 			return !!action.id || action.id === 0;
 		});
 
-		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
+		const openFileConnector = !!filters[target][OPEN_IMAGE] ? (
 			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target={ORIGINAL_IMAGE} />
 		) : (
 				''
@@ -68,7 +68,7 @@ class ImageArea extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.imageActions)
+		console.log(this.props.filters)
 		const { canDrop, isOver, connectDropTarget } = this.props;
 		const isActive = canDrop && isOver;
 
@@ -91,8 +91,8 @@ class ImageArea extends React.Component {
 	}
 }
 
-function mapStateToProps({ imageActions }) {
-	return { imageActions };
+function mapStateToProps({ filters }) {
+	return { filters };
 }
 
 export default connect(mapStateToProps)(

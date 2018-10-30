@@ -46,9 +46,9 @@ class FilterProperties extends React.Component {
 
 	loadImageToCanvas = () => {
 		const canvas = document.getElementById('image-canvas');
-		const { images, imageActions } = this.props;
+		const { images, filters } = this.props;
 		const { id, target } = this.props.match.params;
-		const actions = imageActions[target];
+		const actions = filters[target];
 
 		if (images[target] && !!canvas && !!actions) {
 			const { pixels } = images[target];
@@ -70,9 +70,9 @@ class FilterProperties extends React.Component {
 	};
 
 	async componentDidMount() {
-		const { imageActions } = this.props;
+		const { filters } = this.props;
 		const { id, target } = this.props.match.params;
-		const actions = imageActions[target];
+		const actions = filters[target];
 		if (
 			!!actions[id] &&
 			!!actions.customState &&
@@ -338,8 +338,8 @@ class FilterProperties extends React.Component {
 	}
 }
 
-function mapStateToProps({ images, imageActions }) {
-	return { images, imageActions };
+function mapStateToProps({ images, filters }) {
+	return { images, filters };
 }
 
 export default connect(mapStateToProps, actions)(withRouter(FilterProperties));

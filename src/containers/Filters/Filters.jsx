@@ -8,13 +8,28 @@ import FlowArea from '../../components/FlowArea';
 import * as actions from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
 
-const Parameterization = () => {
+const Parameterization = ({parameters, filters}) => {
+  console.log(parameters)
+  console.log(filters[AREA_1])
 
+  return(
+    <Grid.Row centered>
+        <Grid.Column width={8}>
+          parametros
+        </Grid.Column>
+
+        <Grid.Column width={8}>
+          imagem
+        </Grid.Column>
+    </Grid.Row>
+  )
 }
 
 class Filters extends React.Component {
 
   render() {
+    const { filters } = this.props
+    
     return (
       <Grid stackable celled>
       <Grid.Row centered>
@@ -35,8 +50,10 @@ class Filters extends React.Component {
             this.props.removeAllProcessingBlocks(AREA_1);
           }}>Remover Filtros</Button>
 
+          <div className={filters[AREA_1][0] ? '' : 'hidden'}>
           <h3>Parâmetros e Pré-Visualização</h3>
-          
+          < Parameterization parameters={this.props.parameters} filters={this.props.filters}/>
+          </div>
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -44,8 +61,8 @@ class Filters extends React.Component {
   }
 }
 
-function mapStateToProps({ images, filters,  }) {
-  return { images };
+function mapStateToProps({ images, filters }) {
+  return { images, filters };
 }
 
 export default connect(mapStateToProps, actions)(Filters);
