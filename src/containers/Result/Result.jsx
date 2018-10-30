@@ -12,6 +12,8 @@ import {
   BILIENEAR_NEIGHBOR_INT,
 } from '../../constants/actionTypes';
 
+import { ORIGINAL_IMAGE } from '../../constants/imageTypes'
+
 import { Histogram } from '../../components'
 import './style.css'
 
@@ -92,9 +94,9 @@ class Result extends React.Component {
 
   componentDidMount() {
     const canvas = document.getElementById('image-result-canvas');
-    const { images, imageActions } = this.props;
-    const target = 'fluxo_1';
-    const { blocks } = imageActions;
+    const { images, filters } = this.props;
+    const target = ORIGINAL_IMAGE;
+    const { blocks } = filters;
     //ver imagem
     const { pixels } = images[target];
 
@@ -124,7 +126,7 @@ class Result extends React.Component {
 
   render() {
     const { images } = this.props;
-    const target = 'fluxo_1';
+    const target = ORIGINAL_IMAGE;
     const { pixels } = images[target];
     return (
       <div style={style.container}>
@@ -155,8 +157,8 @@ class Result extends React.Component {
   }
 }
 
-function mapStateToProps({ images, imageActions }) {
-  return { images, imageActions };
+function mapStateToProps({ images, filters }) {
+  return { images, filters };
 }
 
 export default connect(mapStateToProps)(withRouter(Result));

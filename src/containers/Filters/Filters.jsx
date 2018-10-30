@@ -8,6 +8,10 @@ import FlowArea from '../../components/FlowArea';
 import * as actions from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
 
+const Parameterization = () => {
+
+}
+
 class Filters extends React.Component {
 
   render() {
@@ -32,7 +36,7 @@ class Filters extends React.Component {
           }}>Remover Filtros</Button>
 
           <h3>Parâmetros e Pré-Visualização</h3>
-
+          
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -40,7 +44,7 @@ class Filters extends React.Component {
   }
 }
 
-function mapStateToProps({ images }) {
+function mapStateToProps({ images, filters,  }) {
   return { images };
 }
 

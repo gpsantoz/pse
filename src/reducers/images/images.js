@@ -1,16 +1,15 @@
-import { ADD_PIXEL_DATA } from '../constants/actionTypes';
+import { ADD_PIXEL_DATA } from '../../constants/actionTypes';
 
 export default (state = {}, action) => {
-  let target, pixels, originalPixels;
+  let target, pixels;
   switch (action.type) {
     case ADD_PIXEL_DATA:
       target = action.payload.target;
       pixels = action.payload.pixels;
-      originalPixels = action.payload.originalPixels;
 
       return {
         ...state,
-        [target]: { ...state[target], pixels: pixels, originalPixels: originalPixels },
+        [target]: { ...state[target], pixels: pixels },
       };
     default:
       return state;

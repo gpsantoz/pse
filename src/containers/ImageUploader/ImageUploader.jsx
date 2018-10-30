@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { loading } from '../../actions';
+import { loading, image } from '../../actions';
 import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
+import { ORIGINAL_IMAGE } from '../../constants/imageTypes';
+
 import './style.css';
 
 const style = {
@@ -30,10 +32,12 @@ class ImageUploader extends React.Component {
 
   componentDidMount() {
     const canvas = document.getElementById('image-canvas');
+   
     const { images } = this.props;
-    const target = 'fluxo_1';
-    if (images[target] && !!canvas) {
-      const { pixels } = images[target];
+    console.log("did mount")
+    console.log(this)
+    if (images[ORIGINAL_IMAGE] && !!canvas) {
+      const { pixels } = images[ORIGINAL_IMAGE];
       canvas.width = pixels.width;
       canvas.height = pixels.height;
       writeImageData(canvas, pixels.data, pixels.width, pixels.height);
@@ -80,7 +84,7 @@ class ImageUploader extends React.Component {
   renderInput() {
     return (
       <Grid.Column>
-        <div className={`ui placeholder ${this.props.images["fluxo_1"] ? 'hidden' : 'image-not-found'}`}>
+        <div className={`ui placeholder ${this.props.images[ORIGINAL_IMAGE] ? 'hidden' : 'image-not-found'}`}>
           <div className="ui icon header image-not-found">
             <i className="image file outline icon" />
             Nenhuma imagem encontrada.
@@ -102,7 +106,7 @@ class ImageUploader extends React.Component {
 
   renderCanvas() {
     return (
-      <Grid.Column style={style.canvasColumn} className={` ${this.props.images["fluxo_1"] ? '' : 'hidden'}`}>
+      <Grid.Column style={style.canvasColumn} className={` ${this.props.images[ORIGINAL_IMAGE] ? '' : 'hidden'}`}>
         <canvas
           id="image-canvas"
           style={{
@@ -117,14 +121,15 @@ class ImageUploader extends React.Component {
 
   savePixels() {
     if (!this.state.image.hasImage) {
+      this.props.removeLoading()
       return;
     }
     const canvas = document.getElementById('image-canvas');
     const pixels = canvas
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
-    const originalPixels = pixels;
-    this.props.addPixelData(pixels, originalPixels, 'fluxo_1');
+    this.props.addPixelData(pixels, ORIGINAL_IMAGE);
+    this.props.removeLoading()
   }
 
   handleSave() {
@@ -152,7 +157,6 @@ class ImageUploader extends React.Component {
   }
 
   render() {
-    console.log(this)
     return (
       <Grid>
         <Grid.Row centered>
@@ -175,7 +179,9 @@ function mapStateToProps({ images }) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  addLoading: bindActionCreators(loading.addLoading, dispatch)
+  addLoading: bindActionCreators(loading.addLoading, dispatch),
+  removeLoading: bindActionCreators(loading.removeLoading, dispatch),
+  addPixelData: bindActionCreators(image.addPixelData, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImageUploader);

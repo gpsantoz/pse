@@ -5,6 +5,7 @@ import { DropTarget } from 'react-dnd';
 import { connect } from 'react-redux';
 import ConnectorModal from './ConnectorModal';
 import { OPEN_IMAGE } from '../../constants/actionTypes';
+import { ORIGINAL_IMAGE } from '../../constants/imageTypes';
 
 const areaTarget = {
 	drop(props) {
@@ -46,7 +47,7 @@ class ImageArea extends React.Component {
 		});
 
 		const openFileConnector = !!imageActions[target][OPEN_IMAGE] ? (
-			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target="fluxo_1" />
+			<ConnectorModal key={OPEN_IMAGE} type={OPEN_IMAGE} target={ORIGINAL_IMAGE} />
 		) : (
 				''
 			);
@@ -57,7 +58,7 @@ class ImageArea extends React.Component {
 				<ConnectorModal
 					key={action.id}
 					{...action}
-					target="fluxo_1"
+					target={ORIGINAL_IMAGE}
 					actions={actions}
 				/>
 			))
@@ -67,6 +68,7 @@ class ImageArea extends React.Component {
 	}
 
 	render() {
+		console.log(this.props.imageActions)
 		const { canDrop, isOver, connectDropTarget } = this.props;
 		const isActive = canDrop && isOver;
 
@@ -78,6 +80,7 @@ class ImageArea extends React.Component {
 		}
 
 		return connectDropTarget(
+	
 			<div>
 				<h3>Fluxo</h3>
 				<div style={{ ...style, backgroundColor }}>

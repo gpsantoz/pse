@@ -8,6 +8,7 @@ import {
 } from '../constants/actionTypes';
 
 import * as loading from './loading/loading'
+import * as image from './image/image'
 
 export const addWriteFileBlock = (type, target) => {
   return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };
@@ -28,10 +29,9 @@ export const removeAllProcessingBlocks = (target) => {
   return { type: REMOVE_ALL_PROCESSING_BLOCKS, payload: { target } };
 };
 
-export const addPixelData = (pixels, originalPixels, target) => {
-  return { type: ADD_PIXEL_DATA, payload: { pixels, originalPixels, target } };
-};
+
 
 export {
-  loading
+  loading,
+  image
 }

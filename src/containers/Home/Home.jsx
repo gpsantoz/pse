@@ -3,8 +3,8 @@ import React from 'react';
 import { Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import { Stepper, ImageUploader, Filters, Result } from '../'
-import { Logo } from '../../components'
+import { ImageUploader, Filters, Result } from '../'
+import { Logo, Stepper } from '../../components'
 
 class Home extends React.Component {
 
@@ -42,7 +42,6 @@ class Home extends React.Component {
   }
 
   render(){
-    console.log(this)
     return(
       <Grid stackable celled>
       <Grid.Row>

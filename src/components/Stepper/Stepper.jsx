@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import {ORIGINAL_IMAGE} from '../../constants/imageTypes'
 import './style.css'
 
 class Stepper extends React.Component {
@@ -11,9 +12,9 @@ class Stepper extends React.Component {
     switch(element)
     {
       case 0:
-        return images["fluxo_1"] ? 'completed' : ''
+        return images[ORIGINAL_IMAGE] ? 'completed' : ''
       case 1:
-        return images["fluxo_1"] ? '' : 'disabled'
+        return images[ORIGINAL_IMAGE] ? '' : 'disabled'
       default:
         return ''
     }
