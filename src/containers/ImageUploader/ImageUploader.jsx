@@ -34,8 +34,6 @@ class ImageUploader extends React.Component {
     const canvas = document.getElementById('image-canvas');
    
     const { images } = this.props;
-    console.log("did mount")
-    console.log(this)
     if (images[ORIGINAL_IMAGE] && !!canvas) {
       const { pixels } = images[ORIGINAL_IMAGE];
       canvas.width = pixels.width;
@@ -129,7 +127,7 @@ class ImageUploader extends React.Component {
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
     this.props.addPixelData(pixels, ORIGINAL_IMAGE);
-//    this.props.addPixelData(pixels, PROCESSED_IMAGE);
+    //this.props.addPixelData(pixels, PROCESSED_IMAGE);
     this.props.removeLoading()
   }
 
@@ -176,7 +174,6 @@ class ImageUploader extends React.Component {
 }
 
 function mapStateToProps({ images }) {
-  console.log(loading)
   return { images };
 }
 

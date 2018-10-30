@@ -68,7 +68,6 @@ class ImageArea extends React.Component {
 	}
 
 	render() {
-		console.log(this.props.filters)
 		const { canDrop, isOver, connectDropTarget } = this.props;
 		const isActive = canDrop && isOver;
 

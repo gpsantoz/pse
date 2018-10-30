@@ -7,6 +7,8 @@ import {
     PROCESS_FILTER
   } from '../../constants/actionTypes';
 
+  import { image } from '../../actions'
+
   export const addWriteFileBlock = (type, target) => {
     return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };
   };
@@ -30,6 +32,9 @@ import {
     return { type: REMOVE_ALL_PROCESSING_BLOCKS, payload: { target } };
   };
 
-  export const processFilter = (filterID, actualPixels, parameters) => {
+  export const processFilter = (filterID, actualPixels, parameters, dispatch) => {
+    
+    image.addPixelData()
+
     return { type: PROCESS_FILTER, payload: { filterID, actualPixels, parameters } };
   };
