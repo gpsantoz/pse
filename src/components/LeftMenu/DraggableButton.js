@@ -17,6 +17,7 @@ const buttonSource = {
   beginDrag(props) {
     return {
       name: _.snakeCase(props.label),
+      parameters: props.parameters
     };
   },
 
@@ -27,15 +28,13 @@ const buttonSource = {
     if (dropResult) {
       const type = _.snakeCase(item.name);
       const target = _.snakeCase(dropResult.name);
+      //CHECK PARAMETERS
       switch (type) {
-        case 'abrir_imagem':
-          props.addOpenImageBlock(type, target);
-          break;
         case 'gravar_arquivo':
           props.addWriteFileBlock(type, target);
           break;
         default:
-          props.addProcessingBlock(type, target);
+          props.addProcessingBlock(type, target, item.parameters);
           break;
       }
     }

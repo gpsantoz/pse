@@ -37,6 +37,7 @@ export default [
       {
         color: 'yellow',
         label: 'Grayscale',
+        parameters: "TESTE"
       },
       {
         color: 'yellow',

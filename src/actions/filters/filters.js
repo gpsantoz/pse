@@ -13,8 +13,8 @@ import {
     return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };
   };
 
-  export const addProcessingBlock = (type, target) => {
-    return { type: ADD_PROCESSING_BLOCK, payload: { type, target } };
+  export const addProcessingBlock = (type, target, parameters) => {
+    return { type: ADD_PROCESSING_BLOCK, payload: { type, target, parameters } };
   };
 
   export const removeProcessingBlock = (id, target) => {
