@@ -124,7 +124,8 @@ function mapStateToProps({ images, filters }) {
 function mapDispatchToProps(dispatch) {
   return {
     addWriteFileBlock: bindActionCreators(filtersActions.addWriteFileBlock, dispatch),
-    addProcessingBlock: bindActionCreators(filtersActions.addProcessingBlock, dispatch)
+    addProcessingBlock: bindActionCreators(filtersActions.addProcessingBlock, dispatch),
+    processFilter: bindActionCreators(filtersActions.processFilter, dispatch),
   };
 }
 

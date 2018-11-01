@@ -36,7 +36,8 @@ export default (state = initialState, action) => {
         return {
           ...state,
           [target]: { ...state[target], [id]: { type, id, parameters } },
-          blocks: [...state.blocks, type],
+          // [target]: [ ...state[target], { type, id, parameters } ],
+          blocks: [...state.blocks, { type, id, parameters }],
         };
       }
 
@@ -44,7 +45,7 @@ export default (state = initialState, action) => {
         ...state,
         [target]: { ...state[target], [id]: { type, id, parameters } },
       };
-      
+
     case REMOVE_PROCESSING_BLOCK:
       target = action.payload.target;
 

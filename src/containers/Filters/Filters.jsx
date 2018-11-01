@@ -5,13 +5,12 @@ import { connect } from 'react-redux';
 import { Grid, Message, Button } from 'semantic-ui-react';
 import LeftMenu from '../../components/LeftMenu';
 import FlowArea from '../../components/FlowArea';
-import * as actions from '../../actions';
+import { bindActionCreators } from 'redux'
+import { filtersActions } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
 
-const Parameterization = ({parameters, filters}) => {
-  console.log(parameters)
-  console.log(filters[AREA_1])
-
+const Parameterization = ({filter}) => {
+  console.log(filter)
   return(
     <Grid.Row centered>
         <Grid.Column width={8}>
@@ -27,9 +26,22 @@ const Parameterization = ({parameters, filters}) => {
 
 class Filters extends React.Component {
 
+  componentDidMount(){
+
+  }
+
+  renderPreviews = (filters) => {
+    return filters.map((filter, key) => {
+      return (
+        < Parameterization key={key} filter={filter}/>
+      )
+    }) 
+  }
+
   render() {
     const { filters } = this.props
-    
+    console.log(filters)
+    console.log("renderizou")
     return (
       <Grid stackable celled>
       <Grid.Row centered>
@@ -51,8 +63,12 @@ class Filters extends React.Component {
           }}>Remover Filtros</Button>
 
           <div className={filters[AREA_1][0] ? '' : 'hidden'}>
-          <h3>Parâmetros e Pré-Visualização</h3>
-          < Parameterization parameters={this.props.parameters} filters={this.props.filters}/>
+          
+            <h3>Parâmetros e Pré-Visualização</h3>
+            {
+              this.renderPreviews(this.props.filters.blocks)
+            }
+
           </div>
         </Grid.Column>
       </Grid.Row>
@@ -65,5 +81,9 @@ function mapStateToProps({ images, filters }) {
   return { images, filters };
 }
 
-export default connect(mapStateToProps, actions)(Filters);
+const mapDispatchToProps = (dispatch) => ({
+  removeAllProcessingBlocks: bindActionCreators(filtersActions.removeAllProcessingBlocks, dispatch),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filters);
 
