@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as actions from '../../actions';
+import * as actions from '../../../actions';
 import PropTypes from 'prop-types';
 import ButtonBlock from './ButtonBlock';
 import {
@@ -12,7 +12,7 @@ import {
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
   MORPHOLOGICAL_FILTERING,
-} from '../../constants/actionTypes';
+} from '../../../constants/actionTypes';
 
 class ConnectorModal extends React.Component {
   static propTypes = {

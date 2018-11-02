@@ -5,8 +5,8 @@ import { BarChart, Bar, Tooltip, CartesianGrid, XAxis, YAxis } from 'recharts';
 import psnr from 'psnr';
 import mse from 'mse';
 import ssim from 'ssim';
-import CoreDSP from '../../lib/web-dsp/CoreDSP';
-import { AREA_1 } from '../../constants/actionTypes';
+import CoreDSP from '../../../lib/web-dsp/CoreDSP';
+import { AREA_1 } from '../../../constants/actionTypes';
 
 const coreDSP = new CoreDSP();
 
@@ -66,8 +66,8 @@ class Histogram extends React.Component {
 	// renderHistograms(target, title) {
 	// 	if (
 	// 		!this.props.images ||
-	// 		!this.props.images[target]		
-	// 	)	
+	// 		!this.props.images[target]
+	// 	)
 	// 		return;
 	// 	const { pixels } = this.props.images[target];
 	// 	return this.renderHistogram(title, pixels);

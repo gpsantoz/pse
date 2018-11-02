@@ -3,8 +3,8 @@ import React from 'react';
 import './style.css';
 import { connect } from 'react-redux';
 import { Grid, Message, Button } from 'semantic-ui-react';
-import LeftMenu from '../../components/LeftMenu';
-import FlowArea from '../../components/FlowArea';
+import LeftMenu from '../../components/Filters/LeftMenu';
+import FlowArea from '../../components/Filters/FlowArea';
 import { bindActionCreators } from 'redux'
 import { filtersActions, image } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';

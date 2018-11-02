@@ -100,20 +100,6 @@ class Result extends React.Component {
     //ver imagem
     const { pixels } = images[filters.blocks.length];
 
-    // const filteredImage = new ImageData(pixels.width, pixels.height);
-    // filteredImage.data.set(pixels.data);
-    // var filterPixels = filteredImage
-
-    // _.forEach(blocks, block => {
-    //   handleFilter(block, filterPixels);
-    //   filterPixels = this.handleScaling(block, canvas, filterPixels);
-    // });
-
-    // processedImage = filterPixels
-
-    // canvas.width = filterPixels.width;
-    // canvas.height = filterPixels.height;
-
     writeImageData(
       canvas,
       pixels.data,

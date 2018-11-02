@@ -4,7 +4,7 @@ import {
   BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
   MORPHOLOGICAL_FILTERING,
-} from '../../constants/actionTypes';
+} from '../../../constants/actionTypes';
 
 export default [
   {

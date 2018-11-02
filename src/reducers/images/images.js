@@ -15,10 +15,10 @@ export default (state = {}, action) => {
     case PROCESS_IMAGE:
       console.log("Reducer")
       console.log(action)
-    return {
-      ...state,
-      [action.payload.filter.id]: { pixels: action.payload.pixels}
-    };
+      return {
+        ...state,
+        [action.payload.filter.id]: { pixels: action.payload.pixels}
+      };
     default:
       return state;
   }

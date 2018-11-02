@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import {ORIGINAL_IMAGE} from '../../constants/imageTypes'
+import {ORIGINAL_IMAGE} from '../../../constants/imageTypes'
 import './style.css'
 
 class Stepper extends React.Component {

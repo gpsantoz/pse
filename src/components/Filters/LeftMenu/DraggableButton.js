@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { DragSource } from 'react-dnd'
 import { Button } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { filtersActions } from '../../actions'
+import { filtersActions } from '../../../actions'
 import { bindActionCreators } from 'redux'
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';

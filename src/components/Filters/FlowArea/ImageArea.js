@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd';
 import { connect } from 'react-redux';
 import ConnectorModal from './ConnectorModal';
-import { OPEN_IMAGE } from '../../constants/actionTypes';
-import { ORIGINAL_IMAGE } from '../../constants/imageTypes';
+import { OPEN_IMAGE } from '../../../constants/actionTypes';
+import { ORIGINAL_IMAGE } from '../../../constants/imageTypes';
 
 const areaTarget = {
 	drop(props) {
@@ -79,7 +79,7 @@ class ImageArea extends React.Component {
 		}
 
 		return connectDropTarget(
-	
+
 			<div>
 				<h3>Fluxo</h3>
 				<div style={{ ...style, backgroundColor }}>
