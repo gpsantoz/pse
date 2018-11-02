@@ -98,27 +98,27 @@ class Result extends React.Component {
     const target = ORIGINAL_IMAGE;
     const { blocks } = filters;
     //ver imagem
-    const { pixels } = images[target];
+    const { pixels } = images[filters.blocks.length];
 
-    const filteredImage = new ImageData(pixels.width, pixels.height);
-    filteredImage.data.set(pixels.data);
-    var filterPixels = filteredImage
+    // const filteredImage = new ImageData(pixels.width, pixels.height);
+    // filteredImage.data.set(pixels.data);
+    // var filterPixels = filteredImage
 
-    _.forEach(blocks, block => {
-      handleFilter(block, filterPixels);
-      filterPixels = this.handleScaling(block, canvas, filterPixels);
-    });
+    // _.forEach(blocks, block => {
+    //   handleFilter(block, filterPixels);
+    //   filterPixels = this.handleScaling(block, canvas, filterPixels);
+    // });
 
-    processedImage = filterPixels
+    // processedImage = filterPixels
 
-    canvas.width = filterPixels.width;
-    canvas.height = filterPixels.height;
+    // canvas.width = filterPixels.width;
+    // canvas.height = filterPixels.height;
 
     writeImageData(
       canvas,
-      filterPixels.data,
-      filterPixels.width,
-      filterPixels.height
+      pixels.data,
+      pixels.width,
+      pixels.height
     );
 
     this.handleLoading(false);

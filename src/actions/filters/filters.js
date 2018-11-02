@@ -7,18 +7,14 @@ import {
     PROCESS_FILTER
   } from '../../constants/actionTypes';
 
-  import { image } from '../../actions'
+  import { image, loading } from '../../actions'
 
   export const addWriteFileBlock = (type, target) => {
     return { type: ADD_WRITE_FILE_BLOCK, payload: { type, target } };
   };
 
-  export const addProcessingBlock = (type, target, parameters) => {
-    return { type: ADD_PROCESSING_BLOCK, payload: { type, target, parameters } };
-    // return dispatch => {
-    //     // dispatch(addPixelData())
-        
-    // }
+  export const addProcessingBlock = (type, target, name, parameters) => {
+    return { type: ADD_PROCESSING_BLOCK, payload: { type, target, name, parameters } };
   };
 
   export const removeProcessingBlock = (id, target) => {
@@ -36,10 +32,4 @@ import {
     return { type: REMOVE_ALL_PROCESSING_BLOCKS, payload: { target } };
   };
 
-  export const processFilter = (filterID, actualPixels, parameters) => {
-    
-    return dispatch => {
-        // dispatch(image.addPixelData())
-        return { type: PROCESS_FILTER, payload: { filterID, actualPixels, parameters } };
-    }
-  };
+

@@ -10,18 +10,18 @@ import {
 
 const initialState = {
   [AREA_1]: {
-    id: 0,
   },
   blocks: [],
 };
 
 export default (state = initialState, action) => {
-  let target, type, id, parameters
+  let target, type, id, parameters, name
   switch (action.type) {
     case ADD_PROCESSING_BLOCK:
       target = action.payload.target;
       type = action.payload.type;
-      id = state[target].id++;
+      name = action.payload.name
+      id = state.blocks.length+1;
       parameters = action.payload.parameters ? action.payload.parameters : null
 
       //TODO: Permitir apenas 1 custom filter
@@ -35,9 +35,9 @@ export default (state = initialState, action) => {
       if (!state.blocks.includes(type)) {
         return {
           ...state,
-          [target]: { ...state[target], [id]: { type, id, parameters } },
+          [target]: { ...state[target], [id]: { type, id, parameters, name } },
           // [target]: [ ...state[target], { type, id, parameters } ],
-          blocks: [...state.blocks, { type, id, parameters }],
+          blocks: [...state.blocks, { type, id, parameters, name }],
         };
       }
 

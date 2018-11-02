@@ -16,7 +16,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 const buttonSource = {
   beginDrag(props) {
     return {
-      name: _.snakeCase(props.label),
+      name: props.label,
       parameters: props.parameters
     };
   },
@@ -34,7 +34,7 @@ const buttonSource = {
           props.addWriteFileBlock(type, target);
           break;
         default:
-          props.addProcessingBlock(type, target, item.parameters);
+          props.addProcessingBlock(type, target, item.name, item.parameters);
           break;
       }
     }
@@ -99,7 +99,7 @@ class DraggableButton extends Component {
           {label}
         </Button>
         {/* {
-          this.state.openModal ? 
+          this.state.openModal ?
           <Dialog
             open
             onClose={this.handleClose}
@@ -124,8 +124,7 @@ function mapStateToProps({ images, filters }) {
 function mapDispatchToProps(dispatch) {
   return {
     addWriteFileBlock: bindActionCreators(filtersActions.addWriteFileBlock, dispatch),
-    addProcessingBlock: bindActionCreators(filtersActions.addProcessingBlock, dispatch),
-    processFilter: bindActionCreators(filtersActions.processFilter, dispatch),
+    addProcessingBlock: bindActionCreators(filtersActions.addProcessingBlock, dispatch)
   };
 }
 
