@@ -13,6 +13,6 @@ export const processImage = (filter, actualPixels) => {
   const filteredImage = new ImageData(actualPixels.width, actualPixels.height);
   filteredImage.data.set(actualPixels.data);
   var actualPixels = filteredImage
-  handleFilter(filter.type, actualPixels);
+  handleFilter(filter, actualPixels);
   return { type: PROCESS_IMAGE, payload: { filter, pixels: actualPixels } };
 };

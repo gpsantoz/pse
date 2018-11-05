@@ -42,8 +42,12 @@ export default class CoreDSP {
     this.security = security;
     this.robbery = security;
     this.getHistograms = getHistograms;
+    this.erosion = erosion;
+    this.dilation = dilation
   }
 }
+
+let Img = require('image-js');
 
 function getNewHistogramArray() {
   return _.chain(_.range(0, 256, 1))
@@ -150,6 +154,25 @@ function invert(data) {
   }
   return data;
 }
+
+function erosion(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  imagem = imagem.grey();
+  result = imagem.erode({kernel: parameters.kernel, iterations: parameters.iterations});
+  result = result.rgba8();
+  return result.data;
+}
+
+function dilation(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  imagem = imagem.grey();
+  result = imagem.dilate({kernel: parameters.kernel, iterations: parameters.iterations});
+  result = result.rgba8();
+  return result.data;
+}
+
 function noise(data) {
   let random;
   for (let i = 0; i < data.length; i += 4) {

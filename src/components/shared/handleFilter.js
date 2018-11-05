@@ -2,8 +2,16 @@ import CoreDSP from '../../lib/web-dsp/CoreDSP';
 const coreDSP = new CoreDSP();
 
 export const handleFilter = (filter, pixels) => {
-  const { width, height } = pixels;
-  switch (filter) {
+  const { width, height, data } = pixels;
+  console.log("Handle")
+  console.log(filter)
+  switch (filter.type) {
+    case 'erosion':
+      pixels.data.set(coreDSP.erosion(data, width, height, filter.parameters ));
+      break;
+    case 'dilation':
+    pixels.data.set(coreDSP.dilation(data, width, height, filter.parameters ));
+    break;
     case 'grayscale':
       pixels.data.set(coreDSP.grayscale(pixels.data));
       break;

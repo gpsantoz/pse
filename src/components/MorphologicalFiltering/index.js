@@ -224,7 +224,7 @@ class MorphologicalFiltering extends React.Component {
 				value={this.state.matrizPersonalizada[i][j]}
 			/>
 		</div>;
-	renderLinha = (l) => 
+	renderLinha = (l) =>
 		<div className="row">
 			{this.renderColuna(l, 0)}
 			{this.renderColuna(l, 1)}
@@ -242,7 +242,6 @@ class MorphologicalFiltering extends React.Component {
 		</div>;
 
 	render() {
-		console.log(this.state.matrizPersonalizada);
 		return (
 			<div>
 				<Message floating className="container" >

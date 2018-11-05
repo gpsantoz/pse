@@ -15,6 +15,26 @@ export default [
         label: MORPHOLOGICAL_FILTERING,
       },
       {
+        color: 'pink',
+        label: 'Erosion',
+        parameters: {
+          kernel:  [[0, 1, 0],
+          [1, 1, 1],
+          [0, 1, 0]],
+          iterations: 4
+        }
+      },
+      {
+        color: 'pink',
+        label: 'Dilation',
+        parameters: {
+          kernel:  [[0, 1, 0],
+          [1, 1, 1],
+          [0, 1, 0]],
+          iterations: 4
+        }
+      },
+      {
         color: 'orange',
         label: 'Histogram Equalization'
       },
