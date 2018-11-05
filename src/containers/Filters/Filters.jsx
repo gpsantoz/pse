@@ -6,9 +6,11 @@ import { Grid, Message, Button } from 'semantic-ui-react';
 import LeftMenu from '../../components/Filters/LeftMenu';
 import FlowArea from '../../components/Filters/FlowArea';
 import { bindActionCreators } from 'redux'
-import { filtersActions, image } from '../../actions';
+import { filtersActions, image, loading } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
-import { Canvas } from '../../components'
+import { Canvas, Morphological } from '../../components'
+
+import { EROSION, DILATION } from '../../constants/filtersTypes'
 
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 
@@ -42,29 +44,57 @@ class Filters extends React.Component {
   }
 
   componentDidUpdate(prevProps){
-    const { filters, images } = this.props
+    const { filters, images, dispatch } = this.props
     filters.blocks.forEach((filter, index) => {
+      console.log('update')
       if(images[filter.id]){
+        console.log(prevProps.filters)
+        console.log(filters)
+        console.log('comparing filters')
         if(filter != prevProps.filters.blocks[index]){
-          this.props.processImage(filter, images[filter.id-1].pixels)
+          console.log(' not equal 1')
+          this.props.addLoading()
+          this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
+        }else if(!_.isEqual(filter.parameters, prevProps.filters.blocks[index].parameters)){
+          console.log('not equal 2')
+          this.props.addLoading()
+          this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
         }
       }
       else{
-        this.props.processImage(filter, images[filter.id-1].pixels)
+        this.props.addLoading()
+        this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
       }
     });
   }
 
+  renderParameters(filter){
+    if (filter.type) {
+      switch (filter.type) {
+        case _.snakeCase(EROSION):
+          return (
+            <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1} />
+          )
+        case _.snakeCase(DILATION):
+        return (
+          <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+        )
+        default:
+          break;
+      }
+    }
+  }
+
   renderPreviews = (filters, images) => {
-    console.log("Render Previews")
     return filters.blocks.map((filter, key) => {
       // console.log(images[filter.id].pixels)
       if(images[filter.id]){
       return (
         // < Parameterization key={key} filter={filter}/>
-        <Grid.Column width={8}>
+        <Grid.Column width={8} key={key}>
         <h4>Filtro: {filter.name}</h4>
            <Canvas id={`image-preview-${filter.id}`} pixels={images[filter.id].pixels}/>
+           {this.renderParameters(filter)}
         </Grid.Column>
       )
     }
@@ -73,7 +103,6 @@ class Filters extends React.Component {
 
   render() {
     const { filters, images } = this.props
-    console.log("renderizou")
     return (
       <Grid stackable celled>
       <Grid.Row centered>
@@ -115,7 +144,10 @@ function mapStateToProps({ images, filters }) {
 
 const mapDispatchToProps = (dispatch) => ({
   removeAllProcessingBlocks: bindActionCreators(filtersActions.removeAllProcessingBlocks, dispatch),
+  updateProcessingBlock: bindActionCreators(filtersActions.updateProcessingBlock, dispatch),
   processImage: bindActionCreators(image.processImage, dispatch),
+  addLoading: bindActionCreators(loading.addLoading, dispatch),
+  dispatch
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Filters);

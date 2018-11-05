@@ -1,6 +1,7 @@
 import {
     ADD_WRITE_FILE_BLOCK,
     ADD_PROCESSING_BLOCK,
+    UPDATE_PROCESSING_BLOCK,
     REMOVE_PROCESSING_BLOCK,
     REMOVE_ALL_PROCESSING_BLOCKS,
     SET_CUSTOM_FILTER_STATE,
@@ -15,6 +16,10 @@ import {
 
   export const addProcessingBlock = (type, target, name, parameters) => {
     return { type: ADD_PROCESSING_BLOCK, payload: { type, target, name, parameters } };
+  };
+
+  export const updateProcessingBlock = (target, id, parameters) => {
+    return { type: UPDATE_PROCESSING_BLOCK, payload: { target, id, parameters } };
   };
 
   export const removeProcessingBlock = (id, target) => {

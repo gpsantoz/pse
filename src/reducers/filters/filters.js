@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import {
   ADD_PROCESSING_BLOCK,
+  UPDATE_PROCESSING_BLOCK,
   REMOVE_PROCESSING_BLOCK,
   REMOVE_ALL_PROCESSING_BLOCKS,
   SET_CUSTOM_FILTER_STATE,
@@ -45,6 +46,17 @@ export default (state = initialState, action) => {
         ...state,
         [target]: { ...state[target], [id]: { type, id, parameters } },
       };
+
+    case UPDATE_PROCESSING_BLOCK:
+    target = action.payload.target;
+    const filterID = action.payload.id;
+    parameters = action.payload.parameters ? action.payload.parameters : null
+      console.log("reducer update")
+      console.log(action)
+    return {
+      ...state,
+      [target]: { ...state[target], [filterID]: { ...state[target][filterID], parameters: parameters } },
+    };
 
     case REMOVE_PROCESSING_BLOCK:
       target = action.payload.target;

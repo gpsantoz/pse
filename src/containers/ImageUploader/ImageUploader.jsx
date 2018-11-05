@@ -127,7 +127,6 @@ class ImageUploader extends React.Component {
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
     this.props.addPixelData(pixels, ORIGINAL_IMAGE);
-    // this.props.addPixelData(pixels, 0);
     this.props.removeLoading()
   }
 

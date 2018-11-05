@@ -26,6 +26,7 @@ const loading = (state = initialState, action) => {
 }
 
 const addLoading = (state) => {
+    console.log("add loading")
     return {
         ...state,
         loaders: state.loaders + 1
@@ -33,6 +34,7 @@ const addLoading = (state) => {
 }
 
 const removeLoading = (state) => {
+    console.log("remove loading")
     return {
         ...state,
         loaders: (state.loaders > 0) ? state.loaders - 1 : 0

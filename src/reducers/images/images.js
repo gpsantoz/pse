@@ -13,8 +13,6 @@ export default (state = {}, action) => {
         [target]: { ...state[target], pixels: pixels },
       };
     case PROCESS_IMAGE:
-      console.log("Reducer")
-      console.log(action)
       return {
         ...state,
         [action.payload.filter.id]: { pixels: action.payload.pixels}

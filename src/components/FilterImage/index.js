@@ -121,7 +121,6 @@ class FilterImage extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <div style={style.container}>
         <Grid>

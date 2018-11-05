@@ -6,6 +6,11 @@ import {
   MORPHOLOGICAL_FILTERING,
 } from '../../../constants/actionTypes';
 
+import {
+  EROSION,
+  DILATION,
+} from '../../../constants/filtersTypes';
+
 export default [
   {
     label: 'Processamento',
@@ -16,7 +21,7 @@ export default [
       },
       {
         color: 'pink',
-        label: 'Erosion',
+        label: EROSION,
         parameters: {
           kernel:  [[0, 1, 0],
           [1, 1, 1],
@@ -26,7 +31,7 @@ export default [
       },
       {
         color: 'pink',
-        label: 'Dilation',
+        label: DILATION,
         parameters: {
           kernel:  [[0, 1, 0],
           [1, 1, 1],
