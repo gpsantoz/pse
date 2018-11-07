@@ -50,9 +50,10 @@ export default (state = initialState, action) => {
     case UPDATE_PROCESSING_BLOCK:
     target = action.payload.target;
     const filterID = action.payload.id;
-    parameters = action.payload.parameters ? action.payload.parameters : null
+    let parameters = action.payload.parameters ? action.payload.parameters : null
       console.log("reducer update")
       console.log(action)
+      console.log(parameters)
     return {
       ...state,
       [target]: { ...state[target], [filterID]: { ...state[target][filterID], parameters: parameters } },

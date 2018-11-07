@@ -42,8 +42,9 @@ export default class CoreDSP {
     this.security = security;
     this.robbery = security;
     this.getHistograms = getHistograms;
-    this.erosion = erosion;
+    this.erosion = erosion
     this.dilation = dilation
+    this.threshold = threshold
   }
 }
 
@@ -72,6 +73,18 @@ function getHistograms(data) {
 
   return histogram;
 }
+
+function threshold (pixels, threshold){
+	let d = pixels;
+	for (let i = 0; i < d.length; i += 4) {
+		let r = d[i];
+		let g = d[i + 1];
+		let b = d[i + 2];
+		let v = 0.2126 * r + 0.7152 * g + 0.0722 * b >= threshold ? 255 : 0;
+		d[i] = d[i + 1] = d[i + 2] = v;
+	}
+	return pixels;
+};
 
 function histogramEqualization (pixels, width, height) {
   var newImageData = new ImageData(pixels, width, height)

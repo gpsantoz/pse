@@ -9,6 +9,7 @@ import {
 import {
   EROSION,
   DILATION,
+  THRESHOLD
 } from '../../../constants/filtersTypes';
 
 export default [
@@ -18,6 +19,10 @@ export default [
       {
         color: 'pink',
         label: MORPHOLOGICAL_FILTERING,
+      },
+      {
+        color: 'pink',
+        label: THRESHOLD,
       },
       {
         color: 'pink',
