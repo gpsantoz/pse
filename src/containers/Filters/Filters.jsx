@@ -8,66 +8,40 @@ import FlowArea from '../../components/Filters/FlowArea';
 import { bindActionCreators } from 'redux'
 import { filtersActions, image, loading } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
-import { Canvas, Morphological } from '../../components'
-
+import { Canvas, Morphological, Loader } from '../../components'
 import { EROSION, DILATION } from '../../constants/filtersTypes'
-
-import CoreDSP from '../../lib/web-dsp/CoreDSP';
-
-const Parameterization = ({filter, image, blocks}) => {
-  // console.log(filter)
-  // const canvas = document.getElementById('image-preview-'+filter.id);
-  // const { pixels } = images[filter.id];
-
-  // writeImageData(
-  //   canvas,
-  //   pixels.data,
-  //   pixels.width,
-  //   pixels.height
-  // );
-
-  return(
-    <Grid.Row centered>
-        <Grid.Column width={8}>
-          parametros
-        </Grid.Column>
-
-
-    </Grid.Row>
-  )
-}
+import { removeLoading } from '../../actions/loading/loading';
 
 class Filters extends React.Component {
 
-  componentDidMount(){
-
+  constructor(props){
+    super(props)
+    this.state = { loaders: 0 }
   }
 
   componentDidUpdate(prevProps){
     const { filters, images, dispatch } = this.props
     filters.blocks.forEach((filter, index) => {
-      console.log('update')
       if(images[filter.id]){
-        console.log(prevProps.filters)
-        console.log(filters)
-        console.log('comparing filters')
-        if(filter != prevProps.filters.blocks[index]){
-          console.log(' not equal 1')
-          this.props.addLoading()
+        if(filter !== prevProps.filters.blocks[index] || images[filter.id-1] !== prevProps.images[filter.id-1]){
+          //this.props.addLoading()
+          console.log("increase loaders")
+          this.setState({loaders: this.state.loaders+1})
+          console.log("will process image")
           this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
-        }else if(!_.isEqual(filter.parameters, prevProps.filters.blocks[index].parameters)){
-          console.log('not equal 2')
-          this.props.addLoading()
-          this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
-        }
+          console.log("processed image")
+        } 
       }
       else{
-        this.props.addLoading()
+        //this.props.addLoading()
+        console.log("increase loaders")
+        this.setState({loaders: this.state.loaders+1})
+        console.log("will process image")
         this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
+        console.log("processed image")
       }
     });
   }
-
   renderParameters(filter){
     if (filter.type) {
       switch (filter.type) {
@@ -87,7 +61,6 @@ class Filters extends React.Component {
 
   renderPreviews = (filters, images) => {
     return filters.blocks.map((filter, key) => {
-      // console.log(images[filter.id].pixels)
       if(images[filter.id]){
       return (
         // < Parameterization key={key} filter={filter}/>
@@ -102,9 +75,12 @@ class Filters extends React.Component {
   }
 
   render() {
-    const { filters, images } = this.props
+    console.log("render filters")
+    console.log(this.state.loaders)
+    const { filters, images, loading } = this.props
     return (
       <Grid stackable celled>
+      <Loader loading={this.state.loaders > 0} />
       <Grid.Row centered>
         <Grid.Column width={4}>
           <LeftMenu />
@@ -126,10 +102,10 @@ class Filters extends React.Component {
           <div className={filters[AREA_1][1] ? '' : 'hidden'}>
 
             {/* <h3>Parâmetros e Pré-Visualização</h3> */}
+            {}
             {
               this.renderPreviews(filters, images)
             }
-
           </div>
         </Grid.Column>
       </Grid.Row>
@@ -138,8 +114,8 @@ class Filters extends React.Component {
   }
 }
 
-function mapStateToProps({ images, filters }) {
-  return { images, filters };
+function mapStateToProps({ images, filters, loading }) {
+  return { images, filters, loading };
 }
 
 const mapDispatchToProps = (dispatch) => ({

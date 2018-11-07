@@ -111,7 +111,7 @@ class Result extends React.Component {
   }
 
   render() {
-    const { images } = this.props;
+    const { images, filters } = this.props;
     const target = ORIGINAL_IMAGE;
     const { pixels } = images[target];
     return (

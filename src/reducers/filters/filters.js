@@ -51,12 +51,11 @@ export default (state = initialState, action) => {
     target = action.payload.target;
     const filterID = action.payload.id;
     let parameters = action.payload.parameters ? action.payload.parameters : null
-      console.log("reducer update")
-      console.log(action)
-      console.log(parameters)
     return {
       ...state,
       [target]: { ...state[target], [filterID]: { ...state[target][filterID], parameters: parameters } },
+      blocks: Object.assign([],state.blocks.map(
+        (block,index) => (block.id == filterID) ? {...block,parameters} : block))
     };
 
     case REMOVE_PROCESSING_BLOCK:

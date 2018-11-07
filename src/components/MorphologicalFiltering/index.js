@@ -86,7 +86,6 @@ class MorphologicalFiltering extends React.Component {
 	}
 
 	handleSize = (valor) => {
-		console.log(valor);
 		this.setState({ size: valor.target.value});
 	}
 	renderOpcoes = () => {

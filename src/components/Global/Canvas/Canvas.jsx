@@ -20,7 +20,7 @@ componentWillMount(){
   // style.canvas.maxWidth = styles.maxWidth
 }
 
-componentDidMount(){
+setCanvas(){
   const { id, pixels } = this.props
   const canvas = document.getElementById(id);
   writeImageData(
@@ -29,6 +29,13 @@ componentDidMount(){
     pixels.width,
     pixels.height
   );
+}
+componentDidMount(){
+  this.setCanvas()
+}
+
+componentDidUpdate(){
+  this.setCanvas()
 }
 
 render() {

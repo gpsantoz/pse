@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Dimmer, Loader } from 'semantic-ui-react';
+import './style.css'
 
 const PSELoader = (props) => {
-    console.log(props)
+  console.log(props.loading)
   return (
     <Dimmer active={props.loading}>
-        <Loader />
+        <Loader className="loader" />
     </Dimmer>
   )
 }

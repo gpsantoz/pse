@@ -13,18 +13,29 @@ import { Loader } from '../components';
 
 class App extends Component {
 
+  constructor(props){
+    super(props)
+  }
+
   componentWillReceiveProps(nextProps){
+    // if(nextProps.someValue!==this.props.someValue){
+    //   //Perform some operation
+    //   this.setState({someState: someValue });
+    //   this.classMethod();
+    // }
+    console.log("will receive props")
     console.log(nextProps)
   }
+
   render() {
-    const { loaders, hasLoading } = this.props
+    const { loaders } = this.props
     return (
       <DragDropContextProvider backend={HTML5Backend}>
         <BrowserRouter>
           <div className="container" style={{ marginTop: '20px' }}>
             {/* <Header /> */}
             <div>
-              <Loader loading={loaders > 0 && hasLoading} />
+              {/* <Loader loading={loaders > 0} /> */}
               <Route exact path="/" component={Home} />
               <Route exact path="/test" component={Test} />
               <Route
@@ -49,11 +60,10 @@ class App extends Component {
 }
 
 const mapStateToProps = ({ loading }) => {
-  const { loaders, hasLoading } = loading
+  const { loaders } = loading
 
   return {
-      loaders,
-      hasLoading
+      loaders
   }
 }
 
