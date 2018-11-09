@@ -4,10 +4,7 @@ import {
 	Button
 } from 'semantic-ui-react';
 
-import ElementoEstruturante1 from '../../../../assets/images/elemento_estruturante_1.png'
-import ElementoEstruturante2 from '../../../../assets/images/elemento_estruturante_2.png'
-
-class Morphological extends React.Component {
+class Threshold extends React.Component {
 
     constructor(props){
         super(props)
@@ -30,11 +27,11 @@ class Morphological extends React.Component {
       <Grid.Column>
         <div>
         <label>
-        Quantidade de Iterações:
+        Limiar:
             <input
                 type="number"
                 min="1"
-                name="iterations"
+                name="limiar"
                 onChange={this.handleChange}
                 value={this.state.iterations}
             />
@@ -55,4 +52,4 @@ class Morphological extends React.Component {
 }
 }
 
-export default Morphological
+export default Threshold

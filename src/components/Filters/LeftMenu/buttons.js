@@ -29,9 +29,9 @@ export default [
         label: EROSION,
         parameters: {
           kernel:  [[0, 1, 0],
-          [1, 1, 1],
-          [0, 1, 0]],
-          iterations: 4
+                   [1, 1, 1],
+                   [0, 1, 0]],
+          iterations: 25
         }
       },
       {
@@ -39,9 +39,9 @@ export default [
         label: DILATION,
         parameters: {
           kernel:  [[0, 1, 0],
-          [1, 1, 1],
-          [0, 1, 0]],
-          iterations: 4
+                   [1, 1, 1],
+                    [0, 1, 0]],
+          iterations: 25
         }
       },
       {

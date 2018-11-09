@@ -16,7 +16,7 @@ class Filters extends React.Component {
 
   constructor(props){
     super(props)
-    this.state = { loaders: 0 }
+    this.state = { loader: false }
   }
 
   componentDidUpdate(prevProps){
@@ -26,22 +26,36 @@ class Filters extends React.Component {
         if(filter !== prevProps.filters.blocks[index] || images[filter.id-1] !== prevProps.images[filter.id-1]){
           //this.props.addLoading()
           console.log("increase loaders")
-          this.setState({loaders: this.state.loaders+1})
+          if(!this.state.loader)
+          this.setState({loader: true})
           console.log("will process image")
-          this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
+          // if(this.props.loaders == 0)
+          // this.props.addLoading()
+          //setTimeout(function (theseArgs) { this.props.processImage(filter, images[filter.id-1].pixels, dispatch) }, 1000);
           console.log("processed image")
         } 
       }
       else{
-        //this.props.addLoading()
         console.log("increase loaders")
-        this.setState({loaders: this.state.loaders+1})
         console.log("will process image")
-        this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
+        if(!this.state.loader){
+        this.setState({loader: true})
+        const proc = this.props.processImage
+        const sta = this.setState
+        setTimeout(function (theseArgs) {
+          console.log(theseArgs)
+          console.log(this)
+          proc(filter, images[filter.id-1].pixels, dispatch) 
+          sta({loader: false})
+        }, 1000)
+      }
+
         console.log("processed image")
       }
+    
     });
   }
+
   renderParameters(filter){
     if (filter.type) {
       switch (filter.type) {
@@ -63,7 +77,6 @@ class Filters extends React.Component {
     return filters.blocks.map((filter, key) => {
       if(images[filter.id]){
       return (
-        // < Parameterization key={key} filter={filter}/>
         <Grid.Column width={8} key={key}>
         <h4>Filtro: {filter.name}</h4>
            <Canvas id={`image-preview-${filter.id}`} pixels={images[filter.id].pixels}/>
@@ -80,7 +93,7 @@ class Filters extends React.Component {
     const { filters, images, loading } = this.props
     return (
       <Grid stackable celled>
-      <Loader loading={this.state.loaders > 0} />
+      <Loader loading={this.state.loader} />
       <Grid.Row centered>
         <Grid.Column width={4}>
           <LeftMenu />
