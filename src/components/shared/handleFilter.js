@@ -9,7 +9,7 @@ export const handleFilter = async (filter, pixels) => {
     case 'dilation':
       return pixels.data.set(coreDSP.dilation(data, width, height, filter.parameters ));
     case 'threshold':
-      return pixels.data.set(coreDSP.threshold(data, 128 ));
+      return pixels.data.set(coreDSP.threshold(data, filter.parameters.t ));
     case 'grayscale':
       pixels.data.set(coreDSP.grayscale(pixels.data));
       break;

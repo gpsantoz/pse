@@ -3,6 +3,7 @@ import {
 	Grid,
 	Button
 } from 'semantic-ui-react';
+import { Slider } from '../../../'
 
 class Threshold extends React.Component {
 
@@ -20,6 +21,12 @@ class Threshold extends React.Component {
         this.setState({...this.state, [name]: value});
       }
 
+    setLimiar(value) {
+        console.log('set limiar')
+        console.log(value)
+        this.setState({...this.state, t: value})
+    }
+
     render(){
         const {updateFilter, filter, target} = this.props
     return (
@@ -27,15 +34,9 @@ class Threshold extends React.Component {
       <Grid.Column>
         <div>
         <label>
-        Limiar:
-            <input
-                type="number"
-                min="1"
-                name="limiar"
-                onChange={this.handleChange}
-                value={this.state.iterations}
-            />
-            </label>
+            Limiar:
+        </label>
+        <Slider value={filter.parameters.t} setValue={this.setLimiar.bind(this)}/>
         </div>
       <Button
             basic

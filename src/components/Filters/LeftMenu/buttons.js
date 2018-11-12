@@ -23,6 +23,9 @@ export default [
       {
         color: 'pink',
         label: THRESHOLD,
+        parameters: {
+          t: 128
+        }
       },
       {
         color: 'pink',

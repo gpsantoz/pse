@@ -8,8 +8,8 @@ import FlowArea from '../../components/Filters/FlowArea';
 import { bindActionCreators } from 'redux'
 import { filtersActions, image, loading } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
-import { Canvas, Morphological, Loader } from '../../components'
-import { EROSION, DILATION } from '../../constants/filtersTypes'
+import { Canvas, Morphological, Threshold, Loader } from '../../components'
+import { EROSION, DILATION, THRESHOLD } from '../../constants/filtersTypes'
 import { removeLoading } from '../../actions/loading/loading';
 
 class Filters extends React.Component {
@@ -20,35 +20,55 @@ class Filters extends React.Component {
   }
 
   componentDidUpdate(prevProps){
-    const { filters, images, dispatch } = this.props
+    const { filters, images, dispatch, loading } = this.props
     filters.blocks.forEach((filter, index) => {
       if(images[filter.id]){
         if(filter !== prevProps.filters.blocks[index] || images[filter.id-1] !== prevProps.images[filter.id-1]){
-          //this.props.addLoading()
-          console.log("increase loaders")
-          if(!this.state.loader)
-          this.setState({loader: true})
-          console.log("will process image")
-          // if(this.props.loaders == 0)
-          // this.props.addLoading()
-          //setTimeout(function (theseArgs) { this.props.processImage(filter, images[filter.id-1].pixels, dispatch) }, 1000);
-          console.log("processed image")
+          this.props.addLoading()
+          this.props.processImage(filter, images[filter.id-1].pixels, dispatch) 
+          this.props.removeLoading()
+          // console.log("increase loaders")
+          // if(!this.state.loader)
+          // this.setState({loader: true})
+          // console.log("will process image")
+          // // if(this.props.loaders == 0)
+          // // this.props.addLoading()
+          // //setTimeout(function (theseArgs) { this.props.processImage(filter, images[filter.id-1].pixels, dispatch) }, 1000);
+          // console.log("processed image")
+          // if(!loading.loaders > 0){
+          //   // this.setState({loader: true})
+          //   const proc = this.props.processImage
+          //   // const sta = this.setState
+          //   this.props.addLoading()
+          //   const remProc = this.props.removeLoading
+          //   setTimeout(function (theseArgs) {
+          //     console.log(theseArgs)
+          //     console.log(this)
+          //     proc(filter, images[filter.id-1].pixels, dispatch) 
+          //     //sta({loader: false})
+          //     remProc()
+          //   }, 1000)
+          // }
         } 
       }
       else{
-        console.log("increase loaders")
-        console.log("will process image")
-        if(!this.state.loader){
-        this.setState({loader: true})
-        const proc = this.props.processImage
-        const sta = this.setState
-        setTimeout(function (theseArgs) {
-          console.log(theseArgs)
-          console.log(this)
-          proc(filter, images[filter.id-1].pixels, dispatch) 
-          sta({loader: false})
-        }, 1000)
-      }
+        this.props.addLoading()
+        this.props.processImage(filter, images[filter.id-1].pixels, dispatch) 
+        this.props.removeLoading()
+      //   if(!loading.loaders > 0){
+      //   // this.setState({loader: true})
+      //   const proc = this.props.processImage
+      //   // const sta = this.setState
+      //   this.props.addLoading()
+      //   const remProc = this.props.removeLoading
+      //   setTimeout(function (theseArgs) {
+      //     console.log(theseArgs)
+      //     console.log(this)
+      //     proc(filter, images[filter.id-1].pixels, dispatch) 
+      //     //sta({loader: false})
+      //     remProc()
+      //   }, 1000)
+      // }
 
         console.log("processed image")
       }
@@ -66,6 +86,10 @@ class Filters extends React.Component {
         case _.snakeCase(DILATION):
         return (
           <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+        )
+        case _.snakeCase(THRESHOLD):
+        return (
+          <Threshold updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
         )
         default:
           break;
@@ -93,7 +117,7 @@ class Filters extends React.Component {
     const { filters, images, loading } = this.props
     return (
       <Grid stackable celled>
-      <Loader loading={this.state.loader} />
+      {/* <Loader loading={this.state.loader} /> */}
       <Grid.Row centered>
         <Grid.Column width={4}>
           <LeftMenu />
@@ -136,6 +160,7 @@ const mapDispatchToProps = (dispatch) => ({
   updateProcessingBlock: bindActionCreators(filtersActions.updateProcessingBlock, dispatch),
   processImage: bindActionCreators(image.processImage, dispatch),
   addLoading: bindActionCreators(loading.addLoading, dispatch),
+  removeLoading: bindActionCreators(loading.removeLoading, dispatch),
   dispatch
 })
 

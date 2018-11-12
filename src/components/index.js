@@ -4,6 +4,8 @@ import Histogram from './Result/Histogram/Histogram'
 import Loader from './Global/Loader/Loader'
 import Stepper from './Home/Stepper/Stepper'
 import Morphological from './Filters/Parameters/Morphological/Morphological'
+import Threshold from './Filters/Parameters/Threshold/Threshold'
+import Slider from './Global/Slider/Slider'
 
 export {
   Logo,
@@ -11,5 +13,7 @@ export {
   Histogram,
   Loader,
   Stepper,
-  Morphological
+  Threshold,
+  Morphological,
+  Slider
 }
