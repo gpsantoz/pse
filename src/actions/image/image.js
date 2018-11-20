@@ -15,12 +15,13 @@ export const processImage = (filter, pixels, dispatch) => {
     filteredImage.data.set(pixels.data);
     var actualPixels = filteredImage
     //dispatch(loading.addLoading())
-    console.log('process image')
-    processPixels(filter, actualPixels)
+    var result = processPixels(filter, actualPixels)
+    const resultImage = new ImageData(result.width, result.height);
+    resultImage.data.set(result.data)
     // dispatch(loading.removeLoading())
-    return { type: PROCESS_IMAGE, payload: { filter, pixels: actualPixels } };
+    return { type: PROCESS_IMAGE, payload: { filter, pixels: resultImage } };
 };
 
-const processPixels = async (filter, pixels) => {
+const processPixels = (filter, pixels) => {
     return handleFilter(filter, pixels);
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
-import { loading, image } from '../../actions';
+import { loading, filtersActions, image } from '../../actions';
 import { Button, Grid, Message } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import { ORIGINAL_IMAGE, PROCESSED_IMAGE } from '../../constants/imageTypes';
@@ -127,6 +127,7 @@ class ImageUploader extends React.Component {
       .getContext('2d')
       .getImageData(0, 0, canvas.width, canvas.height);
     this.props.addPixelData(pixels, ORIGINAL_IMAGE);
+    this.props.removeAllProcessingBlocks();
     this.props.removeLoading()
   }
 
@@ -179,7 +180,8 @@ function mapStateToProps({ images }) {
 const mapDispatchToProps = (dispatch) => ({
   addLoading: bindActionCreators(loading.addLoading, dispatch),
   removeLoading: bindActionCreators(loading.removeLoading, dispatch),
-  addPixelData: bindActionCreators(image.addPixelData, dispatch)
+  addPixelData: bindActionCreators(image.addPixelData, dispatch),
+  removeAllProcessingBlocks: bindActionCreators(filtersActions.removeAllProcessingBlocks, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImageUploader);

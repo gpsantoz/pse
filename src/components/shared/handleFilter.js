@@ -1,112 +1,123 @@
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 const coreDSP = new CoreDSP();
 
-export const handleFilter = async (filter, pixels) => {
+export const handleFilter = (filter, pixels) => {
   const { width, height, data } = pixels;
+  let result;
   switch (filter.type) {
     case 'erosion':
-      return pixels.data.set(coreDSP.erosion(data, width, height, filter.parameters ));
+      result = coreDSP.erosion(data, width, height, filter.parameters );
+      break;
     case 'dilation':
-      return pixels.data.set(coreDSP.dilation(data, width, height, filter.parameters ));
+      result = coreDSP.dilation(data, width, height, filter.parameters );
+      break;
     case 'threshold':
-      return pixels.data.set(coreDSP.threshold(data, filter.parameters.t ));
+      result = coreDSP.threshold(data,  width, height, filter.parameters.t );
+      break;
     case 'grayscale':
-      pixels.data.set(coreDSP.grayscale(pixels.data));
+      result = coreDSP.grayscale(pixels.data,  width, height);
+      break;
+    case 'bicubic_interpolation':
+      result = coreDSP.bicubic(pixels.data, width, height, filter.parameters)
       break;
     case 'brighten':
-      pixels.data.set(coreDSP.brighten(pixels.data));
+      result = coreDSP.brighten(pixels.data, width, height);
       break;
     case 'histogram_equalization':
-      pixels.data.set(coreDSP.histogramEqualization(pixels.data, width, height));
+      result = coreDSP.histogramEqualization(pixels.data, width, height);
       break;
     case 'invert':
-      pixels.data.set(coreDSP.invert(pixels.data));
+        result = coreDSP.invert(pixels.data,  width, height);
       break;
     case 'noise':
-      pixels.data.set(coreDSP.noise(pixels.data));
+        result = coreDSP.noise(pixels.data,  width, height);
       break;
     case 'sunset':
-      pixels.data.set(coreDSP.sunset(pixels.data, width));
+        result = coreDSP.sunset(pixels.data, width,  width, height);
       break;
     case 'analog':
-      pixels.data.set(coreDSP.analog(pixels.data, width));
+        result = coreDSP.analog(pixels.data, width,  width, height);
       break;
     case 'emboss':
-      pixels.data.set(coreDSP.emboss(pixels.data, width));
+        result = coreDSP.emboss(pixels.data, width,  width, height);
       break;
     case 'sobel':
-      pixels.data.set(coreDSP.sobel(pixels.data, width, height));
+        result = coreDSP.sobel(pixels.data, width, height);
       break;
     case 'sobel_invertido':
-      pixels.data.set(coreDSP.sobel(pixels.data, width, height, true));
+        result = coreDSP.sobel(pixels.data, width, height, true);
       break;
     case 'gaussian_blur':
-      pixels.data.set(coreDSP.blur(pixels.data, width, height));
+        result = coreDSP.blur(pixels.data, width, height);
       break;
     case 'sharpen':
-      pixels.data.set(coreDSP.sharpen(pixels.data, width, height));
+        result = coreDSP.sharpen(pixels.data, width, height);
       break;
     case 'uber_sharpen':
-      pixels.data.set(coreDSP.strong_sharpen(pixels.data, width, height));
+        result = coreDSP.strong_sharpen(pixels.data, width, height);
       break;
     case 'clarity':
-      pixels.data.set(coreDSP.clarity(pixels.data, width, height));
+        result = coreDSP.clarity(pixels.data, width, height);
       break;
     case 'good_morning':
-      pixels.data.set(coreDSP.good_morning(pixels.data, width, height));
+        result = coreDSP.good_morning(pixels.data, width, height);
       break;
     case 'acid':
-      pixels.data.set(coreDSP.acid(pixels.data, width, height));
+        result = coreDSP.acid(pixels.data, width, height);
       break;
     case 'urple':
-      pixels.data.set(coreDSP.urple(pixels.data, width));
+        result = coreDSP.urple(pixels.data,  width, height);
       break;
     case 'forest':
-      pixels.data.set(coreDSP.forest(pixels.data, width));
+        result = coreDSP.forest(pixels.data,  width, height);
       break;
     case 'romance':
-      pixels.data.set(coreDSP.romance(pixels.data, width));
+        result = coreDSP.romance(pixels.data,  width, height);
       break;
     case 'hippo':
-      pixels.data.set(coreDSP.hippo(pixels.data, width));
+        result = coreDSP.hippo(pixels.data,  width, height);
       break;
     case 'longhorn':
-      pixels.data.set(coreDSP.longhorn(pixels.data, width));
+        result = coreDSP.longhorn(pixels.data,  width, height);
       break;
     case 'underground':
-      pixels.data.set(coreDSP.underground(pixels.data, width));
+        result = coreDSP.underground(pixels.data,  width, height);
       break;
     case 'rooster':
-      pixels.data.set(coreDSP.rooster(pixels.data, width));
+        result = coreDSP.rooster(pixels.data, width);
       break;
     case 'mist':
-      pixels.data.set(coreDSP.mist(pixels.data, width));
+        result = coreDSP.mist(pixels.data, width);
       break;
     case 'kaleidoscope':
-      pixels.data.set(coreDSP.kaleidoscope(pixels.data, width));
+        result = coreDSP.kaleidoscope(pixels.data, width);
       break;
     case 'bacteria':
-      pixels.data.set(coreDSP.bacteria(pixels.data, width));
+        result = coreDSP.bacteria(pixels.data, width);
       break;
     case 'dewdrops':
-      pixels.data.set(coreDSP.dewdrops(pixels.data, width, height));
+        result = coreDSP.dewdrops(pixels.data, width, height);
       break;
     case 'color_destruction':
-      pixels.data.set(coreDSP.destruction(pixels.data, width, height));
+        result = coreDSP.destruction(pixels.data, width, height);
       break;
     case 'hulk_edge':
-      pixels.data.set(coreDSP.hulk(pixels.data, width));
+        result = coreDSP.hulk(pixels.data, width);
       break;
     case 'ghost':
-      pixels.data.set(coreDSP.ghost(pixels.data, width));
+        result = coreDSP.ghost(pixels.data, width);
       break;
     case 'twisted':
-      pixels.data.set(coreDSP.twisted(pixels.data, width));
+        result = coreDSP.twisted(pixels.data, width);
       break;
     case 'security':
-      pixels.data.set(coreDSP.security(pixels.data, width));
+        result = coreDSP.security(pixels.data, width);
       break;
     default:
       break;
   }
+  
+  const imgResult = new ImageData(result.width || width, result.height || height)
+  imgResult.data.set(result.data)
+  return imgResult
 };

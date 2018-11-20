@@ -45,6 +45,7 @@ export default class CoreDSP {
     this.erosion = erosion
     this.dilation = dilation
     this.threshold = threshold
+    this.bicubic = bicubic
   }
 }
 
@@ -74,7 +75,9 @@ function getHistograms(data) {
   return histogram;
 }
 
-function threshold (pixels, threshold){
+//FILTERS
+
+function threshold (pixels,  width, height, threshold){
 	let d = pixels;
 	for (let i = 0; i < d.length; i += 4) {
 		let r = d[i];
@@ -82,8 +85,20 @@ function threshold (pixels, threshold){
 		let b = d[i + 2];
 		let v = 0.2126 * r + 0.7152 * g + 0.0722 * b >= threshold ? 255 : 0;
 		d[i] = d[i + 1] = d[i + 2] = v;
-	}
-	return pixels;
+  }
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(d)
+	return resultImage;
+};
+
+function bicubic (data, width, height, parameters){
+   const srcImg = new ImageData(width, height)
+   srcImg.data.set(data)
+
+   let destImg;
+   let imagem = new Img.Image(width, height, data);
+   destImg = imagem.resize({width: width*4});
+   return destImg;
 };
 
 function histogramEqualization (pixels, width, height) {
@@ -136,7 +151,7 @@ function histogramEqualization (pixels, width, height) {
   return newImageData;
 }
 
-function grayscale(data) {
+function grayscale(data, width, height) {
   for (let i = 0; i < data.length; i += 4) {
     let red = data[i];
     let a = data[i + 3];
@@ -147,9 +162,12 @@ function grayscale(data) {
     data[i + 2] = red;
     data[i + 3] = a;
   }
-  return data;
+  
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
-function brighten(data, brightness = 25) {
+function brighten(data, brightness = 25, width, height) {
   for (let i = 0; i < data.length; i += 4) {
     data[i] = data[i] + brightness > 255 ? 255 : data[i] + brightness;
     data[i + 1] =
@@ -157,15 +175,19 @@ function brighten(data, brightness = 25) {
     data[i + 2] =
       data[i + 2] + brightness > 255 ? 255 : data[i + 2] + brightness;
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
-function invert(data) {
+function invert(data, width, height) {
   for (let i = 0; i < data.length; i += 4) {
     data[i] = 255 - data[i]; //r
     data[i + 1] = 255 - data[i + 1]; //g
     data[i + 2] = 255 - data[i + 2]; //b
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
 
 function erosion(data, width, height, parameters) {
@@ -174,7 +196,7 @@ function erosion(data, width, height, parameters) {
   imagem = imagem.grey();
   result = imagem.erode({kernel: parameters.kernel, iterations: parameters.iterations});
   result = result.rgba8();
-  return result.data;
+  return result
 }
 
 function dilation(data, width, height, parameters) {
@@ -183,10 +205,10 @@ function dilation(data, width, height, parameters) {
   imagem = imagem.grey();
   result = imagem.dilate({kernel: parameters.kernel, iterations: parameters.iterations});
   result = result.rgba8();
-  return result.data;
+  return result;
 }
 
-function noise(data) {
+function noise(data, width, height) {
   let random;
   for (let i = 0; i < data.length; i += 4) {
     random = (Math.random() - 0.5) * 70;
@@ -194,7 +216,9 @@ function noise(data) {
     data[i + 1] = data[i + 1] + random; //g
     data[i + 2] = data[i + 2] + random; //b
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
 function multiFilter(data, width, filterType, mag, mult, adj) {
   for (let i = 0; i < data.length; i += filterType) {

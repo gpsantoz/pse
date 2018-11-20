@@ -8,7 +8,6 @@ import { handleFilter } from '../../components/shared/handleFilter';
 import { nearest, bicubic, bilinear } from '../../components/shared/handleScaling';
 import {
   NEAREST_NEIGHBOR_INT,
-  BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
 } from '../../constants/actionTypes';
 
@@ -78,9 +77,9 @@ class Result extends React.Component {
         case _.snakeCase(NEAREST_NEIGHBOR_INT):
           nearest(sourceImage, destImage, scale);
           break;
-        case _.snakeCase(BICUBIC_INT):
-          bicubic(sourceImage, destImage, scale);
-          break;
+        // case _.snakeCase(BICUBIC_INT):
+        //   bicubic(sourceImage, destImage, scale);
+        //   break;
         case _.snakeCase(BILIENEAR_NEIGHBOR_INT):
           bilinear(sourceImage, destImage, scale);
           break;

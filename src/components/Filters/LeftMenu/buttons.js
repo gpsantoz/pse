@@ -1,7 +1,6 @@
 import {
   CUSTOM_FILTER,
   NEAREST_NEIGHBOR_INT,
-  BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
   MORPHOLOGICAL_FILTERING,
 } from '../../../constants/actionTypes';
@@ -9,7 +8,8 @@ import {
 import {
   EROSION,
   DILATION,
-  THRESHOLD
+  THRESHOLD,
+  BICUBIC_INTERPOLATION
 } from '../../../constants/filtersTypes';
 
 export default [
@@ -34,7 +34,7 @@ export default [
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                    [0, 1, 0]],
-          iterations: 25
+          iterations: 4
         }
       },
       {
@@ -44,33 +44,37 @@ export default [
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                     [0, 1, 0]],
-          iterations: 25
+          iterations: 4
+        }
+      },
+      {
+        color: 'pink',
+        label: BICUBIC_INTERPOLATION,
+        parameters: {
+          options: {
+            width: 1024
+          }
         }
       },
       {
         color: 'orange',
         label: 'Histogram Equalization'
       },
-      {
-        color: 'orange',
-        label: NEAREST_NEIGHBOR_INT,
-      },
-      {
-        color: 'orange',
-        label: BICUBIC_INT,
-      },
-      {
-        color: 'orange',
-        label: BILIENEAR_NEIGHBOR_INT,
-      },
-      {
-        color: 'green',
-        label: CUSTOM_FILTER,
-      },
+      // {
+      //   color: 'orange',
+      //   label: NEAREST_NEIGHBOR_INT,
+      // },
+      // {
+      //   color: 'orange',
+      //   label: BICUBIC_INT,
+      // },
+      // {
+      //   color: 'orange',
+      //   label: BILIENEAR_NEIGHBOR_INT,
+      // },
       {
         color: 'yellow',
         label: 'Grayscale',
-        parameters: "TESTE"
       },
       {
         color: 'yellow',

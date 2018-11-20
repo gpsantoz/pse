@@ -20,6 +20,7 @@ class Filters extends React.Component {
   }
 
   componentDidUpdate(prevProps){
+    console.log("Atualizou")
     const { filters, images, dispatch, loading } = this.props
     filters.blocks.forEach((filter, index) => {
       if(images[filter.id]){

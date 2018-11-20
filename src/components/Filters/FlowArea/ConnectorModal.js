@@ -9,7 +9,6 @@ import {
   OPEN_IMAGE,
   CUSTOM_FILTER,
   NEAREST_NEIGHBOR_INT,
-  BICUBIC_INT,
   BILIENEAR_NEIGHBOR_INT,
   MORPHOLOGICAL_FILTERING,
 } from '../../../constants/actionTypes';
@@ -68,8 +67,8 @@ class ConnectorModal extends React.Component {
       );
     } else if (
       type === _.snakeCase(NEAREST_NEIGHBOR_INT) ||
-      type === _.snakeCase(BILIENEAR_NEIGHBOR_INT) ||
-      type === _.snakeCase(BICUBIC_INT)
+      type === _.snakeCase(BILIENEAR_NEIGHBOR_INT) 
+      // type === _.snakeCase(BICUBIC_INT)
     ) {
       return (
         <ButtonBlock content={type} onClick={this.handleScaling.bind(this)} />
