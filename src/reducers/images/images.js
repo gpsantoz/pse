@@ -1,7 +1,6 @@
-import { ADD_PIXEL_DATA } from '../../constants/actionTypes';
-import { PROCESS_IMAGE } from '../../constants/actionTypes';
+import { ADD_PIXEL_DATA, PROCESS_IMAGE, SET_PROCESSING_STATUS } from '../../constants/actionTypes';
 
-export default (state = {}, action) => {
+export default (state = {processing: false}, action) => {
   let target, pixels;
   switch (action.type) {
     case ADD_PIXEL_DATA:
@@ -16,6 +15,10 @@ export default (state = {}, action) => {
       return {
         ...state,
         [action.payload.filter.id]: { pixels: action.payload.pixels}
+      };
+    case SET_PROCESSING_STATUS:
+      return {
+        ...state, processing: action.payload.status
       };
     default:
       return state;

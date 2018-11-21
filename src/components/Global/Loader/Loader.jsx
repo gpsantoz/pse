@@ -5,7 +5,7 @@ import './style.css'
 const PSELoader = (props) => {
   console.log(props.loading)
   return (
-    <Dimmer active={props.loading}>
+    <Dimmer page active={props.loading}>
         <Loader className="loader" />
     </Dimmer>
   )
