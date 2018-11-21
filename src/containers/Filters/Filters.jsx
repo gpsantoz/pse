@@ -33,6 +33,7 @@ class Filters extends React.Component {
         this.props.setProcessingStatus(true)
         this.props.addLoading()
         } 
+
       }
       else{
         setTimeout(function (theseArgs) 
@@ -42,6 +43,7 @@ class Filters extends React.Component {
         this.props.setProcessingStatus(true)
         this.props.addLoading()
       }
+
     });
   }
   }
@@ -87,7 +89,6 @@ class Filters extends React.Component {
     console.log(loading)
     return (
       <Grid stackable celled>
-      {/* <Loader loading={images.processing} /> */}
       <Grid.Row centered>
         <Grid.Column width={4}>
           <LeftMenu />

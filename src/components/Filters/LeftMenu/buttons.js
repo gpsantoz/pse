@@ -60,18 +60,6 @@ export default [
         color: 'orange',
         label: 'Histogram Equalization'
       },
-      // {
-      //   color: 'orange',
-      //   label: NEAREST_NEIGHBOR_INT,
-      // },
-      // {
-      //   color: 'orange',
-      //   label: BICUBIC_INT,
-      // },
-      // {
-      //   color: 'orange',
-      //   label: BILIENEAR_NEIGHBOR_INT,
-      // },
       {
         color: 'yellow',
         label: 'Grayscale',
