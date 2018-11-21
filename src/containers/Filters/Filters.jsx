@@ -26,54 +26,18 @@ class Filters extends React.Component {
       if(images[filter.id]){
         if(filter !== prevProps.filters.blocks[index] || images[filter.id-1] !== prevProps.images[filter.id-1]){
           this.props.addLoading()
-          this.props.processImage(filter, images[filter.id-1].pixels, dispatch) 
+          this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
           this.props.removeLoading()
-          // console.log("increase loaders")
-          // if(!this.state.loader)
-          // this.setState({loader: true})
-          // console.log("will process image")
-          // // if(this.props.loaders == 0)
-          // // this.props.addLoading()
-          // //setTimeout(function (theseArgs) { this.props.processImage(filter, images[filter.id-1].pixels, dispatch) }, 1000);
-          // console.log("processed image")
-          // if(!loading.loaders > 0){
-          //   // this.setState({loader: true})
-          //   const proc = this.props.processImage
-          //   // const sta = this.setState
-          //   this.props.addLoading()
-          //   const remProc = this.props.removeLoading
-          //   setTimeout(function (theseArgs) {
-          //     console.log(theseArgs)
-          //     console.log(this)
-          //     proc(filter, images[filter.id-1].pixels, dispatch) 
-          //     //sta({loader: false})
-          //     remProc()
-          //   }, 1000)
-          // }
-        } 
+          console.log("processed image")
+        }
       }
       else{
         this.props.addLoading()
-        this.props.processImage(filter, images[filter.id-1].pixels, dispatch) 
+        this.props.processImage(filter, images[filter.id-1].pixels, dispatch)
         this.props.removeLoading()
-      //   if(!loading.loaders > 0){
-      //   // this.setState({loader: true})
-      //   const proc = this.props.processImage
-      //   // const sta = this.setState
-      //   this.props.addLoading()
-      //   const remProc = this.props.removeLoading
-      //   setTimeout(function (theseArgs) {
-      //     console.log(theseArgs)
-      //     console.log(this)
-      //     proc(filter, images[filter.id-1].pixels, dispatch) 
-      //     //sta({loader: false})
-      //     remProc()
-      //   }, 1000)
-      // }
-
         console.log("processed image")
       }
-    
+
     });
   }
 
@@ -118,7 +82,7 @@ class Filters extends React.Component {
     const { filters, images, loading } = this.props
     return (
       <Grid stackable celled>
-      {/* <Loader loading={this.state.loader} /> */}
+      {/* <Loader loading={} /> */}
       <Grid.Row centered>
         <Grid.Column width={4}>
           <LeftMenu />
