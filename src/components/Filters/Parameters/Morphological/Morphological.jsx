@@ -1,11 +1,9 @@
 import React from 'react';
 import {
 	Grid,
-	Button
+    Button,
+    Radio
 } from 'semantic-ui-react';
-
-import ElementoEstruturante1 from '../../../../assets/images/elemento_estruturante_1.png'
-import ElementoEstruturante2 from '../../../../assets/images/elemento_estruturante_2.png'
 
 class Morphological extends React.Component {
 

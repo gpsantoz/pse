@@ -73,7 +73,7 @@ class Filters extends React.Component {
     return filters.blocks.map((filter, key) => {
       if(images[filter.id]){
       return (
-        <Grid.Column width={8} key={key}>
+        <Grid.Column className="preview-block" width={8} key={key}>
         <h4>Filtro: {filter.name}</h4>
            <Canvas id={`image-preview-${filter.id}`} pixels={images[filter.id].pixels}/>
            {this.renderParameters(filter)}
@@ -111,6 +111,7 @@ class Filters extends React.Component {
 
             {/* <h3>Parâmetros e Pré-Visualização</h3> */}
             {}
+  
             {
               this.renderPreviews(filters, images)
             }

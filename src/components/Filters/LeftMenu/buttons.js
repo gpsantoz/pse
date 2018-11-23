@@ -2,7 +2,6 @@ import {
   CUSTOM_FILTER,
   NEAREST_NEIGHBOR_INT,
   BILIENEAR_NEIGHBOR_INT,
-  MORPHOLOGICAL_FILTERING,
 } from '../../../constants/actionTypes';
 
 import {
@@ -16,10 +15,6 @@ export default [
   {
     label: 'Processamento',
     buttons: [
-      {
-        color: 'pink',
-        label: MORPHOLOGICAL_FILTERING,
-      },
       {
         color: 'pink',
         label: THRESHOLD,
