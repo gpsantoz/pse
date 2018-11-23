@@ -21,7 +21,7 @@ export const handleFilter = (filter, pixels) => {
       result = coreDSP.bicubic(pixels.data, width, height, filter.parameters)
       break;
     case 'brighten':
-      result = coreDSP.brighten(pixels.data, width, height);
+      result = coreDSP.brighten(pixels.data, 25, width, height);
       break;
     case 'histogram_equalization':
       result = coreDSP.histogramEqualization(pixels.data, width, height);
