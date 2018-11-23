@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import { ORIGINAL_IMAGE } from '../../constants/imageTypes'
-
 import { Histogram } from '../../components'
 import './style.css'
 
@@ -47,6 +46,30 @@ class Result extends React.Component {
 
   handleLoading = isLoading => {
     this.setState({ isLoading });
+  };
+
+  canvasToBlobPromisify = canvas => {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        async blob => {
+          const url = URL.createObjectURL(blob);
+          const link = { href: url, download: 'download.png' };
+          resolve(link);
+          //URL.revokeObjectURL(url);
+        },
+        'image/png',
+        1
+      );
+    });
+  };
+
+  downloadImage = async () => {
+    const link = document.getElementById('download');
+    const canvas = document.getElementById('image-result-canvas');
+    const newLink = await this.canvasToBlobPromisify(canvas);
+
+    link.href = newLink.href;
+    link.download = newLink.download;
   };
 
   componentDidMount() {
@@ -104,14 +127,24 @@ class Result extends React.Component {
         </Grid.Column>
 
         </Grid.Row>
-
+        <button class="ui right floated button">Right Floated</button>
+        <Button
+            inverted
+            color="blue"
+            onClick={this.downloadImage}
+            className="floated right"
+            id="download"
+          >
+            Download
+          </Button>
+          
           <Grid.Row centered>
             <Message style={style.container}>
               <Message.Header>Histograma da Imagem Original</Message.Header>
             </Message>
           </Grid.Row>
             <Grid.Row centered className="histogram-container">
-            <Histogram pixels={processedImage}/>
+            <Histogram pixels={pixels}/>
             </Grid.Row>
             <Grid.Row centered>
             <Message style={style.container}>
@@ -119,8 +152,9 @@ class Result extends React.Component {
             </Message>
           </Grid.Row>
             <Grid.Row centered className="histogram-container">
-            <Histogram pixels={pixels}/>
-            </Grid.Row>
+            <Histogram pixels={processedImage}/>
+          </Grid.Row>
+          
         </Grid>
       </div>
     );

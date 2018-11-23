@@ -76,7 +76,9 @@ class Filters extends React.Component {
         <Grid.Column className="preview-block" width={8} key={key}>
         <h4>Filtro: {filter.name}</h4>
            <Canvas id={`image-preview-${filter.id}`} pixels={images[filter.id].pixels}/>
-           {this.renderParameters(filter)}
+           <div className="image-parameters">
+            {this.renderParameters(filter)}
+           </div>
         </Grid.Column>
       )
     }
@@ -84,9 +86,7 @@ class Filters extends React.Component {
   }
 
   render() {
-    console.log("render filters")
     const { filters, images, loading } = this.props
-    console.log(loading)
     return (
       <Grid stackable celled>
       <Grid.Row centered>

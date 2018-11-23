@@ -1,0 +1,8 @@
+.radio-margin{
+    margin: 0px 10px !important;
+}
+
+.inline-fields{
+    display: inline-flex;
+    width: 100%;
+}

@@ -26,6 +26,8 @@ export default [
         color: 'pink',
         label: EROSION,
         parameters: {
+          matrixSize: '3',
+          element: 'cross',
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                    [0, 1, 0]],
@@ -36,6 +38,7 @@ export default [
         color: 'pink',
         label: DILATION,
         parameters: {
+          matrixSize: '3',
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                     [0, 1, 0]],
