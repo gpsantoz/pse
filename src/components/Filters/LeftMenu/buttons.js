@@ -9,13 +9,18 @@ import {
   EROSION,
   DILATION,
   THRESHOLD,
-  BICUBIC_INTERPOLATION
+  BICUBIC_INTERPOLATION,
+  YOLO,
 } from '../../../constants/filtersTypes';
 
 export default [
   {
     label: 'Processamento',
     buttons: [
+      {
+        color: 'pink',
+        label: YOLO,
+      },
       {
         color: 'pink',
         label: MORPHOLOGICAL_FILTERING,

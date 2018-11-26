@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 export default class CoreDSP {
   constructor() {
     this.mag = 127;
@@ -42,10 +41,11 @@ export default class CoreDSP {
     this.security = security;
     this.robbery = security;
     this.getHistograms = getHistograms;
-    this.erosion = erosion
-    this.dilation = dilation
-    this.threshold = threshold
-    this.bicubic = bicubic
+    this.erosion = erosion;
+    this.dilation = dilation;
+    this.threshold = threshold;
+    this.bicubic = bicubic;
+    this.yolo = yolo;
   }
 }
 
@@ -76,6 +76,17 @@ function getHistograms(data) {
 }
 
 //FILTERS
+
+
+function yolo (pixels,  width, height, threshold) {
+  console.log('aquiiii');
+
+  //  let destImg;
+  //  let imagem = new Img.Image(width, height, data);
+  //  destImg = imagem.resize({width: width*4});
+  //  return destImg;
+  return null;
+}
 
 function threshold (pixels,  width, height, threshold){
 	let d = pixels;
