@@ -33,13 +33,13 @@ export const handleFilter = (filter, pixels) => {
         result = coreDSP.noise(pixels.data,  width, height);
       break;
     case 'sunset':
-        result = coreDSP.sunset(pixels.data, width,  width, height);
+        result = coreDSP.sunset(pixels.data, width, height);
       break;
     case 'analog':
-        result = coreDSP.analog(pixels.data, width,  width, height);
+        result = coreDSP.analog(pixels.data, width, height);
       break;
     case 'emboss':
-        result = coreDSP.emboss(pixels.data, width,  width, height);
+        result = coreDSP.emboss(pixels.data, width, height);
       break;
     case 'sobel':
         result = coreDSP.sobel(pixels.data, width, height);

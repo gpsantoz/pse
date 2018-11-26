@@ -220,13 +220,15 @@ function noise(data, width, height) {
   resultImage.data.set(data)
 	return resultImage;
 }
-function multiFilter(data, width, filterType, mag, mult, adj) {
+function multiFilter(data, width, height, filterType, mag, mult, adj) {
   for (let i = 0; i < data.length; i += filterType) {
     if (i % 4 !== 3) {
       data[i] = mag + mult * data[i] - data[i + adj] - data[i + width * 4];
     }
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 } // output needs to be clamped to match C++ filters
 
 //to bind arguments in the right order
@@ -289,7 +291,9 @@ const convFilter = (
       }
     }
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 };
 const blur = bindLastArgs(
   convFilter,
@@ -401,5 +405,7 @@ const sobel = (data, width, height, invert = false) => {
       }
     }
   }
-  return data; //sobelData;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 };
