@@ -8,7 +8,6 @@ import {
   EROSION,
   DILATION,
   THRESHOLD,
-  BICUBIC_INTERPOLATION,
   YOLO,
   INTERPOLATION,
   SUBSTRACT_IMAGE,
@@ -23,10 +22,6 @@ export default [
       {
         color: 'pink',
         label: YOLO,
-      },
-      {
-        color: 'pink',
-        label: MORPHOLOGICAL_FILTERING,
       },
       {
         color: 'pink',
