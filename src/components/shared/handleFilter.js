@@ -84,16 +84,16 @@ export const handleFilter = (filter, pixels) => {
         result = coreDSP.underground(pixels.data,  width, height);
       break;
     case 'rooster':
-        result = coreDSP.rooster(pixels.data, width);
+        result = coreDSP.rooster(pixels.data, width, height);
       break;
     case 'mist':
-        result = coreDSP.mist(pixels.data, width);
+        result = coreDSP.mist(pixels.data, width, height);
       break;
     case 'kaleidoscope':
-        result = coreDSP.kaleidoscope(pixels.data, width);
+        result = coreDSP.kaleidoscope(pixels.data, width, height);
       break;
     case 'bacteria':
-        result = coreDSP.bacteria(pixels.data, width);
+        result = coreDSP.bacteria(pixels.data, width, height);
       break;
     case 'dewdrops':
         result = coreDSP.dewdrops(pixels.data, width, height);
@@ -102,21 +102,21 @@ export const handleFilter = (filter, pixels) => {
         result = coreDSP.destruction(pixels.data, width, height);
       break;
     case 'hulk_edge':
-        result = coreDSP.hulk(pixels.data, width);
+        result = coreDSP.hulk(pixels.data, width, height);
       break;
     case 'ghost':
-        result = coreDSP.ghost(pixels.data, width);
+        result = coreDSP.ghost(pixels.data, width, height);
       break;
     case 'twisted':
-        result = coreDSP.twisted(pixels.data, width);
+        result = coreDSP.twisted(pixels.data, width, height);
       break;
     case 'security':
-        result = coreDSP.security(pixels.data, width);
+        result = coreDSP.security(pixels.data, width, height);
       break;
     default:
       break;
   }
-  
+
   const imgResult = new ImageData(result.width || width, result.height || height)
   imgResult.data.set(result.data)
   return imgResult
