@@ -6,3 +6,12 @@
     display: inline-flex;
     width: 100%;
 }
+
+.iterations-input{
+    max-width: 60px;
+    margin-left: 9px !important;
+}
+
+.update-filters{
+    margin-top: 10px;
+}

@@ -6,7 +6,9 @@ import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
 import { ORIGINAL_IMAGE } from '../../constants/imageTypes'
 import { Histogram } from '../../components'
+import NavigationButtons from '../../components/shared/NavigationButtons'
 import './style.css'
+
 
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 const coreDSP = new CoreDSP();
@@ -127,17 +129,8 @@ class Result extends React.Component {
         </Grid.Column>
 
         </Grid.Row>
-        <button class="ui right floated button">Right Floated</button>
-        <Button
-            inverted
-            color="blue"
-            onClick={this.downloadImage}
-            className="floated right"
-            id="download"
-          >
-            Download
-          </Button>
-          
+        <NavigationButtons />
+         
           <Grid.Row centered>
             <Message style={style.container}>
               <Message.Header>Histograma da Imagem Original</Message.Header>

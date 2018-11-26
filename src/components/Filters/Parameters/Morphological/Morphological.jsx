@@ -134,8 +134,9 @@ class Morphological extends React.Component {
         <Grid.Column>
         <div>
         <label>
-        Quantidade de Iterações:
+        Iterations:
             <input
+            className="iterations-input"
                 type="number"
                 min="1"
                 name="iterations"
