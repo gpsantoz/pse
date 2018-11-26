@@ -17,8 +17,8 @@ export const handleFilter = (filter, pixels) => {
     case 'grayscale':
       result = coreDSP.grayscale(pixels.data,  width, height);
       break;
-    case 'bicubic_interpolation':
-      result = coreDSP.bicubic(pixels.data, width, height, filter.parameters)
+    case 'interpolation':
+      result = coreDSP.interpolation(pixels.data, width, height, filter.parameters)
       break;
     case 'brighten':
       result = coreDSP.brighten(pixels.data, 25, width, height);

@@ -45,7 +45,7 @@ export default class CoreDSP {
     this.erosion = erosion
     this.dilation = dilation
     this.threshold = threshold
-    this.bicubic = bicubic
+    this.interpolation = interpolation
   }
 }
 
@@ -91,13 +91,17 @@ function threshold (pixels,  width, height, threshold){
 	return resultImage;
 };
 
-function bicubic (data, width, height, parameters){
+function interpolation (data, width, height, parameters){
    const srcImg = new ImageData(width, height)
    srcImg.data.set(data)
 
+   var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
    let destImg;
    let imagem = new Img.Image(width, height, data);
-   destImg = imagem.resize({width: width*4});
+   console.log('method')
+   console.log(parameters)
+   console.log(algorithm)
+   destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
    return destImg;
 };
 

@@ -8,8 +8,8 @@ import FlowArea from '../../components/Filters/FlowArea';
 import { bindActionCreators } from 'redux'
 import { filtersActions, image, loading } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
-import { Canvas, Morphological, Threshold, Loader } from '../../components'
-import { EROSION, DILATION, THRESHOLD } from '../../constants/filtersTypes'
+import { Canvas, Morphological, Threshold, Interpolation, Loader } from '../../components'
+import { EROSION, DILATION, THRESHOLD, INTERPOLATION } from '../../constants/filtersTypes'
 import { removeLoading } from '../../actions/loading/loading';
 
 class Filters extends React.Component {
@@ -48,7 +48,7 @@ class Filters extends React.Component {
   }
   }
 
-  renderParameters(filter){
+  renderParameters(filter, pixels){
     if (filter.type) {
       switch (filter.type) {
         case _.snakeCase(EROSION):
@@ -56,12 +56,16 @@ class Filters extends React.Component {
             <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1} />
           )
         case _.snakeCase(DILATION):
-        return (
-          <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+          return (
+            <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
         )
         case _.snakeCase(THRESHOLD):
-        return (
-          <Threshold updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+          return (
+            <Threshold updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+        )
+        case _.snakeCase(INTERPOLATION):
+          return (
+            <Interpolation pixels={pixels} updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
         )
         default:
           break;
@@ -77,7 +81,7 @@ class Filters extends React.Component {
         <h4>Filtro: {filter.name}</h4>
            <Canvas id={`image-preview-${filter.id}`} pixels={images[filter.id].pixels}/>
            <div className="image-parameters">
-            {this.renderParameters(filter)}
+            {this.renderParameters(filter, images[filter.id].pixels)}
            </div>
         </Grid.Column>
       )

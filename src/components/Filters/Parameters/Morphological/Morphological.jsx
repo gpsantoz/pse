@@ -148,6 +148,7 @@ class Morphological extends React.Component {
             </label>
         </div>
       <Button
+            className="update-filters"
             basic
             color="green"
             onClick={(e) => {

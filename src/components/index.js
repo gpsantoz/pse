@@ -6,6 +6,7 @@ import Stepper from './Home/Stepper/Stepper'
 import Morphological from './Filters/Parameters/Morphological/Morphological'
 import Threshold from './Filters/Parameters/Threshold/Threshold'
 import Slider from './Global/Slider/Slider'
+import Interpolation from './Filters/Parameters/Interpolation/Interpolation'
 
 export {
   Logo,
@@ -15,5 +16,6 @@ export {
   Stepper,
   Threshold,
   Morphological,
-  Slider
+  Slider,
+  Interpolation
 }

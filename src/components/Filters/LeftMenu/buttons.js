@@ -8,7 +8,7 @@ import {
   EROSION,
   DILATION,
   THRESHOLD,
-  BICUBIC_INTERPOLATION
+  INTERPOLATION
 } from '../../../constants/filtersTypes';
 
 export default [
@@ -47,11 +47,10 @@ export default [
       },
       {
         color: 'pink',
-        label: BICUBIC_INTERPOLATION,
+        label: INTERPOLATION,
         parameters: {
-          options: {
-            width: 1024
-          }
+            scale: '2',
+            algorithm: '1'
         }
       },
       {
