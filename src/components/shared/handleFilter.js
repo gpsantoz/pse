@@ -20,6 +20,17 @@ export const handleFilter = (filter, pixels) => {
     case 'interpolation':
       result = coreDSP.interpolation(pixels.data, width, height, filter.parameters)
       break;
+    case 'median':
+      result = coreDSP.median(pixels.data, width, height, filter.parameters)
+      break;
+    case 'gaussian':
+      result = coreDSP.gaussian(pixels.data, width, height, filter.parameters)
+      break;
+    case 'substract_image':
+        const srcImg = new ImageData(width, height)
+      srcImg.data.set(data)
+      result = srcImg
+      break;
     case 'brighten':
       result = coreDSP.brighten(pixels.data, 25, width, height);
       break;

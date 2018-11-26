@@ -108,7 +108,7 @@ class Result extends React.Component {
       <div style={style.container}>
         <Grid>
         <Grid.Row centered className="images-columns">
-        <Grid.Column width={8}  >
+        <Grid.Column centered width={8}  >
             <Message style={style.container}>
               <Message.Header className="centered-text">Imagem Original</Message.Header>
             </Message>
@@ -118,7 +118,7 @@ class Result extends React.Component {
             <canvas id="image-original-canvas" style={style.canvas} />
         </Grid.Column>
 
-        <Grid.Column width={8}>
+        <Grid.Column centered width={8}>
             <Message style={style.container}>
               <Message.Header className="centered-text">Imagem Processada</Message.Header>
             </Message>
@@ -130,7 +130,7 @@ class Result extends React.Component {
 
         </Grid.Row>
         <NavigationButtons />
-         
+
           <Grid.Row centered>
             <Message style={style.container}>
               <Message.Header>Histograma da Imagem Original</Message.Header>
@@ -147,7 +147,7 @@ class Result extends React.Component {
             <Grid.Row centered className="histogram-container">
             <Histogram pixels={processedImage}/>
           </Grid.Row>
-          
+
         </Grid>
       </div>
     );

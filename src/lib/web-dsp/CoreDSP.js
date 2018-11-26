@@ -46,6 +46,8 @@ export default class CoreDSP {
     this.dilation = dilation
     this.threshold = threshold
     this.interpolation = interpolation
+    this.median = median
+    this.gaussian = gaussian
   }
 }
 
@@ -98,11 +100,19 @@ function interpolation (data, width, height, parameters){
    var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
    let destImg;
    let imagem = new Img.Image(width, height, data);
-   console.log('method')
-   console.log(parameters)
-   console.log(algorithm)
    destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
    return destImg;
+};
+
+function substractImage (data, width, height, parameters){
+  const srcImg = new ImageData(width, height)
+  srcImg.data.set(data)
+
+  var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
+  let destImg;
+  let imagem = new Img.Image(width, height, data);
+  destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
+  return destImg;
 };
 
 function histogramEqualization (pixels, width, height) {
@@ -166,7 +176,7 @@ function grayscale(data, width, height) {
     data[i + 2] = red;
     data[i + 3] = a;
   }
-  
+
   const resultImage = new ImageData(width, height)
   resultImage.data.set(data)
 	return resultImage;
@@ -192,6 +202,20 @@ function invert(data, width, height) {
   const resultImage = new ImageData(width, height)
   resultImage.data.set(data)
 	return resultImage;
+}
+
+function median(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  result = imagem.medianFilter({radius: parameters.radius});
+  return result
+}
+
+function gaussian(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  result = imagem.gaussianFilter({radius: parameters.radius});
+  return result
 }
 
 function erosion(data, width, height, parameters) {

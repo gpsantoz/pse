@@ -8,7 +8,10 @@ import {
   EROSION,
   DILATION,
   THRESHOLD,
-  INTERPOLATION
+  INTERPOLATION,
+  SUBSTRACT_IMAGE,
+  MEDIAN,
+  GAUSSIAN
 } from '../../../constants/filtersTypes';
 
 export default [
@@ -53,6 +56,27 @@ export default [
             algorithm: '1'
         }
       },
+      {
+        color: 'pink',
+        label: MEDIAN,
+        parameters: {
+          radius: '1'
+        }
+      },
+      {
+        color: 'pink',
+        label: GAUSSIAN,
+        parameters: {
+          radius: '1'
+        }
+      },
+      // {
+      //   color: 'pink',
+      //   label: SUBSTRACT_IMAGE,
+      //   parameters: {
+
+      //   }
+      // },
       {
         color: 'orange',
         label: 'Histogram Equalization'
