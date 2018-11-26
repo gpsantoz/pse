@@ -13,13 +13,6 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    // if(nextProps.someValue!==this.props.someValue){
-    //   //Perform some operation
-    //   this.setState({someState: someValue });
-    //   this.classMethod();
-    // }
-    console.log("will receive props")
-    console.log(nextProps)
   }
 
   render() {

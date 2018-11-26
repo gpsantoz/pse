@@ -29,10 +29,10 @@ const style = {
 
 class ButtonBlock extends React.Component {
 	render() {
-		const { content, onClick } = this.props;
+		const { content } = this.props;
 		return (
 			<div style={style.node}>
-				<div style={style.nodeContent} onClick={onClick}>
+				<div style={style.nodeContent}>
 					{content}
 				</div>
 			</div>

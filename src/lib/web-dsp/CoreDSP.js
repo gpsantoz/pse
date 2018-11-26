@@ -44,7 +44,9 @@ export default class CoreDSP {
     this.erosion = erosion;
     this.dilation = dilation;
     this.threshold = threshold;
-    this.bicubic = bicubic;
+    this.interpolation = interpolation;
+    this.median = median;
+    this.gaussian = gaussian;
     this.yolo = yolo;
   }
 }
@@ -102,14 +104,26 @@ function threshold (pixels,  width, height, threshold){
 	return resultImage;
 };
 
-function bicubic (data, width, height, parameters){
+function interpolation (data, width, height, parameters){
    const srcImg = new ImageData(width, height)
    srcImg.data.set(data)
 
+   var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
    let destImg;
    let imagem = new Img.Image(width, height, data);
-   destImg = imagem.resize({width: width*4});
+   destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
    return destImg;
+};
+
+function substractImage (data, width, height, parameters){
+  const srcImg = new ImageData(width, height)
+  srcImg.data.set(data)
+
+  var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
+  let destImg;
+  let imagem = new Img.Image(width, height, data);
+  destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
+  return destImg;
 };
 
 function histogramEqualization (pixels, width, height) {
@@ -173,7 +187,7 @@ function grayscale(data, width, height) {
     data[i + 2] = red;
     data[i + 3] = a;
   }
-  
+
   const resultImage = new ImageData(width, height)
   resultImage.data.set(data)
 	return resultImage;
@@ -199,6 +213,20 @@ function invert(data, width, height) {
   const resultImage = new ImageData(width, height)
   resultImage.data.set(data)
 	return resultImage;
+}
+
+function median(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  result = imagem.medianFilter({radius: parameters.radius});
+  return result
+}
+
+function gaussian(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  result = imagem.gaussianFilter({radius: parameters.radius});
+  return result
 }
 
 function erosion(data, width, height, parameters) {
@@ -231,13 +259,15 @@ function noise(data, width, height) {
   resultImage.data.set(data)
 	return resultImage;
 }
-function multiFilter(data, width, filterType, mag, mult, adj) {
+function multiFilter(data, width, height, filterType, mag, mult, adj) {
   for (let i = 0; i < data.length; i += filterType) {
     if (i % 4 !== 3) {
       data[i] = mag + mult * data[i] - data[i + adj] - data[i + width * 4];
     }
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 } // output needs to be clamped to match C++ filters
 
 //to bind arguments in the right order
@@ -300,7 +330,9 @@ const convFilter = (
       }
     }
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 };
 const blur = bindLastArgs(
   convFilter,
@@ -412,5 +444,7 @@ const sobel = (data, width, height, invert = false) => {
       }
     }
   }
-  return data; //sobelData;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 };

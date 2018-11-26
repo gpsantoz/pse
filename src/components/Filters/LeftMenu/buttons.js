@@ -2,7 +2,6 @@ import {
   CUSTOM_FILTER,
   NEAREST_NEIGHBOR_INT,
   BILIENEAR_NEIGHBOR_INT,
-  MORPHOLOGICAL_FILTERING,
 } from '../../../constants/actionTypes';
 
 import {
@@ -11,6 +10,10 @@ import {
   THRESHOLD,
   BICUBIC_INTERPOLATION,
   YOLO,
+  INTERPOLATION,
+  SUBSTRACT_IMAGE,
+  MEDIAN,
+  GAUSSIAN
 } from '../../../constants/filtersTypes';
 
 export default [
@@ -36,6 +39,8 @@ export default [
         color: 'pink',
         label: EROSION,
         parameters: {
+          matrixSize: '3',
+          element: 'cross',
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                    [0, 1, 0]],
@@ -46,6 +51,7 @@ export default [
         color: 'pink',
         label: DILATION,
         parameters: {
+          matrixSize: '3',
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                     [0, 1, 0]],
@@ -54,13 +60,33 @@ export default [
       },
       {
         color: 'pink',
-        label: BICUBIC_INTERPOLATION,
+        label: INTERPOLATION,
         parameters: {
-          options: {
-            width: 1024
-          }
+            scale: '2',
+            algorithm: '1'
         }
       },
+      {
+        color: 'pink',
+        label: MEDIAN,
+        parameters: {
+          radius: '1'
+        }
+      },
+      {
+        color: 'pink',
+        label: GAUSSIAN,
+        parameters: {
+          radius: '1'
+        }
+      },
+      // {
+      //   color: 'pink',
+      //   label: SUBSTRACT_IMAGE,
+      //   parameters: {
+
+      //   }
+      // },
       {
         color: 'orange',
         label: 'Histogram Equalization'

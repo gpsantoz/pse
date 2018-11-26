@@ -21,11 +21,22 @@ export const handleFilter = (filter, pixels) => {
     case 'grayscale':
       result = coreDSP.grayscale(pixels.data,  width, height);
       break;
-    case 'bicubic_interpolation':
-      result = coreDSP.bicubic(pixels.data, width, height, filter.parameters)
+    case 'interpolation':
+      result = coreDSP.interpolation(pixels.data, width, height, filter.parameters)
+      break;
+    case 'median':
+      result = coreDSP.median(pixels.data, width, height, filter.parameters)
+      break;
+    case 'gaussian':
+      result = coreDSP.gaussian(pixels.data, width, height, filter.parameters)
+      break;
+    case 'substract_image':
+        const srcImg = new ImageData(width, height)
+      srcImg.data.set(data)
+      result = srcImg
       break;
     case 'brighten':
-      result = coreDSP.brighten(pixels.data, width, height);
+      result = coreDSP.brighten(pixels.data, 25, width, height);
       break;
     case 'histogram_equalization':
       result = coreDSP.histogramEqualization(pixels.data, width, height);
@@ -37,13 +48,13 @@ export const handleFilter = (filter, pixels) => {
         result = coreDSP.noise(pixels.data,  width, height);
       break;
     case 'sunset':
-        result = coreDSP.sunset(pixels.data, width,  width, height);
+        result = coreDSP.sunset(pixels.data, width, height);
       break;
     case 'analog':
-        result = coreDSP.analog(pixels.data, width,  width, height);
+        result = coreDSP.analog(pixels.data, width, height);
       break;
     case 'emboss':
-        result = coreDSP.emboss(pixels.data, width,  width, height);
+        result = coreDSP.emboss(pixels.data, width, height);
       break;
     case 'sobel':
         result = coreDSP.sobel(pixels.data, width, height);
@@ -88,16 +99,16 @@ export const handleFilter = (filter, pixels) => {
         result = coreDSP.underground(pixels.data,  width, height);
       break;
     case 'rooster':
-        result = coreDSP.rooster(pixels.data, width);
+        result = coreDSP.rooster(pixels.data, width, height);
       break;
     case 'mist':
-        result = coreDSP.mist(pixels.data, width);
+        result = coreDSP.mist(pixels.data, width, height);
       break;
     case 'kaleidoscope':
-        result = coreDSP.kaleidoscope(pixels.data, width);
+        result = coreDSP.kaleidoscope(pixels.data, width, height);
       break;
     case 'bacteria':
-        result = coreDSP.bacteria(pixels.data, width);
+        result = coreDSP.bacteria(pixels.data, width, height);
       break;
     case 'dewdrops':
         result = coreDSP.dewdrops(pixels.data, width, height);
@@ -106,22 +117,22 @@ export const handleFilter = (filter, pixels) => {
         result = coreDSP.destruction(pixels.data, width, height);
       break;
     case 'hulk_edge':
-        result = coreDSP.hulk(pixels.data, width);
+        result = coreDSP.hulk(pixels.data, width, height);
       break;
     case 'ghost':
-        result = coreDSP.ghost(pixels.data, width);
+        result = coreDSP.ghost(pixels.data, width, height);
       break;
     case 'twisted':
-        result = coreDSP.twisted(pixels.data, width);
+        result = coreDSP.twisted(pixels.data, width, height);
       break;
     case 'security':
-        result = coreDSP.security(pixels.data, width);
+        result = coreDSP.security(pixels.data, width, height);
       break;
     default:
       break;
   }
-  
-  const imgResult = new ImageData(result.width || width, result.height || height);
-  imgResult.data.set(result.data);
-  return imgResult;
+
+  const imgResult = new ImageData(result.width || width, result.height || height)
+  imgResult.data.set(result.data)
+  return imgResult
 };

@@ -8,8 +8,8 @@ import FlowArea from '../../components/Filters/FlowArea';
 import { bindActionCreators } from 'redux'
 import { filtersActions, image, loading } from '../../actions';
 import { AREA_1 } from '../../constants/actionTypes';
-import { Canvas, Morphological, Threshold, Loader } from '../../components'
-import { EROSION, DILATION, THRESHOLD } from '../../constants/filtersTypes'
+import { Canvas, Morphological, Threshold, Interpolation, Substract, NumberParameter, Loader } from '../../components'
+import { EROSION, DILATION, THRESHOLD, INTERPOLATION, SUBSTRACT_IMAGE, MEDIAN, GAUSSIAN } from '../../constants/filtersTypes'
 import { removeLoading } from '../../actions/loading/loading';
 
 class Filters extends React.Component {
@@ -18,7 +18,7 @@ class Filters extends React.Component {
     super(props)
     this.state = { loader: false }
   }
- 
+
   componentDidUpdate(prevProps){
     const { filters, images, dispatch, loading } = this.props
     var that = this
@@ -26,19 +26,19 @@ class Filters extends React.Component {
     filters.blocks.forEach((filter, index) => {
       if(images[filter.id]){
         if(filter !== prevProps.filters.blocks[index] || images[filter.id-1] !== prevProps.images[filter.id-1]){
-          setTimeout(function (theseArgs) 
-          { 
-            that.props.processImage(filter, images[filter.id-1].pixels, dispatch) 
+          setTimeout(function (theseArgs)
+          {
+            that.props.processImage(filter, images[filter.id-1].pixels, dispatch)
           }, 500)
         this.props.setProcessingStatus(true)
         this.props.addLoading()
-        } 
+        }
 
       }
       else{
-        setTimeout(function (theseArgs) 
-          { 
-            that.props.processImage(filter, images[filter.id-1].pixels, dispatch) 
+        setTimeout(function (theseArgs)
+          {
+            that.props.processImage(filter, images[filter.id-1].pixels, dispatch)
           }, 500)
         this.props.setProcessingStatus(true)
         this.props.addLoading()
@@ -48,7 +48,7 @@ class Filters extends React.Component {
   }
   }
 
-  renderParameters(filter){
+  renderParameters(filter, pixels){
     if (filter.type) {
       switch (filter.type) {
         case _.snakeCase(EROSION):
@@ -56,13 +56,29 @@ class Filters extends React.Component {
             <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1} />
           )
         case _.snakeCase(DILATION):
-        return (
-          <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+          return (
+            <Morphological updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
         )
         case _.snakeCase(THRESHOLD):
-        return (
-          <Threshold updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+          return (
+            <Threshold updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
         )
+        case _.snakeCase(INTERPOLATION):
+          return (
+            <Interpolation pixels={pixels} updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+        )
+        case _.snakeCase(SUBSTRACT_IMAGE):
+        return (
+            <Substract images={this.props.images} updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+      )
+      case _.snakeCase(MEDIAN):
+        return (
+            <NumberParameter name='Radius' parameter='radius' updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+      )
+      case _.snakeCase(GAUSSIAN):
+        return (
+            <NumberParameter name='Radius' parameter='radius' images={this.props.images} updateFilter={this.props.updateProcessingBlock} filter={filter} target={AREA_1}/>
+      )
         default:
           break;
       }
@@ -73,10 +89,13 @@ class Filters extends React.Component {
     return filters.blocks.map((filter, key) => {
       if(images[filter.id]){
       return (
-        <Grid.Column width={8} key={key}>
-        <h4>Filtro: {filter.name}</h4>
+        <Grid.Column className="preview-block" width={8} key={key}>
+        <h4>Filter: {filter.name}</h4>
+        <p>Image number: {filter.id}</p>
            <Canvas id={`image-preview-${filter.id}`} pixels={images[filter.id].pixels}/>
-           {this.renderParameters(filter)}
+           <div className="image-parameters">
+            {this.renderParameters(filter, images[filter.id].pixels)}
+           </div>
         </Grid.Column>
       )
     }
@@ -84,9 +103,7 @@ class Filters extends React.Component {
   }
 
   render() {
-    console.log("render filters")
     const { filters, images, loading } = this.props
-    console.log(loading)
     return (
       <Grid stackable celled>
       <Grid.Row centered>
@@ -111,6 +128,7 @@ class Filters extends React.Component {
 
             {/* <h3>Parâmetros e Pré-Visualização</h3> */}
             {}
+
             {
               this.renderPreviews(filters, images)
             }

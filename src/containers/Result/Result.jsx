@@ -4,17 +4,11 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button, Grid, Message, Dimmer, Loader } from 'semantic-ui-react';
 import { writeImageData } from '../../lib/web-dsp/WebDSP';
-import { handleFilter } from '../../components/shared/handleFilter';
-import { nearest, bicubic, bilinear } from '../../components/shared/handleScaling';
-import {
-  NEAREST_NEIGHBOR_INT,
-  BILIENEAR_NEIGHBOR_INT,
-} from '../../constants/actionTypes';
-
 import { ORIGINAL_IMAGE } from '../../constants/imageTypes'
-
 import { Histogram } from '../../components'
+import NavigationButtons from '../../components/shared/NavigationButtons'
 import './style.css'
+
 
 import CoreDSP from '../../lib/web-dsp/CoreDSP';
 const coreDSP = new CoreDSP();
@@ -56,54 +50,50 @@ class Result extends React.Component {
     this.setState({ isLoading });
   };
 
-  handleScaling = (type, loadCanvas, pixels) => {
-    // setup source image
-    const sourceImage = new ImageData(pixels.width, pixels.height);
+  canvasToBlobPromisify = canvas => {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        async blob => {
+          const url = URL.createObjectURL(blob);
+          const link = { href: url, download: 'download.png' };
+          resolve(link);
+          //URL.revokeObjectURL(url);
+        },
+        'image/png',
+        1
+      );
+    });
+  };
 
-    sourceImage.data.set(pixels.data);
+  downloadImage = async () => {
+    const link = document.getElementById('download');
+    const canvas = document.getElementById('image-result-canvas');
+    const newLink = await this.canvasToBlobPromisify(canvas);
 
-    loadCanvas.width = sourceImage.width;
-    loadCanvas.height = sourceImage.height;
-
-    // setup dest image
-    let scale = 5.0;
-    let newWidth = Math.ceil(sourceImage.width * scale);
-    let newHeight = Math.ceil(sourceImage.height * scale);
-
-    const destImage = new ImageData(newWidth, newHeight);
-
-    if (type) {
-      switch (type) {
-        case _.snakeCase(NEAREST_NEIGHBOR_INT):
-          nearest(sourceImage, destImage, scale);
-          break;
-        // case _.snakeCase(BICUBIC_INT):
-        //   bicubic(sourceImage, destImage, scale);
-        //   break;
-        case _.snakeCase(BILIENEAR_NEIGHBOR_INT):
-          bilinear(sourceImage, destImage, scale);
-          break;
-        default:
-          return pixels;
-      }
-    }
-
-    return destImage;
+    link.href = newLink.href;
+    link.download = newLink.download;
   };
 
   componentDidMount() {
-    const canvas = document.getElementById('image-result-canvas');
+    const resultCanvas = document.getElementById('image-result-canvas');
+    const originalCanvas = document.getElementById('image-original-canvas');
     const { images, filters } = this.props;
     const target = ORIGINAL_IMAGE;
-    const { blocks } = filters;
-    //ver imagem
-    const { pixels } = images[filters.blocks.length];
+    const originalPixels = images[target].pixels;
+    const resultPixels = images[filters.blocks.length].pixels;
 
     writeImageData(
-      canvas,
-      pixels.data,
-      pixels.width,
-      pixels.height
+      resultCanvas,
+      resultPixels.data,
+      resultPixels.width,
+      resultPixels.height
+    );
+
+    writeImageData(
+      originalCanvas,
+      originalPixels.data,
+      originalPixels.width,
+      originalPixels.height
     );
 
     this.handleLoading(false);
@@ -113,29 +103,51 @@ class Result extends React.Component {
     const { images, filters } = this.props;
     const target = ORIGINAL_IMAGE;
     const { pixels } = images[target];
+    processedImage = images[filters.blocks.length].pixels
     return (
       <div style={style.container}>
         <Grid>
-          <Grid.Row centered>
+        <Grid.Row centered className="images-columns">
+        <Grid.Column centered width={8}  >
             <Message style={style.container}>
-              <Message.Header>Imagem Processada</Message.Header>
+              <Message.Header className="centered-text">Imagem Original</Message.Header>
             </Message>
-          </Grid.Row>
-          <Grid.Row centered>
+            <Dimmer active={this.state.isLoading}>
+              <Loader />
+            </Dimmer>
+            <canvas id="image-original-canvas" style={style.canvas} />
+        </Grid.Column>
+
+        <Grid.Column centered width={8}>
+            <Message style={style.container}>
+              <Message.Header className="centered-text">Imagem Processada</Message.Header>
+            </Message>
             <Dimmer active={this.state.isLoading}>
               <Loader />
             </Dimmer>
             <canvas id="image-result-canvas" style={style.canvas} />
+        </Grid.Column>
+
+        </Grid.Row>
+        <NavigationButtons />
+
+          <Grid.Row centered>
+            <Message style={style.container}>
+              <Message.Header>Histograma da Imagem Original</Message.Header>
+            </Message>
           </Grid.Row>
-           <Grid.Row centered>
+            <Grid.Row centered className="histogram-container">
+            <Histogram pixels={pixels}/>
+            </Grid.Row>
+            <Grid.Row centered>
             <Message style={style.container}>
               <Message.Header>Histograma da Imagem Processada</Message.Header>
             </Message>
           </Grid.Row>
-
             <Grid.Row centered className="histogram-container">
-            <Histogram pixels={processedImage || pixels}/>
-            </Grid.Row>
+            <Histogram pixels={processedImage}/>
+          </Grid.Row>
+
         </Grid>
       </div>
     );

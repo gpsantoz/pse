@@ -15,7 +15,6 @@ export const AREA_2 = 'fluxo_2';
 export const OPEN_IMAGE = 'abrir_imagem';
 export const WRITE_FILE = 'gravar_arquivo';
 export const CONNECTORS = 'conectores';
-export const MORPHOLOGICAL_FILTERING = 'Filtro Morfólogico';
 export const NEAREST_NEIGHBOR_INT = 'Interpolação pelo vizinho mais próximo';
 export const BILIENEAR_NEIGHBOR_INT = 'Interpolação Bilinear';
 export const ADD_LOADING = 'ADD_LOADING';
