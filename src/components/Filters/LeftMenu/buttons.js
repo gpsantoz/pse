@@ -19,10 +19,10 @@ export default [
   {
     label: 'Processamento',
     buttons: [
-      {
-        color: 'pink',
-        label: YOLO,
-      },
+      // {
+      //   color: 'pink',
+      //   label: YOLO,
+      // },
       {
         color: 'pink',
         label: THRESHOLD,
@@ -39,7 +39,7 @@ export default [
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                    [0, 1, 0]],
-          iterations: 4
+          iterations: 3
         }
       },
       {
@@ -47,10 +47,11 @@ export default [
         label: DILATION,
         parameters: {
           matrixSize: '3',
+          element: 'cross',
           kernel:  [[0, 1, 0],
                    [1, 1, 1],
                     [0, 1, 0]],
-          iterations: 4
+          iterations: 3
         }
       },
       {
