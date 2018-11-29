@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { Home } from '../containers';
+import { Home, Yolo } from '../containers';
 import { Loader } from '../components';
 
 class App extends Component {
@@ -25,6 +25,7 @@ class App extends Component {
             <div>
               <Loader loading={loaders > 0} />
               <Route exact path="/" component={Home} />
+              <Route exact path="/yolo" component={Yolo} />
             </div>
           </div>
         </BrowserRouter>
