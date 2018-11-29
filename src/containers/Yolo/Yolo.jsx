@@ -6,13 +6,10 @@ import yolo, { downloadModel } from 'tfjs-yolo-tiny';
 
 import { Webcam } from './webcam';
 
-let model;
-const webcam = new Webcam(document.getElementById('webcam'));
-
-async function main() {
+async function main(webcam) {
   try {
     ga();
-    model = await downloadModel();
+    let model = await downloadModel();
 
     alert("Just a heads up! We'll ask to access your webcam so that we can " +
       "detect objects in semi-real-time. \n\nDon't worry, we aren't sending " +
@@ -22,14 +19,14 @@ async function main() {
     await webcam.setup();
 
     doneLoading();
-    run();
+    run(webcam, model);
   } catch(e) {
     console.error(e);
     showError();
   }
 };
 
-async function run() {
+async function run(webcam, model) {
   while (true) {
     const inputImage = webcam.capture();
 
@@ -98,31 +95,26 @@ function showError() {
 }
 
 function ga() {
-  // if (process.env.UA) {
-  //   window.dataLayer = window.dataLayer || [];
-  //   function gtag(){dataLayer.push(arguments);}
-  //   gtag('js', new Date());
-  //   gtag('config', process.env.UA);
-  // }
+  if (process.env.UA) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', process.env.UA);
+  }
 }
 
 class Yolo extends React.Component {
 
   componentDidMount(){
-    main()
+    const webcam = new Webcam(document.getElementById('webcam'));
+    main(webcam)
   }
 
   render(){
     return(
       <div>
-        <a
-    className="github-fork-ribbon"
-    href="https://github.com/ModelDepot/tfjs-yolo-tiny-demo"
-    data-ribbon="Fork me on GitHub"
-    title="Fork me on GitHub">
-    Fork me on GitHub
-  </a>
   <div className="wrapper">
+
     <div className="logo-wrapper">
       <a href="https://modeldepot.io/?ref=tfjs-yolo-tiny-demo" target="_blank" rel="noopener noreferrer">
         <img className="logo" src="assets/ModelDepot-logo.png"></img>
