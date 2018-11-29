@@ -55,9 +55,8 @@ async function run(webcam, model) {
   }
 }
 
-const webcamElem = document.getElementById('webcam-wrapper');
-
 function drawRect(x, y, w, h, text = '', color = 'red') {
+  const webcamElem = document.getElementById('webcam-wrapper');
   const rect = document.createElement('div');
   rect.classList.add('rect');
   rect.style.cssText = `top: ${y}; left: ${x}; width: ${w}; height: ${h}; border-color: ${color}`;
