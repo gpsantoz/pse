@@ -2,9 +2,13 @@ import CoreDSP from '../../lib/web-dsp/CoreDSP';
 const coreDSP = new CoreDSP();
 
 export const handleFilter = (filter, pixels) => {
+  console.log(filter);
   const { width, height, data } = pixels;
   let result;
   switch (filter.type) {
+    case 'yolo':
+      result = coreDSP.yolo(data, width, height, filter.parameters );
+    break;
     case 'erosion':
       result = coreDSP.erosion(data, width, height, filter.parameters );
       break;

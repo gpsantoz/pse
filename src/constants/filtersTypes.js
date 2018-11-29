@@ -5,3 +5,5 @@ export const INTERPOLATION = 'Interpolation';
 export const MEDIAN = 'Median';
 export const GAUSSIAN = 'Gaussian';
 export const SUBSTRACT_IMAGE = 'Substract Image';
+export const YOLO = "Yolo";
+export const BICUBIC_INTERPOLATION = 'Bicubic Interpolation';
