@@ -11,10 +11,7 @@ async function main(webcam) {
     ga();
     let model = await downloadModel();
 
-    alert("Just a heads up! We'll ask to access your webcam so that we can " +
-      "detect objects in semi-real-time. \n\nDon't worry, we aren't sending " +
-      "any of your images to a remote server, all the ML is being done " +
-      "locally on device, and you can check out our source code on Github.");
+    alert("Você precisará autorizar o uso da sua webcam :)");
 
     await webcam.setup();
 
@@ -22,7 +19,6 @@ async function main(webcam) {
     run(webcam, model);
   } catch(e) {
     console.error(e);
-    showError();
   }
 };
 
@@ -77,20 +73,11 @@ function clearRects() {
 }
 
 function doneLoading() {
-  const elem = document.getElementById('loading-message');
-  elem.style.display = 'none';
-
   const successElem = document.getElementById('success-message');
   successElem.style.display = 'block';
 
   const webcamElem = document.getElementById('webcam-wrapper');
   webcamElem.style.display = 'flex';
-}
-
-function showError() {
-  const elem = document.getElementById('error-message');
-  elem.style.display = 'block';
-  doneLoading();
 }
 
 function ga() {
@@ -114,21 +101,6 @@ class Yolo extends React.Component {
       <div>
   <div className="wrapper">
 
-    <div className="logo-wrapper">
-      <a href="https://modeldepot.io/?ref=tfjs-yolo-tiny-demo" target="_blank" rel="noopener noreferrer">
-        <img className="logo" src="assets/ModelDepot-logo.png"></img>
-      </a>
-    </div>
-    <div id="loading-message">
-      Loading Skynet (This may take a minute, 40mb)...
-      <div>
-        <img className="spin" src="assets/logo.png"></img>
-      </div>
-    </div>
-    <div id="error-message" >
-      Sorry! An error occured while loading the model 😢
-
-    </div>
     <div id="success-message" >
       Point me at something, but please be a bit patient while I try to figure out what it is!
       (Ex. person, keyboard, cell phone, car, pet, etc.)
@@ -139,11 +111,6 @@ class Yolo extends React.Component {
           id="webcam" width="416" height="416">
         </video>
       </div>
-    </div>
-    <div >
-      <a href='https://modeldepot.io/mikeshi/tiny-yolo-in-javascript' target="_blank" rel="noopener noreferrer">
-        <img src='https://img.shields.io/badge/ModelDepot-Pre--trained_Model-3d9aff.svg' ></img>
-      </a>
     </div>
     </div>
   </div>
