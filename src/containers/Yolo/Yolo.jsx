@@ -6,97 +6,103 @@ import yolo, { downloadModel } from 'tfjs-yolo-tiny';
 
 import { Webcam } from './webcam';
 
-async function main(webcam) {
-  try {
-    ga();
-    let model = await downloadModel();
-
-    alert("Você precisará autorizar o uso da sua webcam :)");
-
-    await webcam.setup();
-
-    doneLoading();
-    run(webcam, model);
-  } catch(e) {
-    console.error(e);
-  }
-};
-
-async function run(webcam, model) {
-  while (true) {
-    const inputImage = webcam.capture();
-
-    const t0 = performance.now();
-
-    const boxes = await yolo(inputImage, model);
-
-    inputImage.dispose();
-
-    const t1 = performance.now();
-    console.log("YOLO inference took " + (t1 - t0) + " milliseconds.");
-
-    console.log('tf.memory(): ', tf.memory());
-
-    clearRects();
-    boxes.forEach(box => {
-      const {
-        top, left, bottom, right, classProb, className,
-      } = box;
-
-      drawRect(left, top, right-left, bottom-top,
-        `${className} Confidence: ${Math.round(classProb * 100)}%`)
-    });
-
-    await tf.nextFrame();
-  }
-}
-
-function drawRect(x, y, w, h, text = '', color = 'red') {
-  const webcamElem = document.getElementById('webcam-wrapper');
-  const rect = document.createElement('div');
-  rect.classList.add('rect');
-  rect.style.cssText = `top: ${y}; left: ${x}; width: ${w}; height: ${h}; border-color: ${color}`;
-
-  const label = document.createElement('div');
-  label.classList.add('label');
-  label.innerText = text;
-  rect.appendChild(label);
-
-  webcamElem.appendChild(rect);
-}
-
-function clearRects() {
-  const rects = document.getElementsByClassName('rect');
-  while(rects[0]) {
-    rects[0].parentNode.removeChild(rects[0]);
-  }
-}
-
-function doneLoading() {
-  const successElem = document.getElementById('success-message');
-  successElem.style.display = 'block';
-
-  const webcamElem = document.getElementById('webcam-wrapper');
-  webcamElem.style.display = 'flex';
-}
-
-function ga() {
-  if (process.env.UA) {
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){window.dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', process.env.UA);
-  }
-}
+let rects = []
 
 class Yolo extends React.Component {
 
+  constructor(props){
+    super(props)
+    this.state = { rects: [] }
+  }
+  main = async () => {
+    try {
+      this.ga();
+      let model = await downloadModel();
+      const webcam = new Webcam(document.getElementById('webcam'));
+
+      alert("Você precisará autorizar o uso da sua webcam :)");
+
+      await webcam.setup();
+
+      this.doneLoading();
+      this.run(webcam, model);
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+  run = async (webcam, model) => {
+    while (true) {
+      const inputImage = webcam.capture();
+
+      const t0 = performance.now();
+
+      const boxes = await yolo(inputImage, model);
+
+      inputImage.dispose();
+
+      const t1 = performance.now();
+      console.log("YOLO inference took " + (t1 - t0) + " milliseconds.");
+
+      console.log('tf.memory(): ', tf.memory());
+
+      this.clearRects();
+      boxes.forEach(box => {
+        const {
+          top, left, bottom, right, classProb, className,
+        } = box;
+
+        this.drawRect(left, top, right-left, bottom-top,
+          `${className} Confidence: ${Math.round(classProb * 100)}%`)
+      });
+
+      await tf.nextFrame();
+    }
+  }
+
+  drawRect = async (x, y, w, h, text = '', color = 'red') => {
+    const webcamElem = document.getElementById('webcam-wrapper');
+    var newRect = {
+      style: {
+      top: y,
+      left: x,
+      width: w,
+      height: h,
+      borderColor: color},
+      text: text
+    };
+    this.setState(prevState => ({
+      rects: [...prevState.rects, newRect]
+    }))
+  }
+
+  clearRects = () => {
+    this.setState({rects: []})
+  }
+
+  doneLoading = () => {
+    const successElem = document.getElementById('success-message');
+    successElem.style.display = 'block';
+
+    const webcamElem = document.getElementById('webcam-wrapper');
+    webcamElem.style.display = 'flex';
+  }
+
+  ga = () => {
+    if (process.env.UA) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', process.env.UA);
+    }
+  }
+
   componentDidMount(){
-    const webcam = new Webcam(document.getElementById('webcam'));
-    main(webcam)
+    this.main()
   }
 
   render(){
+    console.log('render rects')
     return(
       <div>
   <div className="wrapper">
@@ -107,6 +113,17 @@ class Yolo extends React.Component {
     </div>
     <div className="webcam-ui-container">
       <div id="webcam-wrapper" >
+        {this.state.rects.map((rect, key) => {
+          console.log(rect)
+          return (
+            <div className="rect" style={rect.style}>
+              <div className="label">
+                {rect.text}
+              </div>
+            </div>
+          )
+        })
+        }
         <video autoPlay playsInline muted
           id="webcam" width="416" height="416">
         </video>
