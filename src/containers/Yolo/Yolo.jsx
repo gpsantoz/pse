@@ -144,7 +144,7 @@ class Yolo extends React.Component {
     </div>
     <div className="webcam-ui-container">
       <div id="webcam-wrapper" >
-        <video autoplay playsinline muted
+        <video autoPlay playsInline muted
           id="webcam" width="416" height="416">
         </video>
       </div>
