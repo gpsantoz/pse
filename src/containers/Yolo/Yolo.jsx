@@ -1,12 +1,14 @@
 import _ from 'lodash';
 import React from 'react';
+import { Grid, Image } from 'semantic-ui-react';
 import './style.css'
 import * as tf from '@tensorflow/tfjs';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { loading } from '../../actions';
 import yolo, { downloadModel } from 'tfjs-yolo-tiny';
-
-import { Webcam } from './webcam';
-
-let rects = []
+import { Webcam } from '../../lib/webcam';
+import PSE_YOLO_LOGO from '../../assets/images/pse_yolo.png'
 
 class Yolo extends React.Component {
 
@@ -19,12 +21,10 @@ class Yolo extends React.Component {
       this.ga();
       let model = await downloadModel();
       const webcam = new Webcam(document.getElementById('webcam'));
-
-      alert("Você precisará autorizar o uso da sua webcam :)");
-
+      //alert("Você precisará autorizar o uso da sua webcam :)");
       await webcam.setup();
 
-      this.doneLoading();
+      this.props.removeLoading()
       this.run(webcam, model);
     } catch(e) {
       console.error(e);
@@ -61,7 +61,6 @@ class Yolo extends React.Component {
   }
 
   drawRect = async (x, y, w, h, text = '', color = 'red') => {
-    const webcamElem = document.getElementById('webcam-wrapper');
     var newRect = {
       style: {
       top: y,
@@ -80,14 +79,6 @@ class Yolo extends React.Component {
     this.setState({rects: []})
   }
 
-  doneLoading = () => {
-    const successElem = document.getElementById('success-message');
-    successElem.style.display = 'block';
-
-    const webcamElem = document.getElementById('webcam-wrapper');
-    webcamElem.style.display = 'flex';
-  }
-
   ga = () => {
     if (process.env.UA) {
       window.dataLayer = window.dataLayer || [];
@@ -98,23 +89,24 @@ class Yolo extends React.Component {
   }
 
   componentDidMount(){
+    this.props.addLoading()
     this.main()
   }
 
   render(){
-    console.log('render rects')
     return(
-      <div>
+      <Grid stackable celled>
+      <Grid.Row centered>
+      <Grid.Column width={16}>
+      <Image src={PSE_YOLO_LOGO} width={500} centered />
   <div className="wrapper">
 
     <div id="success-message" >
-      Point me at something, but please be a bit patient while I try to figure out what it is!
-      (Ex. person, keyboard, cell phone, car, pet, etc.)
+      Detecção de Objetos em Tempo Real utilizando YOLO. Basta autorizar o acesso à webcam e esperar que a imagem seja processada.
     </div>
     <div className="webcam-ui-container">
       <div id="webcam-wrapper" >
         {this.state.rects.map((rect, key) => {
-          console.log(rect)
           return (
             <div className="rect" style={rect.style}>
               <div className="label">
@@ -130,9 +122,18 @@ class Yolo extends React.Component {
       </div>
     </div>
     </div>
-  </div>
+    </Grid.Column>
+    </Grid.Row>
+    </Grid>
+
     )
   }
 }
 
-export default Yolo
+const mapDispatchToProps = (dispatch) => ({
+  addLoading: bindActionCreators(loading.addLoading, dispatch),
+  removeLoading: bindActionCreators(loading.removeLoading, dispatch),
+})
+
+export default connect(null, mapDispatchToProps)(Yolo);
+

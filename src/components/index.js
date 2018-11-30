@@ -1,5 +1,6 @@
 import { Logo } from './Global/Logo/Logo'
 import Canvas from './Global/Canvas/Canvas'
+import Header from './Global/Header/Header'
 import Histogram from './Result/Histogram/Histogram'
 import Loader from './Global/Loader/Loader'
 import Stepper from './Home/Stepper/Stepper'
@@ -15,6 +16,7 @@ export {
   Canvas,
   Histogram,
   Loader,
+  Header,
   Stepper,
   Threshold,
   Morphological,

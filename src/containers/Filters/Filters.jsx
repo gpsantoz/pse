@@ -29,7 +29,7 @@ class Filters extends React.Component {
           setTimeout(function (theseArgs)
           {
             that.props.processImage(filter, images[filter.id-1].pixels, dispatch)
-          }, 500)
+          }, 100)
         this.props.setProcessingStatus(true)
         this.props.addLoading()
         }
@@ -39,7 +39,7 @@ class Filters extends React.Component {
         setTimeout(function (theseArgs)
           {
             that.props.processImage(filter, images[filter.id-1].pixels, dispatch)
-          }, 500)
+          }, 100)
         this.props.setProcessingStatus(true)
         this.props.addLoading()
       }
