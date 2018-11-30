@@ -36,6 +36,9 @@
   white-space: nowrap;
 }
 
+.yolo-description{
+  margin-top: 20px;
+}
 .intro {
   max-width: 908px;
   margin: 0 auto;

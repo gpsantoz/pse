@@ -95,14 +95,15 @@ class Yolo extends React.Component {
 
   render(){
     return(
-      <Grid stackable celled>
-      <Grid.Row centered>
-      <Grid.Column width={16}>
-      <Image src={PSE_YOLO_LOGO} width={500} centered />
+       <Grid stackable>
+       <Grid.Row centered>
+       <Grid.Column width={16}>
+
   <div className="wrapper">
 
     <div id="success-message" >
-      Detecção de Objetos em Tempo Real utilizando YOLO. Basta autorizar o acesso à webcam e esperar que a imagem seja processada.
+    <Image src={PSE_YOLO_LOGO} width={500} centered />
+      <div className="yolo-description">Detecção de Objetos em Tempo Real utilizando YOLO. Basta autorizar o acesso à webcam e esperar que a imagem seja processada.</div>
     </div>
     <div className="webcam-ui-container">
       <div id="webcam-wrapper" >
@@ -122,9 +123,9 @@ class Yolo extends React.Component {
       </div>
     </div>
     </div>
-    </Grid.Column>
-    </Grid.Row>
-    </Grid>
+     </Grid.Column>
+     </Grid.Row>
+     </Grid>
 
     )
   }
