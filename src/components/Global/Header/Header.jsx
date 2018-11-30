@@ -1,13 +1,23 @@
 import React from 'react';
 import { Menu } from 'semantic-ui-react';
 import { Link, withRouter } from 'react-router-dom';
+import {createBrowserHistory} from 'history';
+
+
 
 class Header extends React.Component {
-	state = { activeItem: 'PSE Image' };
+
+  constructor(props){
+    super(props)
+    const browserHistory = createBrowserHistory();
+    var path = browserHistory.location.pathname == '/yolo' ? 'Real Time YOLO' : 'PSE Image'
+    this.state = { activeItem: path };
+
+  }
 
 	handleItemClick = (e, { name }) => {
 		this.setState({ activeItem: name });
-	};
+  };
 
 	render() {
 		const { activeItem } = this.state;
