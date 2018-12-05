@@ -27,7 +27,7 @@ class NavigationButtons extends React.Component {
   }
 
   renderHistogram() {
-    const canvas = document.getElementById('image-canvas');
+    const canvas = document.getElementById('image-result-canvas');
     const ctx = canvas.getContext('2d');
     const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const location = {
@@ -64,7 +64,7 @@ class NavigationButtons extends React.Component {
 
   downloadImage = async () => {
     const link = document.getElementById('download');
-    const canvas = document.getElementById('image-canvas');
+    const canvas = document.getElementById('image-result-canvas');
     const newLink = await this.canvasToBlobPromisify(canvas);
 
     link.href = newLink.href;
@@ -73,37 +73,17 @@ class NavigationButtons extends React.Component {
 
   render() {
     return (
-      <Grid.Row columns={6}>
-        <Grid.Column>
-          {this.renderNavigationButton('red', 'Voltar', () =>
-            this.props.history.push('/')
-          )}
-        </Grid.Column>
-        <Grid.Column>
-          {this.renderNavigationButton(
-            'red',
-            'Excluir',
-            this.removeBlock.bind(this)
-          )}
-        </Grid.Column>
+      <Grid.Row>
         <Grid.Column>
           <Button
-            inverted
             color="blue"
             onClick={this.downloadImage}
             style={style.navigationButton}
             as="a"
             id="download"
           >
-            Download
+            Download Processed Image
           </Button>
-        </Grid.Column>
-        <Grid.Column>
-          {this.renderNavigationButton(
-            'blue',
-            'Histograma',
-            this.renderHistogram.bind(this)
-          )}
         </Grid.Column>
       </Grid.Row>
     );

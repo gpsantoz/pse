@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import imageActionsReducer from './imageActionsReducer';
-import imagesReducer from './imagesReducer';
+import loading from './loading/loading';
+import images from './images/images';
+import filters from './filters/filters';
 
 export default combineReducers({
-  imageActions: imageActionsReducer,
-  images: imagesReducer,
+  filters: filters,
+  images: images,
+  loading: loading,
 });

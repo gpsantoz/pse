@@ -1,5 +1,4 @@
 import _ from 'lodash';
-
 export default class CoreDSP {
   constructor() {
     this.mag = 127;
@@ -26,6 +25,7 @@ export default class CoreDSP {
     this.underground = underground;
     this.rooster = rooster;
     this.mist = mist;
+    this.histogramEqualization = histogramEqualization;
     this.tingle = tingle;
     this.kaleidoscope = tingle;
     this.bacteria = bacteria;
@@ -41,8 +41,17 @@ export default class CoreDSP {
     this.security = security;
     this.robbery = security;
     this.getHistograms = getHistograms;
+    this.erosion = erosion;
+    this.dilation = dilation;
+    this.threshold = threshold;
+    this.interpolation = interpolation;
+    this.median = median;
+    this.gaussian = gaussian;
+    this.yolo = yolo;
   }
 }
+
+let Img = require('image-js');
 
 function getNewHistogramArray() {
   return _.chain(_.range(0, 256, 1))
@@ -68,7 +77,106 @@ function getHistograms(data) {
   return histogram;
 }
 
-function grayscale(data) {
+//FILTERS
+
+
+function yolo (pixels,  width, height, threshold) {
+  console.log('aquiiii');
+
+  //  let destImg;
+  //  let imagem = new Img.Image(width, height, data);
+  //  destImg = imagem.resize({width: width*4});
+  //  return destImg;
+  return null;
+}
+
+function threshold (pixels,  width, height, threshold){
+	let d = pixels;
+	for (let i = 0; i < d.length; i += 4) {
+		let r = d[i];
+		let g = d[i + 1];
+		let b = d[i + 2];
+		let v = 0.2126 * r + 0.7152 * g + 0.0722 * b >= threshold ? 255 : 0;
+		d[i] = d[i + 1] = d[i + 2] = v;
+  }
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(d)
+	return resultImage;
+};
+
+function interpolation (data, width, height, parameters){
+   const srcImg = new ImageData(width, height)
+   srcImg.data.set(data)
+
+   var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
+   let destImg;
+   let imagem = new Img.Image(width, height, data);
+   destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
+   return destImg;
+};
+
+function substractImage (data, width, height, parameters){
+  const srcImg = new ImageData(width, height)
+  srcImg.data.set(data)
+
+  var algorithm = parameters.algorithm == '1' ? 'nearestNeighbor' : 'bilinear'
+  let destImg;
+  let imagem = new Img.Image(width, height, data);
+  destImg = imagem.resize({width: width*parseInt(parameters.scale), interpolation: algorithm});
+  return destImg;
+};
+
+function histogramEqualization (pixels, width, height) {
+  var newImageData = new ImageData(pixels, width, height)
+
+  var countR = new Array(),
+      countG = new Array(),
+      countB = new Array();
+  for (var i = 0; i < 256; i++) {
+      countR[i] = 0;
+      countG[i] = 0;
+      countB[i] = 0;
+  }
+  for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+          var a = ((y*width)+x)*4;
+          countR[pixels[a]]++;
+          countG[pixels[a+1]]++;
+          countB[pixels[a+2]]++;
+      }
+  }
+  var minR = 256,
+      minG = 256,
+      minB = 256;
+  for (var i = 1; i < 256; i++) {
+      countR[i] += countR[i-1];
+      countG[i] += countG[i-1];
+      countB[i] += countB[i-1];
+
+      minR = ((countR[i] != 0) && (countR[i] < minR)) ? countR[i] : minR;
+      minG = ((countG[i] != 0) && (countG[i] < minG)) ? countG[i] : minG;
+      minB = ((countB[i] != 0) && (countB[i] < minB)) ? countB[i] : minB;
+  }
+  for (var i = 0; i < 256; i++) {
+      countR[i] = ((countR[i]-minR)/((width*height)-minR))*255;
+      countG[i] = ((countG[i]-minG)/((width*height)-minG))*255;
+      countB[i] = ((countB[i]-minB)/((width*height)-minB))*255;
+  }
+
+  for (var y = 0; y < height; y++) {
+      for (var x = 0; x < width; x++) {
+          var a = ((y*width)+x)*4;
+          newImageData.data[a] = countR[pixels[a]];
+          newImageData.data[a+1] = countG[pixels[a+1]];
+          newImageData.data[a+2] = countB[pixels[a+2]];
+          newImageData.data[a+3] = pixels[a+3];
+      }
+  }
+
+  return newImageData;
+}
+
+function grayscale(data, width, height) {
   for (let i = 0; i < data.length; i += 4) {
     let red = data[i];
     let a = data[i + 3];
@@ -79,9 +187,12 @@ function grayscale(data) {
     data[i + 2] = red;
     data[i + 3] = a;
   }
-  return data;
+
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
-function brighten(data, brightness = 25) {
+function brighten(data, brightness = 25, width, height) {
   for (let i = 0; i < data.length; i += 4) {
     data[i] = data[i] + brightness > 255 ? 255 : data[i] + brightness;
     data[i + 1] =
@@ -89,17 +200,54 @@ function brighten(data, brightness = 25) {
     data[i + 2] =
       data[i + 2] + brightness > 255 ? 255 : data[i + 2] + brightness;
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
-function invert(data) {
+function invert(data, width, height) {
   for (let i = 0; i < data.length; i += 4) {
     data[i] = 255 - data[i]; //r
     data[i + 1] = 255 - data[i + 1]; //g
     data[i + 2] = 255 - data[i + 2]; //b
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
-function noise(data) {
+
+function median(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  result = imagem.medianFilter({radius: parameters.radius});
+  return result
+}
+
+function gaussian(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  result = imagem.gaussianFilter({radius: parameters.radius});
+  return result
+}
+
+function erosion(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  imagem = imagem.grey();
+  result = imagem.erode({kernel: parameters.kernel, iterations: parameters.iterations});
+  result = result.rgba8();
+  return result
+}
+
+function dilation(data, width, height, parameters) {
+  let result;
+  let imagem = new Img.Image(width, height, data);
+  imagem = imagem.grey();
+  result = imagem.dilate({kernel: parameters.kernel, iterations: parameters.iterations});
+  result = result.rgba8();
+  return result;
+}
+
+function noise(data, width, height) {
   let random;
   for (let i = 0; i < data.length; i += 4) {
     random = (Math.random() - 0.5) * 70;
@@ -107,15 +255,19 @@ function noise(data) {
     data[i + 1] = data[i + 1] + random; //g
     data[i + 2] = data[i + 2] + random; //b
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 }
-function multiFilter(data, width, filterType, mag, mult, adj) {
+function multiFilter(data, width, height, filterType, mag, mult, adj) {
   for (let i = 0; i < data.length; i += filterType) {
     if (i % 4 !== 3) {
       data[i] = mag + mult * data[i] - data[i + adj] - data[i + width * 4];
     }
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 } // output needs to be clamped to match C++ filters
 
 //to bind arguments in the right order
@@ -178,7 +330,9 @@ const convFilter = (
       }
     }
   }
-  return data;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 };
 const blur = bindLastArgs(
   convFilter,
@@ -290,5 +444,7 @@ const sobel = (data, width, height, invert = false) => {
       }
     }
   }
-  return data; //sobelData;
+  const resultImage = new ImageData(width, height)
+  resultImage.data.set(data)
+	return resultImage;
 };

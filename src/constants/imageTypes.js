@@ -1,0 +1,3 @@
+export const ORIGINAL_IMAGE = 0;
+export const PRE_PROCESSED_IMAGE = 'PRE_PROCESSED_IMAGE';
+export const PROCESSED_IMAGE = 'PROCESSED_IMAGE';
